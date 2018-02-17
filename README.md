@@ -1,6 +1,6 @@
 # VEMLab: a MATLAB library for the virtual element method
 
-This repository contains the code for an open source MATLAB library for the virtual element method.
+Free and open source MATLAB library for the virtual element method.
 <h2>Features</h2>
 <ul><li> Two-dimensional linear elastostatics (plane strain and plane stress).</li>
     <li> Solution methods: VEM (polygonal elements), FEM (3-node triangles, 4-node quadrilaterals).</li>
