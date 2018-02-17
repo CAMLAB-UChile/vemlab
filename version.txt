@@ -13,7 +13,7 @@
 						 
                Computational and Applied Mechanics Laboratory,
                 Center for Modern Computational Engineering,
-                 Facultad de Ciencias FÌsicas y Matem·ticas,
+                 Facultad de Ciencias F√≠sicas y Matem√°ticas,
                    Universidad de Chile, Santiago, CHILE
                             All Rights Reserved.
 							 
@@ -29,6 +29,7 @@ Version 1.0 (17-FEB-2018): (Initial realease of code)
 - Meshes need to be generated separately and stored inside folder 'mesh_files' located in
   the folder 'test.' 
 - Meshes must be generated with the functions 'create_' located in the folder 'mesher.'
+- Solutions can be plotted to MATLAB figures, text files and GiD files.
 
   
 -------------------------------------------------------------------------------
