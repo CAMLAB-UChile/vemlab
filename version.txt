@@ -1,0 +1,46 @@
+------------------------------------------------------------------------------
+                                    VEMLab
+           Source code  : http://camlab.cl/research/software/vemlab
+              (See Copyright and License notice in "license.txt")
+
+                              Copyright (c) 2018                     
+                         by Alejandro Ortiz-Bernardin 
+                               aortizb@uchile.cl
+				          http://camlab.cl/alejandro/
+							   
+                     Department of Mechanical Engineering                        
+                    Universidad de Chile,  Santiago, CHILE                        
+						 
+               Computational and Applied Mechanics Laboratory,
+                Center for Modern Computational Engineering,
+                 Facultad de Ciencias Físicas y Matemáticas,
+                   Universidad de Chile, Santiago, CHILE
+                            All Rights Reserved.
+							 
+------------------------------------------------------------------------------
+
+Version 1.0 (17-FEB-2018): (Initial realease of code)
+
+- Two-dimensional linear elastostatics (plane strain and plane stress)
+- Solution methods: VEM (polygonal elements), FEM (3-node triangles, 4-node quadrilateral)
+- Boundary conditions: Dirichlet, Neumann on boundary edges; can be a constant or a function.
+- Meshers: PolyMesher [1], distmesh2d [2], quad4mesh; customized for rectangular domains only 
+           (requires adjustments for other domain types)
+- Meshes need to be generated separately and stored inside folder 'mesh_files' located in
+  the folder 'test.' 
+- Meshes must be generated with the functions 'create_' located in the folder 'mesher.'
+
+  
+-------------------------------------------------------------------------------
+References:
+
+[1] C Talischi, GH Paulino, A Pereira, IFM Menezes, 
+    "PolyMesher: A general-purpose mesh generator for polygonal elements 
+    written in Matlab", 
+	Struct Multidisc Optim, 2012,
+    DOI 10.1007/s00158-011-0706-z 
+
+[2] Per-Olof Persson and Gilbert Strang, 
+    "A Simple Mesh Generator in MATLAB," 
+	SIAM Review Vol. 46 (2) 2004. 
+	
