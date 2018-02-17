@@ -10,6 +10,6 @@ Free and open source MATLAB library for the virtual element method.
     <li> Meshes must be generated with the functions 'create_' located in the folder 'mesher.'</li> 
     <li> Solutions can be plotted to MATLAB figures, text files and <a href="https://www.gidhome.com/">GiD</a> files.</li>  
 </ul>
-<h2>Author</h2><a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>– Assistant Professor, Department of Mechanical Engineering, Universidad de Chile.
+<h2>Author</h2><a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a> – Assistant Professor, Department of Mechanical Engineering, Universidad de Chile.
 <h2>Running VEMLab</h2><a>VEMLab is a library. You need to create a main .m file and place it inside the 'test' folder. The main file has the typical structure of a FEM simulation. Simply follow the test problems that are provided inside the folder 'test' to wrote your own .m files or modify the ones provided.</a>
 <h2>License</h2><a>This project is licensed under the GPL3 License. This program is free software; it can be redistributed or modified under the terms of the GNU General Public License 3 as published by the Free Software Foundation.<a/>
