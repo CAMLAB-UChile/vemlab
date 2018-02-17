@@ -3,7 +3,7 @@
 This repository contains the code for an open source MATLAB library for the virtual element method.
 <h2>Features</h2>
 <ul><li> Two-dimensional linear elastostatics (plane strain and plane stress).</li>
-    <li> Solution methods: VEM (polygonal elements), FEM (3-node triangles, 4-node quadrilateral).</li>
+    <li> Solution methods: VEM (polygonal elements), FEM (3-node triangles, 4-node quadrilaterals).</li>
     <li> Boundary conditions: Dirichlet, Neumann on boundary edges; can be a constant or a function.</li>  
     <li> Meshers: PolyMesher, distmesh2d, quad4mesh; customized for rectangular domains only (requires adjustments for other domain types).</li>  
     <li> Meshes need to be generated separately and stored inside folder 'mesh_files' located in  the folder 'test.'</li>
