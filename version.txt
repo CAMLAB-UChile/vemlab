@@ -13,34 +13,24 @@
 						 
                Computational and Applied Mechanics Laboratory,
                 Center for Modern Computational Engineering,
-                 Facultad de Ciencias F√≠sicas y Matem√°ticas,
+                 Facultad de Ciencias FÌsicas y Matem·ticas,
                    Universidad de Chile, Santiago, CHILE
                             All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
-Version 2.0 (9-APR-2018). The following features have been added:
 
-- Two-dimensional Poisson problem.
-- Setup of plot and output options in function "plot_and_output_options" located 
-  in folder "config". 
-- Additional plotting options (stresses, strains, fluxes and gradients) to MATLAB 
-  figures, text files and GiD files.
-- Option to plot solutions to VTK files.
-
-Version 1.0 (17-FEB-2018). (Initial realease of code)
+Version 1.0 (17-FEB-2018): (Initial realease of code)
 
 - Two-dimensional linear elastostatics (plane strain and plane stress)
-- Solution methods: linear VEM (polygonal elements), FEM (3-node triangles, 4-node 
-  quadrilateral)
-- Boundary conditions: Dirichlet, Neumann on boundary edges; can be a constant or 
-  a function.
-- Meshers: PolyMesher [1], distmesh2d [2], quad4mesh; customized for rectangular 
-  domains only (requires adjustments for other domain types)
-- Meshes need to be generated separately and stored inside folder 'mesh_files' 
-  located in folder 'test.' 
-- Meshes must be generated with the functions 'create_' located in folder 'mesher.'
-- Solutions can be plotted to MATLAB figures, text files and GiD files.
+- Solution methods: VEM (polygonal elements), FEM (3-node triangles, 4-node quadrilateral)
+- Boundary conditions: Dirichlet, Neumann on boundary edges; can be a constant or a function.
+- Meshers: PolyMesher [1], distmesh2d [2], quad4mesh; customized for rectangular domains only 
+           (requires adjustments for other domain types)
+- Meshes need to be generated separately and stored inside folder 'mesh_files' located in
+  the folder 'test.' 
+- Meshes must be generated with the functions 'create_' located in the folder 'mesher.'
 
+  
 -------------------------------------------------------------------------------
 References:
 

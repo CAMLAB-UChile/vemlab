@@ -1,29 +1,20 @@
-function fb = fem_body_force_linelast2d(verts,config,body_force_fun_values) 
+function fb = fem_body_force_linelast2d(verts,config,body_force_fun_value) 
   if strcmp(config.vemlab_method,'FEM2DT3')
     % area of the element 
     area=triangle_area(verts);
     % vector of nodal body forces
-    bf=body_force_function_linelast2d(verts,body_force_fun_values);                                     
-    bx1=bf(1); bx2=bf(3); bx3=bf(5); % when b is not a constant, b is linearly 
-    by1=bf(2); by2=bf(4); by3=bf(6); % interpolated inside the element and we end
-                                     % up with nodal values of b. If the nodal
-                                     % values are all equal, then these "nodal" 
-                                     % body forces recover the case bf = const.
+    bf=body_force_function_linelast2d(verts,body_force_fun_value);
+    bx1=bf(1); bx2=bf(3); bx3=bf(5); % when bf is not constant, these are
+    by1=bf(2); by2=bf(4); by3=bf(6); % the nodal values of the components of bf.
                                      % Ref.: J. Fish and T. Belytschko, 
                                      % A First Course in Finite Elements, 
-                                     % John Wiley & Sons Ltd, 2007 
-                                     
-                                     
+                                     % John Wiley & Sons Ltd, 2007
     fb=(area/12)*[2*bx1+bx2+bx3;...
                   2*by1+by2+by3;...
                   bx1+2*bx2+bx3;...
                   by1+2*by2+by3;...
                   bx1+bx2+2*bx3;...
                   by1+by2+2*by3];
-    % note that if nodal values are all equal, we get the components 
-    % fbx = 1/3*bx*ones(3,1) and fby = 1/3*by*ones(3,1),
-    % where bx and by are constant body forces, that is, the fb vector 
-    % for a constant body force bx,by is recovered.            
   elseif strcmp(config.vemlab_method,'FEM2DQ4')
     %  compute body force vector by numerical integration
     fb=zeros(8,1);    

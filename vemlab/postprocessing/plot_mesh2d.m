@@ -5,7 +5,7 @@
 %              (See Copyright and License notice in "license.txt")
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FUNCTION:                   triangulate_polygon 
+% FUNCTION:                   plot_mesh 
 %
 % Created by : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 % Updated by :
@@ -14,20 +14,18 @@
 %-------------------------------------------------------------------------------
 % Purpose
 % =======
-% Divide a polygon into triangles using the polygon's vertices.
+% Plot a polygonal mesh. Polygon can be a triangle, square, pentagon, etc.
 %
 % Usage
 % =====
-% triangles = triangulate_polygon(mesh,element_id)
+% plot_mesh2d(mesh)
 %
 % Input
 % =====
-% mesh       : structure containing the polygonal mesh information
-% element_id : element number
+% mesh : structure containing mesh data (coords,connect,etc.)
 %
 % Output
 % ======
-% connect    : connectivity of the triangles
 %
 %-------------------------------------------------------------------------------
 % References 
@@ -40,13 +38,18 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function connect = triangulate_polygon(mesh,element_id)
-  elem_nodes=mesh.connect(element_id,:);
-  elem_num_nodes=length(elem_nodes{1});
-  num_triangles=elem_num_nodes-2;
-  connect=zeros(num_triangles,3);
-  for elem_i=1:num_triangles
-    connect(elem_i,:)=[elem_nodes{1}(1),elem_nodes{1}(elem_i+1),elem_nodes{1}(elem_i+2)];
-  end  
+function plot_mesh2d(mesh)  
+  fprintf('Plotting mesh...\n');
+  points=mesh.coords; 
+  polygons=mesh.connect;  
+%   set(gcf,'Renderer','painters')
+  figure; 
+  maxNumVertices = max(cellfun(@numel,polygons));
+  padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
+  elements = cellfun(padFunc,polygons,'UniformOutput',false);
+  elements = vertcat(elements{:});
+  patch('Faces',elements,'Vertices',points,'FaceColor','w'); 
+%   axis('square')  
+%   set(gca, 'FontSize', 12);
+  axis equal; axis off; 
 end
-

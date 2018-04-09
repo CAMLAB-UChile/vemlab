@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.0                         
-%  Date         : April 9, 2018
+%  Version      : 1.0                         
+%  Date         : 17-FEB-2018  
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -27,9 +27,7 @@ function linear_patch_test_linelast2d
   close all;
   clc;
   
-  %% THIS BLOCK MUST BE PUT ON EVERY TEST FILE
-  
-  % add all vemlab folders to the path
+  %% ADD ALL VEMLAB FOLDERS TO THE PATH
   opsystem=computer;
   is_Windows = strcmp(opsystem,'PCWIN') || strcmp(opsystem,'PCWIN64');
   is_Linux = strcmp(opsystem,'GLNX86') || strcmp(opsystem,'GLNXA64');   
@@ -37,7 +35,7 @@ function linear_patch_test_linelast2d
     cd ..\; vemlab_root_dir=setpath;
   elseif is_Linux
     cd ../; vemlab_root_dir=setpath;
-  end    
+  end   
   
   %% INPUT DATA 
   
@@ -46,34 +44,22 @@ function linear_patch_test_linelast2d
   nu=0.3;                                % Poisson's ratio
   elastic_state='plane_strain';          % 'plane_strain' or 'plane_stress'  
   
-  % mesh filename: see available sample mesh files in folder "test/mesh_files/"
-  %
-  %     VEM2D meshes have the keyword "polygon" in the mesh filename
-  %     FEM2DQ4 meshes have the keyword "q4" in the mesh filename
-  %     FEM2DT3 meshes have the keyword "q4" in the mesh filename 
-  % 
-  %     VEM2D meshes can be used with 'VEM2D' method only.
-  %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
-  %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
-  %
-  mesh_filename='patch_test_1000poly_elems.txt';  
+  % mesh filename 
+  mesh_filename='patch_test_100poly_elems.txt';  
+  
+  % options
+  plot_mesh_over_results='no';           % 'yes' or 'no'
   
   % method
-  vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
-                              % 'FEM2DT3' (3-node triangles - linear FEM) or
-                              % 'FEM2DQ4' (4-node quadrilaterals - bilinear FEM)
+  vemlab_method='VEM2D';                 % 'VEM2D', 'FEM2DT3' or 'FEM2DQ4'
   
   % module
-  vemlab_module='LinearElastostatics';   % 'LinearElastostatics' or 'Poisson'
-  
-  %% PLOT AND OUTPUT OPTIONS
-  % to setup plot and output options go to folder 'config' and 
-  % set the parameters inside function 'plot_and_output_options.m'
+  vemlab_module='LinearElastostatics';  % 'LinearElastostatics'
   
   %% VEMLAB CONFIGURATION
   
-  config=config_vemlab(opsystem,vemlab_root_dir,mesh_filename,vemlab_module,...
-                       vemlab_method);
+  config=config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
+                       plot_mesh_over_results,vemlab_module,vemlab_method);
                                          
   %% PRINT INIT MESSAGE TO SCREEN
 
@@ -82,10 +68,10 @@ function linear_patch_test_linelast2d
   %% PREPROCESSING
   
   % read mesh
-  domainMesh=read_mesh(config);  
+  mesh=read_mesh([config.mesh_folder_location,config.mesh_filename]);  
   
   % plot mesh  
-  plot_mesh2d(domainMesh,config);
+  plot_mesh2d(mesh);
 
   fprintf('\n');
   fprintf('Simulation started...\n');  
@@ -96,37 +82,37 @@ function linear_patch_test_linelast2d
   
   %% BODY FORCE FUNCTIONS
   
-  body_force_fun_values.bx=@(x,y)bx_body_force_fun(x,y);
-  body_force_fun_values.by=@(x,y)by_body_force_fun(x,y);
+  body_force_fun_value.bx=@(x,y)bx_body_force_fun(x,y);
+  body_force_fun_value.by=@(x,y)by_body_force_fun(x,y);
   
   %% ASSEMBLY 
   
   tic
   fprintf('Assemblying element matrices...\n'); 
-  [K_global,f_global]=assembly(domainMesh,config,matProps,body_force_fun_values);
+  [K_global,f_global]=assembly(mesh,config,matProps,body_force_fun_value);
   
   
   %% DIRICHLET BOUNDARY NODES/DOFS/FUNCTIONS (entire boundary) 
   % (see definition of functions at the bottom of this file)
   
-  Dirichet_boundary_nodes=domainMesh.boundary_nodes.all;
-  Dirichet_boundary_dofs=domainMesh.boundary_dofs.all; 
-  Dirichlet_fun_values.ux=@(x,y)ux_Dirichlet_fun(x,y);  
-  Dirichlet_fun_values.uy=@(x,y)uy_Dirichlet_fun(x,y);   
+  Dirichet_boundary_nodes=mesh.boundary_nodes.all;
+  Dirichet_boundary_dofs=mesh.boundary_dofs.all; 
+  Dirichlet_fun_value.ux=@(x,y)ux_Dirichlet_fun(x,y);  
+  Dirichlet_fun_value.uy=@(x,y)uy_Dirichlet_fun(x,y);   
 
   %% ENFORCE DIRICHLET BCS ON THE BOUNDARY NODES
   
   fprintf('Enforcing Dirichlet boundary conditions...\n');   
-  u_nodal_sol=zeros(2*length(domainMesh.coords),1);    
-  DB_dofs=compute_Dirichlet_BCs(domainMesh,config,Dirichet_boundary_nodes,...
-                                Dirichet_boundary_dofs,Dirichlet_fun_values); % DOFs with Dirichlet BCs
+  u_nodal_sol=zeros(2*length(mesh.coords),1);    
+  DB_dofs=compute_Dirichlet_BCs(mesh,config,Dirichet_boundary_nodes,...
+                                Dirichet_boundary_dofs,Dirichlet_fun_value); % DOFs with Dirichlet BCs
   u_nodal_sol(DB_dofs.indexes)=DB_dofs.values;
   f_global=f_global-K_global*u_nodal_sol;    
   
   %% SOLVE RESULTING SYSTEM OF LINEAR EQUATIONS 
   
   fprintf('Solving system of linear equations...\n');   
-  num_nodes=length(domainMesh.coords(:,1));    
+  num_nodes=length(mesh.coords(:,1));    
   free_dofs=setdiff(1:2*num_nodes,DB_dofs.indexes); % dofs that do not have Dirichlet boundary conditions associated  
   u_nodal_sol(free_dofs)=K_global(free_dofs,free_dofs)\f_global(free_dofs); % nodal solution at free dofs
   toc
@@ -134,26 +120,39 @@ function linear_patch_test_linelast2d
   %% EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
   % (see definition of functions at the bottom of this file)
   
-  exact_solution_handle.ux=@(x,y)ux_exact(x,y);
-  exact_solution_handle.uy=@(x,y)uy_exact(x,y);
-  exact_solution_handle.duxdx=@(x,y)duxdx_exact(x,y);  
-  exact_solution_handle.duydx=@(x,y)duydx_exact(x,y);  
-  exact_solution_handle.duxdy=@(x,y)duxdy_exact(x,y);  
-  exact_solution_handle.duydy=@(x,y)duydy_exact(x,y);   
+  exact_sol.ux=@(x,y)ux_exact(x,y);
+  exact_sol.uy=@(x,y)uy_exact(x,y);
+  exact_sol.duxdx=@(x,y)duxdx_exact(x,y);  
+  exact_sol.duydx=@(x,y)duydx_exact(x,y);  
+  exact_sol.duxdy=@(x,y)duxdy_exact(x,y);  
+  exact_sol.duydy=@(x,y)duydy_exact(x,y);   
   
   %% NORMS OF THE ERROR
   
   fprintf('\n');
   fprintf('Computing norms of the solution error...\n');   
-  compute_norms_of_the_error(exact_solution_handle,u_nodal_sol,domainMesh,config,matProps);  
+  compute_norms_of_the_error(exact_sol,u_nodal_sol,mesh,config,matProps);  
   
   %% POSTPROCESSING
   
-  % plot numerical solutions  
-  postprocess_numerical_solution_linelast2d(domainMesh,u_nodal_sol,matProps,config);
+  % compute stresses and strains
+  [stresses,strains]=compute_stresses_and_strains(u_nodal_sol,mesh,matProps,config);
   
-  % plot exact solutions    
-  postprocess_exact_solution_linelast2d(domainMesh,exact_solution_handle,matProps,config); 
+  % plot VEM solution  
+  plot_solution_linelast2d(mesh,u_nodal_sol,'$u_x^{\textrm{vem}}$',...
+                        '$u_y^{\textrm{vem}}$','$||u^{\textrm{vem}}||$',...
+                        config.plot_mesh_over_results,config.vemlab_method);  
+  % plot exact solution  
+  [u_nodal_exact,~,~]=exact_solutions_linelast2d(exact_sol,mesh.coords);
+  plot_solution_linelast2d(mesh,u_nodal_exact,'$u_x^{\textrm{exact}}$',...
+                        '$u_y^{\textrm{exact}}$','$||u^{\textrm{exact}}||$',...
+                        config.plot_mesh_over_results,'exact');
+  
+  % write VEM solution to a text file
+  write_solution_txt_linelast2d(mesh,u_nodal_sol,stresses,strains,config);
+  
+  % write VEM solution to a GiD file
+  write_solution_GiD_linelast2d(mesh,u_nodal_sol,stresses,strains,config) 
   
   %% PRINT END MESSAGE TO SCREEN
   end_message;  
