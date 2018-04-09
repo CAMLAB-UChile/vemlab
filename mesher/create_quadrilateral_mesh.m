@@ -15,11 +15,11 @@ function create_quadrilateral_mesh
   %%
   %%%%%%%%%%%%%%%%%%           USER INPUT DATA         %%%%%%%%%%%%%%%%%%%%%%%%%
   
-  xmin=0; xmax=8; 
-  ymin=-2; ymax=2;
-  ndiv_x=114; ndiv_y=57; % number of divisions along x and y coordinates
+  xmin=0; xmax=1; 
+  ymin=0; ymax=1;
+  ndiv_x=20; ndiv_y=20; % number of divisions along x and y coordinates
   mesh_type='uniform';  % 'uniform'
-  mesh_filename='cantilever_beam_q4_uniform_114x57.txt'; 
+  mesh_filename='square_plate_poisson2d_q4_uniform_20x20.txt'; 
   
   %%%%%%%%%%%%%%%%%%%        END USER INPUT DATA       %%%%%%%%%%%%%%%%%%%%%%%%%  
   

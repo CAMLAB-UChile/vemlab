@@ -18,11 +18,11 @@
 %
 % Usage
 % =====
-% triangles = triangulate_polygon(mesh,element_id)
+% triangles = triangulate_polygon(domainMesh,element_id)
 %
 % Input
 % =====
-% mesh       : structure containing the polygonal mesh information
+% domainMesh : structure containing the polygonal mesh information
 % element_id : element number
 %
 % Output
@@ -40,8 +40,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function connect = triangulate_polygon(mesh,element_id)
-  elem_nodes=mesh.connect(element_id,:);
+function connect = triangulate_polygon(domainMesh,element_id)
+  elem_nodes=domainMesh.connect(element_id,:);
   elem_num_nodes=length(elem_nodes{1});
   num_triangles=elem_num_nodes-2;
   connect=zeros(num_triangles,3);

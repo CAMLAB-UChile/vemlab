@@ -1,11 +1,11 @@
-function fem_norms_linelast2d(exact_sol,uh_global,mesh,config,matProps)
+function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
   % initialize some variables
   h_max=0; L2_norm_top=0; L2_norm_bottom=0; 
   H1_seminorm_top=0; H1_seminorm_bottom=0; 
   
   % mesh data
-  coords=mesh.coords; 
-  connect=mesh.connect; 
+  coords=domainMesh.coords; 
+  connect=domainMesh.connect; 
   num_elem=length(connect);  
   
   if strcmp(config.vemlab_method,'FEM2DT3')
@@ -32,11 +32,7 @@ function fem_norms_linelast2d(exact_sol,uh_global,mesh,config,matProps)
       end  
 
       % area of the element
-      if strcmp(config.vemlab_method,'FEM2DT3')
-        area=triangle_area(elem_coord);
-      else 
-        throw_error('In fem_body_force_linelast2d.m: vemlab_method');
-      end    
+      area=triangle_area(elem_coord);   
 
       % deformation matrix
       x=elem_coord(:,1); y=elem_coord(:,2);  

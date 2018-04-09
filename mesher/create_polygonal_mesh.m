@@ -15,8 +15,11 @@ function create_polygonal_mesh
   %%
   %%%%%%%%%%%%%%%%%%           USER INPUT DATA         %%%%%%%%%%%%%%%%%%%%%%%%%
   
-  N_elems=100;
-  mesh_filename='quadratic_patch_test_100poly_elems.txt'; 
+  % NOTE: you can change the rectangular domain dimensions by changing BdBox in
+  % the RectangularDomain function below
+  
+  N_elems=2000;
+  mesh_filename='square_plate_poisson2d_2000poly_elems.txt'; 
   
   %%%%%%%%%%%%%%%%%%%        END USER INPUT DATA       %%%%%%%%%%%%%%%%%%%%%%%%%   
   

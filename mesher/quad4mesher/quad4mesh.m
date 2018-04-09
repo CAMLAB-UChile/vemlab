@@ -21,8 +21,8 @@
 % =====
 % [coords,connect] = quad4_mesh(mesh_type,xmin,ymin,xmax,ymax,ndiv_x,ndiv_y)
 %
-% Inputs
-% ======                               
+% Input
+% =====                               
 % mesh_type   : 'uniform' or 'nonuniform'
 %                                               
 % xmin        : x-coordinate of the lower left of the rectangular domain
@@ -32,13 +32,22 @@
 % ndiv_x      : number of sub-divisions in the x-direction
 % ndiv_y      : number of sub-divisions in the y-direction
 %
-% Outputs
-% =======        
+% Output
+% ======        
 % coords   : coordinates of the nodes [x1 y1; x2 y2; ... ; xn yn]                     
 % connect  : element connectivity (array of size (nelems)x(4))
 % 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------------------
+% References 
+% ==========
 %
+%-------------------------------------------------------------------------------
+% Function's updates history
+% ==========================
+% Apr. 9, 2018: first realease (by A. Ortiz-Bernardin)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [coords,connect] = ...
                     quad4mesh(mesh_type,xmin,ymin,xmax,ymax,ndiv_x,ndiv_y)
        

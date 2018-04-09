@@ -1,0 +1,778 @@
+********************************************************
+*                      VEMLab 2.0                      *
+*      http://camlab.cl/research/software/vemlab       *
+*------------------------------------------------------*
+*                   Poisson Problem                    *
+********************************************************
+
+Mesh filename: square_plate_poisson2d_t3_hsize_01.txt
+Method: FEM2DT3
+Date: 20-3-2018
+Time: 18:39 hrs
+
+Nodal Scalar Field: 
+ Node      Coords         u 
+1 -0.00000000 0.08815840 0.00000000
+2 -0.00000000 0.26940162 0.00000000
+3 -0.00000000 0.45137235 0.00000000
+4 -0.00000000 0.63435868 0.00000000
+5 -0.00000000 0.81853364 0.00000000
+6 0.00000000 0.00000000 0.00000000
+7 0.00000000 1.00000000 0.00000000
+8 0.00000000 0.90962977 0.00000000
+9 0.00000000 0.17866128 0.00000000
+10 0.00000000 0.36025444 0.00000000
+11 0.00000000 0.54285753 0.00000000
+12 0.00000000 0.72683376 0.00000000
+13 0.08229450 0.72499419 0.23739691
+14 0.08252608 0.54236395 0.29687205
+15 0.08268370 0.36027090 0.27604431
+16 0.08279481 0.17882451 0.17550611
+17 0.08490390 1.00000000 0.00000000
+18 0.08961291 0.00000000 0.00000000
+19 0.09209903 0.90312088 0.11647470
+20 0.11498141 0.45108754 0.39948143
+21 0.11512232 0.26959059 0.31770719
+22 0.11520314 0.63317294 0.37517907
+23 0.11675697 0.08931867 0.13222298
+24 0.11813537 0.81397531 0.24986800
+25 0.17049117 1.00000000 0.00000000
+26 0.18093140 0.54151667 0.58285993
+27 0.18104047 0.36028814 0.54129776
+28 0.18174237 0.17990250 0.34718487
+29 0.18197026 0.72248682 0.47244062
+30 0.18841714 0.00000000 0.00000000
+31 0.19184813 0.90356035 0.21288174
+32 0.22673300 0.45067328 0.68855830
+33 0.22706626 0.27020528 0.54878678
+34 0.22727417 0.63147087 0.64811571
+35 0.22905110 0.09045180 0.22980131
+36 0.23054122 0.81234946 0.42789167
+37 0.26106574 1.00000000 0.00000000
+38 0.28556159 0.36041447 0.74604672
+39 0.28556846 0.54060434 0.80374618
+40 0.28645778 0.18064616 0.47965875
+41 0.28687769 0.72120504 0.65196725
+42 0.29098074 0.00000000 0.00000000
+43 0.29416276 0.90371978 0.28514153
+44 0.33654790 0.45032638 0.87720963
+45 0.33684952 0.27064078 0.69966049
+46 0.33702834 0.63045732 0.82588704
+47 0.33830521 0.09081100 0.29283758
+48 0.33944129 0.81171728 0.54262467
+49 0.35524494 1.00000000 0.00000000
+50 0.39240331 0.36045853 0.87240736
+51 0.39242411 0.54009908 0.93994046
+52 0.39296186 0.18094715 0.56088720
+53 0.39326343 0.72056817 0.76184806
+54 0.39517229 0.00000000 0.00000000
+55 0.39703776 0.90403076 0.32835238
+56 0.44558247 0.45016564 0.97070190
+57 0.44570053 0.27078695 0.77428528
+58 0.44577183 0.63001741 0.91382963
+59 0.44622082 0.09089337 0.32373922
+60 0.44664044 0.81157148 0.59875028
+61 0.45152477 1.00000000 0.00000000
+62 0.50000000 0.53993952 0.98574912
+63 0.50000000 0.72040469 0.79862044
+64 0.50000000 0.36046378 0.91491330
+65 0.50000000 0.90415338 0.34268935
+66 0.50000000 0.18101461 0.58810177
+67 0.50000000 0.00000000 0.00000000
+68 0.54847523 1.00000000 0.00000000
+69 0.55335956 0.81157148 0.59875028
+70 0.55377918 0.09089337 0.32373922
+71 0.55422817 0.63001741 0.91382963
+72 0.55429947 0.27078695 0.77428528
+73 0.55441753 0.45016564 0.97070190
+74 0.60296224 0.90403076 0.32835238
+75 0.60482771 0.00000000 0.00000000
+76 0.60673657 0.72056817 0.76184806
+77 0.60703814 0.18094715 0.56088720
+78 0.60757589 0.54009908 0.93994046
+79 0.60759669 0.36045853 0.87240736
+80 0.64475506 1.00000000 0.00000000
+81 0.66055871 0.81171728 0.54262467
+82 0.66169479 0.09081100 0.29283758
+83 0.66297166 0.63045732 0.82588704
+84 0.66315048 0.27064078 0.69966049
+85 0.66345210 0.45032638 0.87720963
+86 0.70583724 0.90371978 0.28514153
+87 0.70901926 0.00000000 0.00000000
+88 0.71312231 0.72120504 0.65196725
+89 0.71354222 0.18064616 0.47965875
+90 0.71443154 0.54060434 0.80374618
+91 0.71443841 0.36041447 0.74604672
+92 0.73893426 1.00000000 0.00000000
+93 0.76945878 0.81234946 0.42789167
+94 0.77094890 0.09045180 0.22980131
+95 0.77272583 0.63147087 0.64811571
+96 0.77293374 0.27020528 0.54878678
+97 0.77326700 0.45067328 0.68855830
+98 0.80815187 0.90356035 0.21288174
+99 0.81158286 0.00000000 0.00000000
+100 0.81802974 0.72248682 0.47244062
+101 0.81825763 0.17990250 0.34718487
+102 0.81895952 0.36028814 0.54129776
+103 0.81906860 0.54151667 0.58285993
+104 0.82950883 1.00000000 0.00000000
+105 0.88186463 0.81397531 0.24986800
+106 0.88324303 0.08931867 0.13222298
+107 0.88479686 0.63317294 0.37517907
+108 0.88487768 0.26959059 0.31770719
+109 0.88501859 0.45108754 0.39948143
+110 0.90790097 0.90312088 0.11647470
+111 0.91038709 0.00000000 0.00000000
+112 0.91509610 1.00000000 0.00000000
+113 0.91720519 0.17882451 0.17550611
+114 0.91731629 0.36027090 0.27604431
+115 0.91747392 0.54236395 0.29687205
+116 0.91770550 0.72499419 0.23739691
+117 1.00000000 0.72683376 0.00000000
+118 1.00000000 0.54285753 0.00000000
+119 1.00000000 0.36025444 0.00000000
+120 1.00000000 0.17866128 0.00000000
+121 1.00000000 0.90962977 0.00000000
+122 1.00000000 0.26940162 0.00000000
+123 1.00000000 0.45137235 0.00000000
+124 1.00000000 0.63435868 0.00000000
+125 1.00000000 0.08815840 0.00000000
+126 1.00000000 0.81853364 0.00000000
+127 1.00000000 0.00000000 0.00000000
+128 1.00000000 1.00000000 0.00000000
+Gradient and Flux: 
+(quantities are constant in the element)
+
+Element 1
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.5973 -0.0000  3.5973  0.0000
+Element 2
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.5973  0.0000  3.5973 -0.0000
+Element 3
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.4746  0.1113  3.4746 -0.1113
+Element 4
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -2.2074  0.0000  2.2074
+Element 5
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.4244 -0.7234 -2.4244  0.7234
+Element 6
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.3414 -0.6614 -2.3414  0.6614
+Element 7
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.2535 -0.3084 -3.2535  0.3084
+Element 8
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.2532 -0.3346 -3.2532  0.3346
+Element 9
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.8847 -0.0000 -2.8847  0.0000
+Element 10
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.9753 -1.9914 -0.9753  1.9914
+Element 11
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.8847 -0.0000  2.8847  0.0000
+Element 12
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.8847  0.0000  2.8847 -0.0000
+Element 13
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.4746  0.1235  3.4746 -0.1235
+Element 14
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.9054 -0.0911  2.9054  0.0911
+Element 15
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.2647 -0.0000  1.2647  0.0000
+Element 16
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000 -2.2074 -0.0000  2.2074
+Element 17
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.9753 -1.9914  0.9753  1.9914
+Element 18
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.5207 -2.0976  0.5207  2.0976
+Element 19
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.7105 -2.7173  0.7105  2.7173
+Element 20
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.7095 -2.0563  0.7095  2.0563
+Element 21
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.0403 -2.2867  1.0403  2.2867
+Element 22
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000 -2.9616 -0.0000  2.9616
+Element 23
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  1.4804  0.0000 -1.4804
+Element 24
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  0.0000 -0.0000 -0.0000
+Element 25
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.1211  1.1396 -1.1211 -1.1396
+Element 26
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.5973  0.0000 -3.5973 -0.0000
+Element 27
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.5973 -0.0000 -3.5973  0.0000
+Element 28
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.5207 -2.0976 -0.5207  2.0976
+Element 29
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.5200 -2.6456 -0.5200  2.6456
+Element 30
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -3.4214  0.0000  3.4214
+Element 31
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.3379 -0.8015 -2.3379  0.8015
+Element 32
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.9718 -1.2125 -0.9718  1.2125
+Element 33
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000 -1.2023 -0.0000  1.2023
+Element 34
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  0.0000 -0.0000 -0.0000
+Element 35
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.1859 -1.1142 -1.1859  1.1142
+Element 36
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.9046 -0.1829  2.9046  0.1829
+Element 37
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.4274 -0.5251  2.4274  0.5251
+Element 38
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.2535 -0.3084  3.2535  0.3084
+Element 39
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.2532 -0.3346  3.2532  0.3346
+Element 40
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.4244 -0.7234  2.4244  0.7234
+Element 41
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.3414 -0.6614  2.3414  0.6614
+Element 42
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.0808 -0.8886  2.0808  0.8886
+Element 43
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.0881 -0.7009  2.0881  0.7009
+Element 44
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.9718 -1.2125  0.9718  1.2125
+Element 45
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.5592 -1.6958  1.5592  1.6958
+Element 46
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.3379 -0.8015  2.3379  0.8015
+Element 47
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.5644 -1.3413  1.5644  1.3413
+Element 48
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  3.2247  0.0000 -3.2247
+Element 49
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  3.5617  0.0000 -3.5617
+Element 50
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.2838  3.4024 -0.2838 -3.4024
+Element 51
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.2842  2.8015 -0.2842 -2.8015
+Element 52
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.4250 -0.5425  0.4250  0.5425
+Element 53
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.8577  0.1649  0.8577 -0.1649
+Element 54
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.4257 -0.0904  0.4257  0.0904
+Element 55
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  0.1676  0.0000 -0.1676
+Element 56
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.1198  0.0000 -2.1198 -0.0000
+Element 57
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.7227  1.1372 -1.7227 -1.1372
+Element 58
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.1234  0.9099 -1.1234 -0.9099
+Element 59
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.1198 -0.0000 -2.1198  0.0000
+Element 60
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.8472  2.1600 -0.8472 -2.1600
+Element 61
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.8512  1.7624 -0.8512 -1.7624
+Element 62
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  2.5406  0.0000 -2.5406
+Element 63
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.5673  2.9290 -0.5673 -2.9290
+Element 64
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.3386  0.0000  3.3386 -0.0000
+Element 65
+Grad_x      Grad_y      Flux_x       Flux_y 
+-3.3386 -0.0000  3.3386  0.0000
+Element 66
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.6968  0.4001  2.6968 -0.4001
+Element 67
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.9578  0.9172  1.9578 -0.9172
+Element 68
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.1078 -0.3605  2.1078  0.3605
+Element 69
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.2741 -0.0943  1.2741  0.0943
+Element 70
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -1.2023  0.0000  1.2023
+Element 71
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  0.0000 -0.0000 -0.0000
+Element 72
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.1859 -1.1142  1.1859  1.1142
+Element 73
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.6940 -1.4114  1.6940  1.4114
+Element 74
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.0430 -1.8138  1.0430  1.8138
+Element 75
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.0221 -1.8016  1.0221  1.8016
+Element 76
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.6980 -1.0849  1.6980  1.0849
+Element 77
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -2.1924  0.0000  2.1924
+Element 78
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.3415 -1.9925 -0.3415  1.9925
+Element 79
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.3422 -1.4800  0.3422  1.4800
+Element 80
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.3415 -1.9925  0.3415  1.9925
+Element 81
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000 -3.5754 -0.0000  3.5754
+Element 82
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.1434 -3.5029 -0.1434  3.5029
+Element 83
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.1426 -2.8480 -0.1426  2.8480
+Element 84
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -2.7658  0.0000  2.7658
+Element 85
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.4279 -2.5881 -0.4279  2.5881
+Element 86
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.7105 -2.7173 -0.7105  2.7173
+Element 87
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -2.9616  0.0000  2.9616
+Element 88
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.4298 -3.2343 -0.4298  3.2343
+Element 89
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.5592 -1.6958 -1.5592  1.6958
+Element 90
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.5644 -1.3413 -1.5644  1.3413
+Element 91
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.7095 -2.0563 -0.7095  2.0563
+Element 92
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.0403 -2.2867 -1.0403  2.2867
+Element 93
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.0221 -1.8016 -1.0221  1.8016
+Element 94
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.6980 -1.0849 -1.6980  1.0849
+Element 95
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.6940 -1.4114 -1.6940  1.4114
+Element 96
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.0430 -1.8138 -1.0430  1.8138
+Element 97
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.8847  0.0000 -2.8847 -0.0000
+Element 98
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.0881 -0.7009 -2.0881  0.7009
+Element 99
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.2647 -0.0000 -1.2647  0.0000
+Element 100
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.0808 -0.8886 -2.0808  0.8886
+Element 101
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.7589  0.5275  2.7589 -0.5275
+Element 102
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.7588  0.5841  2.7588 -0.5841
+Element 103
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.0589  0.9688  2.0589 -0.9688
+Element 104
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.6968  0.5053  2.6968 -0.5053
+Element 105
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.1198  0.0000  2.1198 -0.0000
+Element 106
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.7556  2.5157  0.7556 -2.5157
+Element 107
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  3.2247 -0.0000 -3.2247
+Element 108
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.2537  1.6033  1.2537 -1.6033
+Element 109
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.0577  1.1998  2.0577 -1.1998
+Element 110
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.7247  0.9524  1.7247 -0.9524
+Element 111
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  3.5617 -0.0000 -3.5617
+Element 112
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  3.5617  0.0000 -3.5617
+Element 113
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.2842  2.8015  0.2842 -2.8015
+Element 114
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.2838  3.4024  0.2838 -3.4024
+Element 115
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.4257 -0.0904 -0.4257  0.0904
+Element 116
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.1824  0.7883  1.1824 -0.7883
+Element 117
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.8583  0.5869  0.8583 -0.5869
+Element 118
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.4274 -0.5251 -2.4274  0.5251
+Element 119
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.9046 -0.1829 -2.9046  0.1829
+Element 120
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.5873  0.1409  2.5873 -0.1409
+Element 121
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.5880  0.3210  2.5880 -0.3210
+Element 122
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.7184  0.1566  1.7184 -0.1566
+Element 123
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.1101 -0.0996  2.1101  0.0996
+Element 124
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.7194  0.4838  1.7194 -0.4838
+Element 125
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.9582  0.6393  1.9582 -0.6393
+Element 126
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.6135 -0.6776  1.6135  0.6776
+Element 127
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.6102 -1.0266  1.6102  1.0266
+Element 128
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.2723 -0.4822  1.2723  0.4822
+Element 129
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.0248 -1.3502  1.0248  1.3502
+Element 130
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.8056 -0.7683  0.8056  0.7683
+Element 131
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.8038 -1.2123  0.8038  1.2123
+Element 132
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -0.7984  0.0000  0.7984
+Element 133
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000 -1.2746  0.0000  1.2746
+Element 134
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.3422 -1.4800 -0.3422  1.4800
+Element 135
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.4250 -0.5425 -0.4250  0.5425
+Element 136
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.4298 -3.2343  0.4298  3.2343
+Element 137
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000 -3.4214 -0.0000  3.4214
+Element 138
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.1434 -3.5029  0.1434  3.5029
+Element 139
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.1426 -2.8480  0.1426  2.8480
+Element 140
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.5200 -2.6456  0.5200  2.6456
+Element 141
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.4279 -2.5881  0.4279  2.5881
+Element 142
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  0.0000 -0.0000 -0.0000
+Element 143
+Grad_x      Grad_y      Flux_x       Flux_y 
+-2.1198 -0.0000  2.1198  0.0000
+Element 144
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.5691  2.4080  0.5691 -2.4080
+Element 145
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.2511  1.9739  1.2511 -1.9739
+Element 146
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  2.5406 -0.0000 -2.5406
+Element 147
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.5673  2.9290  0.5673 -2.9290
+Element 148
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  2.9334  0.0000 -2.9334
+Element 149
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.2528  2.2269 -0.2528 -2.2269
+Element 150
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.2525  2.7827 -0.2525 -2.7827
+Element 151
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.2525  2.7827  0.2525 -2.7827
+Element 152
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.0248 -1.3502 -1.0248  1.3502
+Element 153
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.8038 -1.2123 -0.8038  1.2123
+Element 154
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.8056 -0.7683 -0.8056  0.7683
+Element 155
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.6102 -1.0266 -1.6102  1.0266
+Element 156
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.7570  2.0208  0.7570 -2.0208
+Element 157
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.1822  1.1921  1.1822 -1.1921
+Element 158
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.3691  1.2989  1.3691 -1.2989
+Element 159
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.3676  1.6788  1.3676 -1.6788
+Element 160
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.7194  0.4838 -1.7194 -0.4838
+Element 161
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.1824  0.7883 -1.1824 -0.7883
+Element 162
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.8577  0.1649 -0.8577 -0.1649
+Element 163
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.8583  0.5869 -0.8583 -0.5869
+Element 164
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.7556  2.5157 -0.7556 -2.5157
+Element 165
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.2511  1.9739 -1.2511 -1.9739
+Element 166
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.5691  2.4080 -0.5691 -2.4080
+Element 167
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.9582  0.6393 -1.9582 -0.6393
+Element 168
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.0000  1.4804 -0.0000 -1.4804
+Element 169
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.8472  2.1600  0.8472 -2.1600
+Element 170
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.1234  0.9099  1.1234 -0.9099
+Element 171
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.1211  1.1396  1.1211 -1.1396
+Element 172
+Grad_x      Grad_y      Flux_x       Flux_y 
+-1.7227  1.1372  1.7227 -1.1372
+Element 173
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.8512  1.7624  0.8512 -1.7624
+Element 174
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.2528  2.2269  0.2528 -2.2269
+Element 175
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.6829  1.9744  0.6829 -1.9744
+Element 176
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.6836  1.5005  0.6836 -1.5005
+Element 177
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  2.0740  0.0000 -2.0740
+Element 178
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.6829  1.9744 -0.6829 -1.9744
+Element 179
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.6836  1.5005 -0.6836 -1.5005
+Element 180
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.7570  2.0208 -0.7570 -2.0208
+Element 181
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.1822  1.1921 -1.1822 -1.1921
+Element 182
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.1101 -0.0996 -2.1101  0.0996
+Element 183
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.7184  0.1566 -1.7184 -0.1566
+Element 184
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.1078 -0.3605 -2.1078  0.3605
+Element 185
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.6135 -0.6776 -1.6135  0.6776
+Element 186
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.2723 -0.4822 -1.2723  0.4822
+Element 187
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.2741 -0.0943 -1.2741  0.0943
+Element 188
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.5880  0.3210 -2.5880 -0.3210
+Element 189
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.9054 -0.0911 -2.9054  0.0911
+Element 190
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.5873  0.1409 -2.5873 -0.1409
+Element 191
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.4746  0.1113 -3.4746 -0.1113
+Element 192
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.3950  0.8616  0.3950 -0.8616
+Element 193
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.3950  1.3290  0.3950 -1.3290
+Element 194
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  0.6219  0.0000 -0.6219
+Element 195
+Grad_x      Grad_y      Flux_x       Flux_y 
+-0.0000  1.5682  0.0000 -1.5682
+Element 196
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.3950  1.3290 -0.3950 -1.3290
+Element 197
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 0.3950  0.8616 -0.3950 -0.8616
+Element 198
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.3676  1.6788 -1.3676 -1.6788
+Element 199
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.2537  1.6033 -1.2537 -1.6033
+Element 200
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.9578  0.9172 -1.9578 -0.9172
+Element 201
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.3691  1.2989 -1.3691 -1.2989
+Element 202
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.7588  0.5841 -2.7588 -0.5841
+Element 203
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.0589  0.9688 -2.0589 -0.9688
+Element 204
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 1.7247  0.9524 -1.7247 -0.9524
+Element 205
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.0577  1.1998 -2.0577 -1.1998
+Element 206
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.6968  0.4001 -2.6968 -0.4001
+Element 207
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.6968  0.5053 -2.6968 -0.5053
+Element 208
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.3386  0.0000 -3.3386 -0.0000
+Element 209
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.4746  0.1235 -3.4746 -0.1235
+Element 210
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 3.3386 -0.0000 -3.3386  0.0000
+Element 211
+Grad_x      Grad_y      Flux_x       Flux_y 
+ 2.7589  0.5275 -2.7589 -0.5275

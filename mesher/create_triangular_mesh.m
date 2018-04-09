@@ -15,10 +15,10 @@ function create_triangular_mesh
   %%
   %%%%%%%%%%%%%%%%%%           USER INPUT DATA         %%%%%%%%%%%%%%%%%%%%%%%%%
   
-  xmin=0; xmax=8; 
-  ymin=-2; ymax=2;
-  hsize=0.09;
-  mesh_filename='cantilever_beam_t3_hsize_009.txt'; 
+  xmin=0; xmax=1; 
+  ymin=0; ymax=1;
+  hsize=0.05;
+  mesh_filename='square_plate_poisson2d_t3_hsize_005.txt'; 
   
   %%%%%%%%%%%%%%%%%%%        END USER INPUT DATA       %%%%%%%%%%%%%%%%%%%%%%%%%  
   

@@ -1,8 +1,8 @@
 function Neumann_BCs=...
-           vem_compute_Neumann_BCs_linelast2d(mesh,Neumann_boundary_nodes,...
+           vem_compute_Neumann_BCs_linelast2d(domainMesh,Neumann_boundary_nodes,...
                                               Neumann_boundary_dofs,...
                                               Neumann_fun_value)
-  coords=mesh.coords;  
+  coords=domainMesh.coords;  
   nodes=Neumann_boundary_nodes;  
   % VEM interpolation matrix
   N_bar=[0.5 0.0;...
@@ -31,7 +31,7 @@ function Neumann_BCs=...
     mean_traction=(traction_first_node+traction_second_node)/2;
     range1=(2*first_node-1):(2*first_node);
     range2=(2*second_node-1):(2*second_node);
-  % The following is used in, for instance, Beirao da Veiga's Basic VEM paper for k=1
+  % The following is used in, for instance, Beirao da Veiga's Basic VEM paper for k=1 (mean_traction can also be computed as: mean_traction = 1/|e| * int_e f ds)
     Neumann_BCs.values(range1)=Neumann_BCs.values(range1)+edge_length*N_bar'*mean_traction;
     Neumann_BCs.values(range2)=Neumann_BCs.values(range2)+edge_length*N_bar'*mean_traction;  
 %       This also works: if shape functions are defined as in 1D FEM, the following coincides with a trapezoidal rule

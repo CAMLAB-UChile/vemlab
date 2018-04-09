@@ -1,7 +1,0 @@
-USAGE
------
-VEMLab is a library. You need to create a main .m file and place it 
-inside the 'test' folder. The main file has the typical structure of 
-a FEM simulation. Simply follow the test problems that are provided 
-inside the folder 'test' to wrote your own .m files or modify the 
-ones provided.
