@@ -1,11 +1,11 @@
-function vem_norms_linelast2d(exact_sol,uh_global,mesh,config,matProps)  
+function vem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)  
   % initialize some variables
   h_max=0; L2_norm_top=0; L2_norm_bottom=0; 
   H1_seminorm_top=0; H1_seminorm_bottom=0; 
   
   % mesh data
-  coords=mesh.coords; 
-  connect=mesh.connect; 
+  coords=domainMesh.coords; 
+  connect=domainMesh.connect; 
   num_elem=length(connect);   
   
   % loop over elements
