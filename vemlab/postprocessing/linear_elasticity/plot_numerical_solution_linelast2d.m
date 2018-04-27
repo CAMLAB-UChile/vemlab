@@ -41,6 +41,7 @@
 % Function's updates history
 % ==========================
 % Mar. 17, 2018: first realease (by A. Ortiz-Bernardin)
+% Apr. 19, 2018: improve the plotting of axis and fonts
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -74,7 +75,9 @@ function plot_u_field(domainMesh,solution,config)
   titleSolutionNorm='$||u^h||$';   
 
   if strcmp(config.linelast2d_plot_displacement.unorm,'yes')
-    figure; title(titleSolutionNorm,'Interpreter','latex','FontSize',18);
+    figure; 
+    title(titleSolutionNorm,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');
     maxNumVertices = max(cellfun(@numel,polygons));
     padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
     elements = cellfun(padFunc,polygons,'UniformOutput',false);
@@ -95,18 +98,23 @@ function plot_u_field(domainMesh,solution,config)
     if min(displacementsNorm)~=max(displacementsNorm)
       zlim([min(displacementsNorm) - dz, max(displacementsNorm) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(titleSolutionNorm,'Interpreter','latex','FontSize',18);
-    colorbar
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(titleSolutionNorm,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
     colormap jet
     %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
   
   if strcmp(config.linelast2d_plot_displacement.ux,'yes')  
-    figure; title(titleSolutionX,'Interpreter','latex','FontSize',18);
+    figure; 
+    title(titleSolutionX,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');
     maxNumVertices = max(cellfun(@numel,polygons));
     padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
     elements = cellfun(padFunc,polygons,'UniformOutput',false);
@@ -126,19 +134,24 @@ function plot_u_field(domainMesh,solution,config)
     ylim([min(nodes(:,2)) - dy, max(nodes(:,2)) + dy])
     if min(displacementsX)~=max(displacementsX)
       zlim([min(displacementsX) - dz, max(displacementsX) + dz])
-    end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(titleSolutionX,'Interpreter','latex','FontSize',18);
-    colorbar
+    end    
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(titleSolutionX,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
     colormap jet
-    %set(gcf,'Renderer','painters') 
-    set(gcf,'InvertHardcopy','off','Color',[1 1 1])  
-    set(gca, 'FontSize', 12);
+    %set(gcf,'Renderer','painters')    
+    set(gcf,'InvertHardcopy','off','Color',[1 1 1])
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');    
   end
   
   if strcmp(config.linelast2d_plot_displacement.uy,'yes')  
-    figure; title(titleSolutionY,'Interpreter','latex','FontSize',18);
+    figure; 
+    title(titleSolutionY,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');
     maxNumVertices = max(cellfun(@numel,polygons));
     padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
     elements = cellfun(padFunc,polygons,'UniformOutput',false);
@@ -159,14 +172,17 @@ function plot_u_field(domainMesh,solution,config)
     if min(displacementsY)~=max(displacementsY)
       zlim([min(displacementsY) - dz, max(displacementsY) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(titleSolutionY,'Interpreter','latex','FontSize',18);
-    colorbar
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(titleSolutionY,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
     colormap jet
-    %set(gcf,'Renderer','painters')  
-    set(gcf,'InvertHardcopy','off','Color',[1 1 1])  
-    set(gca, 'FontSize', 12);  
+    %set(gcf,'Renderer','painters')    
+    set(gcf,'InvertHardcopy','off','Color',[1 1 1])
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');  
   end
 end
 
@@ -545,7 +561,8 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_x^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -555,20 +572,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s11)~=max(stress.s11)
       zlim([min(stress.s11) - dz, max(stress.s11) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_stress.s12,'yes')  
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.s12(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_{xy}^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -578,20 +600,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s12)~=max(stress.s12)
       zlim([min(stress.s12) - dz, max(stress.s12) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);   
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');   
   end
   if strcmp(config.linelast2d_plot_stress.s22,'yes')   
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.s22(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_{y}^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -601,20 +628,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s22)~=max(stress.s22)
       zlim([min(stress.s22) - dz, max(stress.s22) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_stress.s33,'yes')   
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.s33(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_z^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -624,20 +656,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s33)~=max(stress.s33)
       zlim([min(stress.s33) - dz, max(stress.s33) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');  
   end
   if strcmp(config.linelast2d_plot_stress.s1,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.s1(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_1^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -647,20 +684,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s1)~=max(stress.s1)
       zlim([min(stress.s1) - dz, max(stress.s1) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_stress.s2,'yes')     
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.s2(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_2^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -670,20 +712,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s2)~=max(stress.s2)
       zlim([min(stress.s2) - dz, max(stress.s2) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');  
   end
   if strcmp(config.linelast2d_plot_stress.s3,'yes')     
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.s3(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_3^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -693,20 +740,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.s3)~=max(stress.s3)
       zlim([min(stress.s3) - dz, max(stress.s3) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);   
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');   
   end
   if strcmp(config.linelast2d_plot_stress.vm,'yes')     
     vq=griddata(gp_list.x(:),gp_list.y(:),stress.vm(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\sigma_{\mathrm{vm}}^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -716,20 +768,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(stress.vm)~=max(stress.vm)
       zlim([min(stress.vm) - dz, max(stress.vm) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_strain.e11,'yes')     
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e11(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_x^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -739,20 +796,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e11)~=max(strain.e11)
       zlim([min(strain.e11) - dz, max(strain.e11) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_strain.e12,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e12(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_{xy}^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -762,20 +824,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e12)~=max(strain.e12)
       zlim([min(strain.e12) - dz, max(strain.e12) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);    
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');   
   end
   if strcmp(config.linelast2d_plot_strain.e22,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e22(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_y^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -785,20 +852,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e22)~=max(strain.e22)
       zlim([min(strain.e22) - dz, max(strain.e22) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12); 
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');  
   end
   if strcmp(config.linelast2d_plot_strain.e33,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e33(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_z^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -808,20 +880,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e33)~=max(strain.e33)
       zlim([min(strain.e33) - dz, max(strain.e33) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12); 
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_strain.e1,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e1(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_1^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -831,20 +908,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e1)~=max(strain.e1)
       zlim([min(strain.e1) - dz, max(strain.e1) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);    
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');    
   end
   if strcmp(config.linelast2d_plot_strain.e2,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e2(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_2^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -854,20 +936,25 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e2)~=max(strain.e2)
       zlim([min(strain.e2) - dz, max(strain.e2) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
   if strcmp(config.linelast2d_plot_strain.e3,'yes')    
     vq=griddata(gp_list.x(:),gp_list.y(:),strain.e3(:),xq,yq);
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\varepsilon_3^h$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -877,13 +964,17 @@ function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
     if min(strain.e3)~=max(strain.e3)
       zlim([min(strain.e3) - dz, max(strain.e3) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);   
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');   
   end
 end
 

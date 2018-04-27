@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.0                         
-%  Date         : April 9, 2018
+%  Version      : 2.0.1                         
+%  Date         : April 26, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -56,7 +56,7 @@ function cantilever_beam_linelast2d
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
-  mesh_filename='cantilever_beam_1000poly_elems.txt';  
+  mesh_filename='cantilever_beam_250poly_elems.txt';  
   
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or

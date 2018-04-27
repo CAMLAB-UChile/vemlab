@@ -37,6 +37,7 @@
 % ==========================
 % Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
 % Mar. 25, 2018: add config (by A. Ortiz-Bernardin)
+% Apr. 19, 2018: improve the plotting of axis and fonts
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -53,7 +54,14 @@ function plot_mesh2d(domainMesh,config)
     elements = vertcat(elements{:});
     patch('Faces',elements,'Vertices',points,'FaceColor','w'); 
   %   axis('square')  
-  %   set(gca, 'FontSize', 12);
-    axis equal; axis off; 
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    axis equal; %axis off; 
+    dx = 0; dy = 0;
+    xlim([min(points(:, 1)) - dx, max(points(:, 1)) + dx]);
+    ylim([min(points(:, 2)) - dy, max(points(:, 2)) + dy]);
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
   end
 end

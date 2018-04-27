@@ -7,8 +7,8 @@
 
 Mesh filename: patch_test_20poly_elems.txt
 Method: VEM2D
-Date: 9-4-2018
-Time: 16:14 hrs
+Date: 19-4-2018
+Time: 16:   hrs
 
 Nodal Displacements: 
  Node      Coords         u1       u2 

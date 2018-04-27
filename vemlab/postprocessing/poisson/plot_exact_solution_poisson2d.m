@@ -39,6 +39,7 @@
 % Function's updates history
 % ==========================
 % Mar. 17, 2018: first realease (by A. Ortiz-Bernardin)
+% Apr. 19, 2018: improve the plotting of axis and fonts
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,7 +67,9 @@ function plot_u_field(domainMesh,solution,config)
   titleSolution='$u$';  
   
   if strcmp(config.poisson2d_plot_scalar_field.u,'yes')
-    figure; title(titleSolution,'Interpreter','latex','FontSize',18);
+    figure; 
+    title(titleSolution,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');
     maxNumVertices = max(cellfun(@numel,polygons));
     padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
     elements = cellfun(padFunc,polygons,'UniformOutput',false);
@@ -87,14 +90,17 @@ function plot_u_field(domainMesh,solution,config)
     if min(solution)~=max(solution)
       zlim([min(solution) - dz, max(solution) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(titleSolution,'Interpreter','latex','FontSize',18);
-    colorbar
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(titleSolution,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
     colormap jet
     %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
 end
 
@@ -209,7 +215,8 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$q_x$';
-    title(mytitle,'Interpreter','latex','FontSize',18);  
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');  
     view(2);
     grid off;
     axis equal;  
@@ -219,13 +226,17 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     if min(flux.qx)~=max(flux.qx)
       zlim([min(flux.qx) - dz, max(flux.qx) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
 
   if strcmp(config.poisson2d_plot_flux.qy,'yes')  
@@ -233,7 +244,8 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$q_y$';
-    title(mytitle,'Interpreter','latex','FontSize',18);   
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');   
     view(2);
     grid off;
     axis equal;  
@@ -243,13 +255,17 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     if min(flux.qy)~=max(flux.qy)
       zlim([min(flux.qy) - dz, max(flux.qy) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12); 
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
 
   if strcmp(config.poisson2d_plot_flux.qnorm,'yes')  
@@ -257,7 +273,8 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$||q||$';
-    title(mytitle,'Interpreter','latex','FontSize',18);   
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');   
     view(2);
     grid off;
     axis equal;  
@@ -267,13 +284,17 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     if min(fluxNorm)~=max(fluxNorm)
       zlim([min(fluxNorm) - dz, max(fluxNorm) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12); 
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
 
   if strcmp(config.poisson2d_plot_grad.dx,'yes')  
@@ -281,7 +302,8 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\frac{\partial u}{\partial x}$';
-    title(mytitle,'Interpreter','latex','FontSize',18);   
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');   
     view(2);
     grid off;
     axis equal;  
@@ -291,13 +313,17 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     if min(grad.dx)~=max(grad.dx)
       zlim([min(grad.dx) - dz, max(grad.dx) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);   
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
 
   if strcmp(config.poisson2d_plot_grad.dy,'yes')  
@@ -305,7 +331,8 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$\frac{\partial u}{\partial y}$';
-    title(mytitle,'Interpreter','latex','FontSize',18);    
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');    
     view(2);
     grid off;
     axis equal;  
@@ -315,13 +342,17 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     if min(grad.dy)~=max(grad.dy)
       zlim([min(grad.dy) - dz, max(grad.dy) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12); 
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
 
   if strcmp(config.poisson2d_plot_grad.dnorm,'yes')    
@@ -329,7 +360,8 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     figure
     mesh(xq,yq,vq,'FaceColor','interp','EdgeColor','interp');
     mytitle='$||\nabla u||$';
-    title(mytitle,'Interpreter','latex','FontSize',18);   
+    title(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+          'Times New Roman','Interpreter','latex');   
     view(2);
     grid off;
     axis equal;  
@@ -339,13 +371,17 @@ function plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,...
     if min(gradNorm)~=max(gradNorm)
       zlim([min(gradNorm) - dz, max(gradNorm) + dz])
     end
-    xlabel('$x$','Interpreter','latex','FontSize',18); 
-    ylabel('$y$','Interpreter','latex','FontSize',18); 
-    zlabel(mytitle,'Interpreter','latex','FontSize',18);  
-    colorbar;
-    colormap jet;
+    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    zlabel(mytitle,'FontWeight','bold','FontSize',20,'FontName',...
+           'Times New Roman','Interpreter','latex');
+    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+    colormap jet
+    %set(gcf,'Renderer','painters')    
     set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca, 'FontSize', 12);  
+    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold'); 
   end
 end
 
