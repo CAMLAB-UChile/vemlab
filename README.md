@@ -11,5 +11,5 @@ This repository contains the code for an open source MATLAB library for the virt
     <li> Solutions can be plotted to MATLAB figures, text files, <a href="https://www.gidhome.com/">GiD</a> files and <a href="https://www.vtk.org/">VTK</a> files.</li>  
 </ul>
 <h2>Author</h2><a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>
-<h2>Running VEMLab</h2><a>VEMLab is a library. You need to create a main .m file and place it inside the 'test' folder. The main file has the typical structure of a FEM simulation. Simply follow the test problems (with comments) that are provided inside the folder 'test' to wrote your own .m files or modify the ones provided.</a>
+<h2>Running VEMLab</h2><a>VEMLab is a library. You need to create a main .m file and place it inside the 'test' folder. The main file has the typical structure of a FEM simulation. Simply follow the test problems (with comments) that are provided inside the folder 'test' to wrote your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder 'doc.'</a>
 <h2>License</h2><a>This project is licensed under the GPL3 License. This program is free software; it can be redistributed or modified under the terms of the GNU General Public License 3 as published by the Free Software Foundation.<a/>
