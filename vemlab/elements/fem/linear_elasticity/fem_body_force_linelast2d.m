@@ -27,11 +27,11 @@ function fb = fem_body_force_linelast2d(verts,config,body_force_fun_values)
   elseif strcmp(config.vemlab_method,'FEM2DQ4')
     %  compute body force vector by numerical integration
     fb=zeros(8,1);    
-    int_order=2;
-    xi=gauss_points_1d(int_order);
-    eta=gauss_points_1d(int_order);
-    wxi=gauss_weights_1d(int_order);
-    weta=gauss_weights_1d(int_order);
+    num_gp=config.number_of_gauss_points_per_axis_FEM2DQ4;
+    xi=gauss_points_1d(num_gp);
+    eta=gauss_points_1d(num_gp);
+    wxi=gauss_weights_1d(num_gp);
+    weta=gauss_weights_1d(num_gp);
     for gpxi=1:length(xi)     
       dN1deta=-(1-xi(gpxi))/4;
       dN2deta=-(1+xi(gpxi))/4;
@@ -58,7 +58,7 @@ function fb = fem_body_force_linelast2d(verts,config,body_force_fun_values)
            0,N1,0,N2,0,N3,0,N4];    
         x=N1*xcoord(1)+N2*xcoord(2)+N3*xcoord(3)+N4*xcoord(4);
         y=N1*ycoord(1)+N2*ycoord(2)+N3*ycoord(3)+N4*ycoord(4);
-        bf=body_force_function_linelast2d([x,y],body_force_fun_value);
+        bf=body_force_function_linelast2d([x,y],body_force_fun_values);
         fb=fb+N'*bf*wxi(gpxi)*weta(gpeta)*detJ;
       end
     end    

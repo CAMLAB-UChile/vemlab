@@ -47,13 +47,16 @@
 % Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
 % Mar. 17, 2018: add Poisson module (by A. Ortiz-Bernardin)
 % Mar. 22, 2018: add options for plotting purposes (by A. Ortiz-Bernardin)
+% May 13, 2018: add variable "config.number_of_gauss_points_per_axis_FEM2DQ4"
+%               to set the number of Gauss points to integrate the FEM2DQ4 
+%               stiffness matrix and body force vector (by A. Ortiz-Bernardin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
                                 vemlab_module,vemlab_method)
   % VEMLab version
-  config.vemlab_version='2.0.1';
+  config.vemlab_version='2.0.2';
   
   % program options
   [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
@@ -77,6 +80,12 @@ function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
   config.linelast2d_plot_strain=linelast2d_plot_strain;
   config.vemlab_module=vemlab_module;  
   config.vemlab_method=vemlab_method;
+  
+  config.number_of_gauss_points_per_axis_FEM2DQ4=2; % for Poisson and 
+                                                    % linear elastostatic problems, 
+                                                    % this should be set to 2 as
+                                                    % a minimum. 1 is for
+                                                    % underintegration
     
   logical_cond_poisson2d=strcmp(poisson2d_plot_flux.qx,'yes')||...
                          strcmp(poisson2d_plot_flux.qy,'yes') ||...

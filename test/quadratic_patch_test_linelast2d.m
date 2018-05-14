@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.0.1                         
-%  Date         : April 26, 2018
+%  Version      : 2.0.2                         
+%  Date         : May 13, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %

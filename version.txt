@@ -18,6 +18,12 @@
                             All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
+Version 2.0.2 (13-MAY-2018):
+
+- Fix several bugs when using vemlab_method='FEM2DQ4' and vemlab_method='FEM2DT3'.
+- Add a control variable in config.m that permits to explicitly set the number of 
+  Gauss points to integrate the FEM2DQ4 stiffness matrix and body force vector.
+
 Version 2.0.1 (26-APR-2018). The following features have been added:
 
 - More detailed manual in folder "doc."

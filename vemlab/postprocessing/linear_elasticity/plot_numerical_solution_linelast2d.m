@@ -349,7 +349,7 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
         dofs(2*node_i)=2*nodes(node_i);
       end
       % element FEM nodal solution
-      uh_elem_column=uh_global(dofs); 
+      uh_elem_column=solution(dofs); 
       % area of the element
       area=triangle_area(elem_coord);
       % deformation matrix
@@ -444,7 +444,11 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
       nodes=connect{i};
       elem_coord=coords(nodes,:);
       % element dofs global indices
-      dofs=nodes;
+      dofs=zeros(2*length(nodes),1);
+      for node_i=1:length(nodes)
+        dofs(2*node_i-1)=2*nodes(node_i)-1;
+        dofs(2*node_i)=2*nodes(node_i);
+      end
       % element FEM nodal solution
       uh_elem_column=solution(dofs); 
       % compute flux and gradient at Gauss points

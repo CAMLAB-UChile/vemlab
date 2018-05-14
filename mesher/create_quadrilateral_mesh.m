@@ -17,9 +17,9 @@ function create_quadrilateral_mesh
   
   xmin=0; xmax=1; 
   ymin=0; ymax=1;
-  ndiv_x=20; ndiv_y=20; % number of divisions along x and y coordinates
+  ndiv_x=64; ndiv_y=64; % number of divisions along x and y coordinates
   mesh_type='uniform';  % 'uniform'
-  mesh_filename='square_plate_poisson2d_q4_uniform_20x20.txt'; 
+  mesh_filename='square_plate_poisson2d_q4_uniform_64x64.txt'; 
   
   %%%%%%%%%%%%%%%%%%%        END USER INPUT DATA       %%%%%%%%%%%%%%%%%%%%%%%%%  
   

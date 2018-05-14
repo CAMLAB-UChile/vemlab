@@ -1,6 +1,6 @@
-BeginZE C:/Dropbox/Universidad/codes/matlab/VEMLab/vemlab-2.0-18feb2018/test/output_files/GiD/square_plate_poisson2d_1000poly_elems.txt.flavia.vv
+BeginZE C:/Dropbox/Universidad/codes/matlab/VEMLab/vemlab-3.0-27apr2018/test/output_files/GiD/square_plate_poisson2d_1000poly_elems.txt.flavia.vv
    x -1.11315 2.11315
-   y 1.22648 -0.226486
+   y 1.22648 -0.226488
    z -2.17945 2.17945
    e 0.726483
    v 0 0 0
@@ -29,7 +29,7 @@ BeginZE C:/Dropbox/Universidad/codes/matlab/VEMLab/vemlab-2.0-18feb2018/test/out
    OGLStereo(EyeDistance) 0.075
    OGLStereo(LeftEyeDistance) 1 0 0 1
    OGLStereo(RightEyeDistance) 0 1 1 1
-EndZE C:/Dropbox/Universidad/codes/matlab/VEMLab/vemlab-2.0-18feb2018/test/output_files/GiD/square_plate_poisson2d_1000poly_elems.txt.flavia.vv
+EndZE C:/Dropbox/Universidad/codes/matlab/VEMLab/vemlab-3.0-27apr2018/test/output_files/GiD/square_plate_poisson2d_1000poly_elems.txt.flavia.vv
 
 
 BeginPostState
@@ -55,6 +55,6 @@ BeginSingleMesh
   EndSet: 0
 EndSingleMesh
   Post_Prefs_Vector_Size: 0 32 32 32
-  ResultView: {Id 31} {Smooth Contour Fill} Load_Analysis 1.0 ||Flux|| ||Flux|| 0.0 4 0
+  ResultView: {Id 6} {Smooth Contour Fill} Load_Analysis 1.0 ||Grad|| ||Grad|| 0.0 4 0
 EndPostState
 

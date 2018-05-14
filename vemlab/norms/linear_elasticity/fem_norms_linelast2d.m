@@ -115,11 +115,11 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
       end  
                              
       % compute norms by numerical integration
-      int_order=2;
-      xi=gauss_points_1d(int_order);
-      eta=gauss_points_1d(int_order);
-      wxi=gauss_weights_1d(int_order);
-      weta=gauss_weights_1d(int_order);
+      num_gp=2; % number of Gauss points per axis
+      xi=gauss_points_1d(num_gp);
+      eta=gauss_points_1d(num_gp);
+      wxi=gauss_weights_1d(num_gp);
+      weta=gauss_weights_1d(num_gp);
       for gpxi=1:length(xi)
         dN1deta=-(1-xi(gpxi))/4;
         dN2deta=-(1+xi(gpxi))/4;

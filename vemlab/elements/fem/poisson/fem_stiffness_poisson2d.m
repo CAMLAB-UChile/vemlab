@@ -14,11 +14,11 @@ function Kfem = fem_stiffness_poisson2d(verts,matProps,config)
     k=matProps.k;    % isotropic material   
     % compute stiffness matrix by numerical integration
     Kfem=zeros(4,4);
-    int_order=2;
-    xi=gauss_points_1d(int_order);
-    eta=gauss_points_1d(int_order);
-    wxi=gauss_weights_1d(int_order);
-    weta=gauss_weights_1d(int_order);
+    num_gp=config.number_of_gauss_points_per_axis_FEM2DQ4;
+    xi=gauss_points_1d(num_gp);
+    eta=gauss_points_1d(num_gp);
+    wxi=gauss_weights_1d(num_gp);
+    weta=gauss_weights_1d(num_gp);
     for gpxi=1:length(xi)
       dN1deta=-(1-xi(gpxi))/4;
       dN2deta=-(1+xi(gpxi))/4;

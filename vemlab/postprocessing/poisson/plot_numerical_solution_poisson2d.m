@@ -227,6 +227,7 @@ function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
       flux.qx(i)=-k*grad_uh(1);
       flux.qy(i)=-k*grad_uh(2);  
       % assign constant flux and gradient to the element Gauss point (1-pt rule)
+      gp=gp+1;
       [xy,~]=gauss_points_T3(1,elem_coord); % int. point in the form [x y]         
       gp_list.x(gp)=xy(1);
       gp_list.y(gp)=xy(2);  
