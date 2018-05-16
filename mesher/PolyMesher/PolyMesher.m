@@ -18,6 +18,7 @@ fprintf('PolyMesher is generating a mesh ...\n');
 if ~exist('P','var'), P=PolyMshr_RndPtSet(NElem,Domain); end
 NElem = size(P,1);
 Tol=5e-6; It=0; Err=1; c=1.5;
+DomainType = Domain('DomainType');
 BdBox = Domain('BdBox'); PFix = Domain('PFix');
 Area = (BdBox(2)-BdBox(1))*(BdBox(4)-BdBox(3));
 Pc = P; figure;
@@ -30,7 +31,7 @@ while(It<=MaxIter && Err>Tol)
   [Pc,A] = PolyMshr_CntrdPly(Element,Node,NElem);
   Area = sum(abs(A));
   Err = sqrt(sum((A.^2).*sum((Pc-P).*(Pc-P),2)))*NElem/Area^1.5;
-  %fprintf('It: %3d   Error: %1.3e\n',It,Err); It=It+1;
+  fprintf('It: %3d   Error: %1.3e\n',It,Err); It=It+1;
   if NElem<=6000, PolyMshr_PlotMsh(Node,Element,NElem); end
 end
 [Node,Element] = PolyMshr_ExtrNds(NElem,Node,Element);  %Extract node list
@@ -41,7 +42,7 @@ PolyMshr_PlotMsh(Node,Element,NElem,Supp,Load);         %Plot mesh and BCs
 % A.O-B, Dec. 26, 2017
 BoundaryNodes=Domain('Boundary',{Node});
 PolyMesher2VEMLab(Node,Element,NElem,...      %Plot mesh to a VEMLab mesh format
-                  BoundaryNodes,MeshFile); 
+                  BoundaryNodes,MeshFile,DomainType,BdBox); 
 close all                                       %Close plot of PolyMesher's mesh
 % END A.O-B
 %------------------------------------------------- GENERATE RANDOM POINTSET
