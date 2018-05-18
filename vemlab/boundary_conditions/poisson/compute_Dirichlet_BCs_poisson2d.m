@@ -5,8 +5,12 @@ function DB_dofs =...
   coords=domainMesh.coords;
   x=coords(Dirichet_boundary_nodes,1); % x-coord of boundary nodes (right boundary)
   y=coords(Dirichet_boundary_nodes,2); % y-coord of boundary nodes (right boundary)    
-  %num_nodes=length(x);    
-  %DB_dofs.values(1:num_nodes)=Dirichlet_fun_values(x,y);    
-  DB_dofs.values=Dirichlet_fun_values(x,y);  
-  DB_dofs.indexes=Dirichet_boundary_dofs;      
+       
+  DB_dofs_aux.values=Dirichlet_fun_values(x,y);  
+  DB_dofs_aux.indexes=Dirichet_boundary_dofs; 
+  
+  % disregard dofs and values of those nodes that are free
+  ind=find(DB_dofs_aux.values(:,2)==0);
+  DB_dofs.values=DB_dofs_aux.values(ind,1);
+  DB_dofs.indexes=DB_dofs_aux.indexes(ind);  
 end

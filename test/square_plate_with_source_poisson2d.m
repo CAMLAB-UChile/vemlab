@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.0.2                        
-%  Date         : May 13, 2018
+%  Version      : 2.1                       
+%  Date         : May 17, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -54,6 +54,7 @@ function square_plate_with_source_poisson2d
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
+    
   mesh_filename='square_plate_poisson2d_1000poly_elems.txt';  
 
   % method
@@ -157,49 +158,59 @@ end
 %% DEFINITION OF THE SOURCE TERM FUNCTION
 
 function b = source_term_fun(x,y)
-  % This function is intended to return a vector of size length(x) or length(y).
-  % So, in case length(x) = 1, the return is just a single value.
-  % Use something like x.*y (i.e., use the dot symbol), so that in case x and y 
-  % are vectors, the return is a vector.
-  b=32*y.*(1-y) + 32*x.*(1-x);
+  % Use something like x.*y (i.e., use the dot symbol) if the return "b"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "b" is an array that has the same form of the input "x" or "y"
+  
+  b=32*y.*(1-y) + 32*x.*(1-x);  % is used as a force per volume
 end
 
 
-%% DEFINITION OF DIRICHLET FUNCTIONS FOR THE QUADRATIC PATCH TEST
+%% DEFINITION OF DIRICHLET FUNCTIONS FOR THE SQUARE PLATE WITH HEAT SOURCE
 
 function u = u_Dirichlet_fun(x,y)
-  % x,y are vectors containing the coordinates of the nodes lying on the 
-  % Dirichlet boundary, therefore this function is intended to return a vector
-  % of size length(x) or length(y).
-  % Use something like x.*y (i.e., use the dot symbol), so that in case x and y 
-  % are vectors, the return is a vector.
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: u = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom in the first column should be ignored (free) or 
+  % applied (fixed).
+  
   N=length(x);
-  u=zeros(N,1);  
+  u=zeros(N,2);  % first column = value; second column = free (1) or fixed (0)
+                 % In this case, all dofs are fixed and have the values of u(:,1)
 end
 
 %% DEFINITION OF THE EXACT SOLUTIONS
 
 function u = u_exact(x,y)
-  % This function is intended to return a vector of size length(x) or length(y).
-  % So, in case length(x) = 1, the return is just a single value.
-  % Use something like x.*y (i.e., use the dot symbol), so that in case x and y 
-  % are vectors, the return is a vector.  
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "u" is an array that has the same form of the input "x" or "y"  
+  
   u=16*x.*y.*(1-x).*(1-y);
 end
 
 function dudx = dudx_exact(x,y)
-  % This function is intended to return a vector of size length(x) or length(y).
-  % So, in case length(x) = 1, the return is just a single value.
-  % Use something like x.*y (i.e., use the dot symbol), so that in case x and y 
-  % are vectors, the return is a vector. 
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "dudx" is an array that has the same form of the input "x" or "y"  
+  
   dudx=16*y.*(1-y).*(1-2*x);
 end
 
 function dudy = dudy_exact(x,y)
-  % This function is intended to return a vector of size length(x) or length(y).
-  % So, in case length(x) = 1, the return is just a single value.
-  % Use something like x.*y (i.e., use the dot symbol), so that in case x and y 
-  % are vectors, the return is a vector.  
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "dudy" is an array that has the same form of the input "x" or "y"  
+  
   dudy=16*x.*(1-x).*(1-2*y);
 end
 

@@ -18,6 +18,15 @@
                             All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
+Version 2.1 (17-MAY-2018):
+
+- Add customized wrench domain (for PolyMesher mesh generator only).
+- Add customized plate with a hole domain (for PolyMesher mesh generator only).
+- Add the following test: "square_plate_with_source2_poisson2d.m" in test folder.
+- Add the following test: "plate_with_hole_linelast2d.m" in test folder.
+- Add the following test: "wrench_linelast2d.m" in test folder.
+- Fix iteration counter in PolyMesher function.
+
 Version 2.0.2 (13-MAY-2018):
 
 - Fix several bugs when using vemlab_method='FEM2DQ4' and vemlab_method='FEM2DT3'.

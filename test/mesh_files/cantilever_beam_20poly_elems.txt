@@ -1,3 +1,5 @@
+# domain type
+RectangularDomain
 # nodal coordinates: number of nodes followed by the coordinates
 42
 -0.00000000 -2.00000000
@@ -71,5 +73,6 @@
 # indices of nodes located on the left boundary
 1 2 7 8 
 # indices of nodes located on the right boundary
-29 37 41 42 
+29 37 41 42
+# xmax, xmin, ymax, ymin of the bounding box
 -0.00000000 8.00000000 -2.00000000 2.00000000

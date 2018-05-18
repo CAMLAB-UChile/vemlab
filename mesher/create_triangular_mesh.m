@@ -133,6 +133,7 @@ end
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% May 17, 2018: add domainType string (by A. Ortiz-Bernardin)
 % Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,6 +148,9 @@ function distmesh2VEMLab_rectangular_domain(Node,Element,NElem,...
                                               BoundaryNodes,MeshFile)
   fprintf('Printing mesh to a VEMLab mesh format...\n'); 
   fid = fopen(MeshFile,'w');
+  % print domain type
+  fprintf(fid,'# domain type\n');  
+  fprintf(fid,'%s\n','RectangularDomain'); 
   % print nodal coordinates
   fprintf(fid,'# nodal coordinates: number of nodes followed by the coordinates\n');
   nnode = size(Node,1);
@@ -182,6 +186,7 @@ function distmesh2VEMLab_rectangular_domain(Node,Element,NElem,...
   fprintf(fid,'%d ',BoundaryNodes.right);    
   fprintf(fid,'\n');
   % print xmax, xmin, ymax, ymin for the rectangular domain
+  fprintf(fid,'# xmax, xmin, ymax, ymin of the bounding box\n'); 
   xmin=Node(BoundaryNodes.blcorner,1);
   xmax=Node(BoundaryNodes.trcorner,1);
   ymin=Node(BoundaryNodes.blcorner,2);

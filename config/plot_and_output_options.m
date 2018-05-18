@@ -4,6 +4,38 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
           linelast2d_plot_stress,linelast2d_plot_strain] = plot_and_output_options
   
   % INSTRUCTIONS: SET VARIABLES WITH 'yes' or 'no' ONLY.
+  %
+  % NOTE: Currently, the MATLAB plotting of stresses and strains 
+  %       (linear elastostatic problem) or fluxes and gradients (Poisson problem)
+  %       is very limited and won't recognize holes that might come with
+  %       the domain geometries. It will work ok with rectangular geometries
+  %       without holes, but the mesh will need to be very refined to obtain a
+  %       colormap on the whole geometry ... just try a coarse mesh and then a
+  %       refined mesh to see what is being said.
+  %
+  %       If quality colormap plots are required for stresses, strains, fluxes
+  %       and gradients, it is highly recommended using the GiD output files to
+  %       visualize them in "GiD the pre and postprocessor" (www.gidhome.com)
+  %
+  disp("*** DON'T FORGET TO SETUP THE PLOT AND OUTPUT OPTIONS ***");
+  disp(" ");
+  disp("To setup them go to file config\plot_and_output_options.m");
+  disp(" ");  
+  disp("NOTE: Currently, the MATLAB plotting of stresses and strains"); 
+  disp("(linear elastostatic problem) or fluxes and gradients (Poisson problem)");
+  disp("is very limited and won't recognize holes that might come with");
+  disp("the domain geometries. It will work fine with rectangular geometries");
+  disp("without holes, but the mesh will need to be very refined to obtain");
+  disp("quality colormaps on the whole geometry ... just try a coarse mesh");
+  disp("and then a refined mesh to see what is being said.");
+  disp(" ");    
+  disp("If quality colormap plots are required for stresses, strains, fluxes");
+  disp("and gradients, it is higly recommended using the GiD output files to");
+  disp("visualize them in GiD the pre and postprocessor (www.gidhome.com)");
+  disp(" ");    
+  disp("Press any key to continue ...");  
+  disp(" ");    
+  pause;
   
   %% GENERAL
   

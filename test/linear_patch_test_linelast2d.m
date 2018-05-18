@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.0.2                         
-%  Date         : May 13, 2018
+%  Version      : 2.1                        
+%  Date         : May 17, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -56,7 +56,7 @@ function linear_patch_test_linelast2d
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
-  mesh_filename='patch_test_50poly_elems.txt';  
+  mesh_filename='patch_test_20poly_elems.txt';  
   
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
@@ -163,39 +163,105 @@ end
 %% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE LINEAR PATCH TEST
 
 function bx = bx_body_force_fun(x,y)
-  bx=0;    
+  % Use something like x.*y (i.e., use the dot symbol) if the return "bx"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "bx" is an array that has the same form of the input "x" or "y"
+  
+  bx=0;  % is used as a force per volume 
 end
 function by = by_body_force_fun(x,y)
-  by=0;    
+  % Use something like x.*y (i.e., use the dot symbol) if the return "by"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "by" is an array that has the same form of the input "x" or "y"
+  
+  by=0;  % is used as a force per volume
 end
 
 %% DEFINITION OF DIRICHLET FUNCTIONS FOR THE LINEAR PATCH TEST
 
 function ux = ux_Dirichlet_fun(x,y)
-  ux=x;    
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: ux = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom-x, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom-x in the first column should be ignored (free) or 
+  % applied (fixed).
+  
+  ux=zeros(length(x),2); % first column = value; second column = free (1) or fixed (0)
+                         % In this case, all ux dofs are fixed and have the
+                         % values of ux(:,1)
+  ux(:,1)=x;   % update the value 
 end
 function uy = uy_Dirichlet_fun(x,y)
-  uy=x+y;     
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: uy = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom-y, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom-y in the first column should be ignored (free) or 
+  % applied (fixed).
+  
+  uy=zeros(length(y),2); % first column = value; second column = free (1) or fixed (0)
+                         % In this case, all uy dofs are fixed and have the
+                         % values of uy(:,1)
+  uy(:,1)=x+y;   % update the value  
 end
 
 %% DEFINITION OF THE EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
 
 function ux = ux_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "ux" is an array that has the same form of the input "x" or "y"
+  
   ux=x;    
 end
 function uy = uy_exact(x,y)  
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "uy" is an array that has the same form of the input "x" or "y"
+  
   uy=x+y;  
 end
 function duxdx = duxdx_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duxdx" is an array that has the same form of the input "x" or "y"
+  
   duxdx=1;
 end
 function duydx = duydx_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duydx" is an array that has the same form of the input "x" or "y"
+  
   duydx=1;
 end
 function duxdy = duxdy_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duxdy" is an array that has the same form of the input "x" or "y"
+  
   duxdy=0;
 end
 function duydy = duydy_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duydy" is an array that has the same form of the input "x" or "y"
+  
   duydy=1;
 end
 

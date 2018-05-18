@@ -17,9 +17,9 @@ function create_quadrilateral_mesh
   
   xmin=0; xmax=1; 
   ymin=0; ymax=1;
-  ndiv_x=64; ndiv_y=64; % number of divisions along x and y coordinates
+  ndiv_x=47; ndiv_y=67; % number of divisions along x and y coordinates
   mesh_type='uniform';  % 'uniform'
-  mesh_filename='square_plate_poisson2d_q4_uniform_64x64.txt'; 
+  mesh_filename='square_plate_poisson2d_q4_uniform_47x67.txt'; 
   
   %%%%%%%%%%%%%%%%%%%        END USER INPUT DATA       %%%%%%%%%%%%%%%%%%%%%%%%%  
   
@@ -121,6 +121,7 @@ end
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% May 17, 2018: add domainType string (by A. Ortiz-Bernardin)
 % Jan. 8, 2018: first realease (by A. Ortiz-Bernardin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -135,6 +136,9 @@ function quad4mesh2VEMLab_rectangular_domain(Node,Element,NElem,...
                                               BoundaryNodes,MeshFile)
   fprintf('Printing mesh to a VEMLab mesh format...\n'); 
   fid = fopen(MeshFile,'w');
+  % print domain type
+  fprintf(fid,'# domain type\n');  
+  fprintf(fid,'%s\n','RectangularDomain');    
   % print nodal coordinates
   fprintf(fid,'# nodal coordinates: number of nodes followed by the coordinates\n');
   nnode = size(Node,1);
@@ -170,6 +174,7 @@ function quad4mesh2VEMLab_rectangular_domain(Node,Element,NElem,...
   fprintf(fid,'%d ',BoundaryNodes.right);    
   fprintf(fid,'\n');
   % print xmax, xmin, ymax, ymin for the rectangular domain
+  fprintf(fid,'# xmax, xmin, ymax, ymin of the bounding box\n'); 
   xmin=Node(BoundaryNodes.blcorner,1);
   xmax=Node(BoundaryNodes.trcorner,1);
   ymin=Node(BoundaryNodes.blcorner,2);

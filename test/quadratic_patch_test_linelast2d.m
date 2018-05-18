@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.0.2                         
-%  Date         : May 13, 2018
+%  Version      : 2.1                         
+%  Date         : May 17, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -162,8 +162,11 @@ end
 %% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE QUADRATIC PATCH TEST
 
 function bx = bx_body_force_fun(x,y)
-  % this function is intended to return a vector of size length(x) or length(y)
-  % so, in case length(x) = 1, the return is just a single value
+  % Use something like x.*y (i.e., use the dot symbol) if the return "bx"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "bx" is an array that has the same form of the input "x" or "y"
+  
   N=length(x); % size of the b vector!
   Ey=10^7;
   nu=0.3;
@@ -172,8 +175,11 @@ function bx = bx_body_force_fun(x,y)
   bx=bx*ones(N,1);
 end
 function by = by_body_force_fun(x,y)
-  % this function is intended to return a vector of size length(x) or length(y)
-  % so, in case length(x) = 1, the return is just a single value
+  % Use something like x.*y (i.e., use the dot symbol) if the return "by"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "by" is an array that has the same form of the input "x" or "y"
+  
   N=length(x); % size of the b vector!  
   Ey=10^7;
   nu=0.3;
@@ -185,36 +191,86 @@ end
 %% DEFINITION OF DIRICHLET FUNCTIONS FOR THE QUADRATIC PATCH TEST
 
 function ux = ux_Dirichlet_fun(x,y)
-  % x,y are vectors containing the coordinates of the nodes lying on the 
-  % Dirichlet boundary, therefore this function is intended to return a vector
-  % of size length(x) or length(y)
-  ux=0.1.*x.*x+0.1.*x.*y+0.2.*y.*y;    
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: ux = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom-x, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom-x in the first column should be ignored (free) or 
+  % applied (fixed).
+  
+  ux=zeros(length(x),2); % first column = value; second column = free (1) or fixed (0)
+                         % In this case, all ux dofs are fixed and have the
+                         % values of ux(:,1)  
+  ux(:,1)=0.1.*x.*x+0.1.*x.*y+0.2.*y.*y;     % update the value
 end
 function uy = uy_Dirichlet_fun(x,y)
-  % x,y are vectors containing the coordinates of the nodes lying on the 
-  % Dirichlet boundary, therefore this function is intended to return a vector
-  % of size length(x) or length(y)
-  uy=0.15.*x.*x+0.29.*x.*y+0.06.*y.*y;     
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: uy = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom-y, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom-y in the first column should be ignored (free) or 
+  % applied (fixed).
+  
+  uy=zeros(length(y),2); % first column = value; second column = free (1) or fixed (0)
+                         % In this case, all uy dofs are fixed and have the
+                         % values of uy(:,1)  
+  uy(:,1)=0.15.*x.*x+0.29.*x.*y+0.06.*y.*y;  % update the value   
 end
 
 %% DEFINITION OF THE EXACT SOLUTIONS FOR THE QUADRATIC PATCH TEST
 
 function ux = ux_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "ux" is an array that has the same form of the input "x" or "y"
+  
   ux=0.1.*x.*x+0.1.*x.*y+0.2.*y.*y;    
 end
 function uy = uy_exact(x,y)  
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "uy" is an array that has the same form of the input "x" or "y"
+  
   uy=0.15.*x.*x+0.29.*x.*y+0.06.*y.*y;  
 end
 function duxdx = duxdx_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duxdx" is an array that has the same form of the input "x" or "y"
+  
   duxdx=x/5+y/10;
 end
 function duydx = duydx_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duydx" is an array that has the same form of the input "x" or "y"
+  
   duydx=3*x/10+29*y/100;
 end
 function duxdy = duxdy_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duxdy" is an array that has the same form of the input "x" or "y"
+  
   duxdy=x/10+2*y/5;
 end
 function duydy = duydy_exact(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "duydy" is an array that has the same form of the input "x" or "y"
+  
   duydy=29*x/100+3*y/25;
 end
 
