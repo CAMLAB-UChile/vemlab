@@ -32,6 +32,7 @@ Version 2.2 (6-OCT-2018):
   generator or using a customized version of the mesh generators available in 
   VEMLab. (See example "Creating and using a custom meshfile" in the VEMLab Primer 
   for details).
+- Add more details to the VEMLab Primer.
   
 Version 2.1 (17-MAY-2018):
 
