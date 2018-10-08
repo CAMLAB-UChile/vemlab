@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.1                       
-%  Date         : May 17, 2018
+%  Version      : 2.2                       
+%  Date         : October 6, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -55,7 +55,7 @@ function square_plate_with_source_poisson2d
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
     
-  mesh_filename='square_plate_poisson2d_1000poly_elems.txt';  
+  mesh_filename='square_plate_poisson2d_50poly_elems.txt';  
 
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or

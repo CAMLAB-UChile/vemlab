@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.1                       
-%  Date         : May 17, 2018
+%  Version      : 2.2                       
+%  Date         : October 6, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -57,7 +57,7 @@ function wrench_linelast2d
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
   
-  mesh_filename='wrench_3000poly_elems.txt';   
+  mesh_filename='wrench_400poly_elems.txt';   
   
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
@@ -190,7 +190,7 @@ function fy = fy_Neumann_fun(x,y)
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "fy" is an array that has the same form of the input "x" or "y"
   
-  fy=-100;  % is used as a force per length 
+  fy=-35;  % is used as a force per length 
 end
 
 %% DEFINITION OF DIRICHLET FUNCTIONS FOR THE WRENCH

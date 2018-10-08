@@ -6,10 +6,10 @@
                               Copyright (c) 2018                     
                          by Alejandro Ortiz-Bernardin 
                                aortizb@uchile.cl
-				          http://camlab.cl/alejandro/
+				                 http://camlab.cl/alejandro/
 							   
-                     Department of Mechanical Engineering                        
-                    Universidad de Chile,  Santiago, CHILE                        
+                    Department of Mechanical Engineering                        
+                   Universidad de Chile,  Santiago, CHILE                        
 						 
                Computational and Applied Mechanics Laboratory,
                 Center for Modern Computational Engineering,
@@ -18,6 +18,21 @@
                             All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
+Version 2.2 (6-OCT-2018):
+
+- Fix disp() in plot_and_ouput_options.m: disp("Hello") seems to work only in newer 
+  versions of MATLAB. So, it is changed to the standard MATLAB format disp('Hello').
+- Results that are postprocessed in the graphical user interface of GiD are now 
+  ordered in folders.
+- Add option to plot deformed domain in MATLAB figures when using the 
+  LinearElastostatics module (see function “plot_and_ouput_options.m” located in 
+  the folder “config”).
+- Add a function to read a meshfile having the domain type declared as "Custom", 
+  which is useful for defining the meshfile manually or using an external mesh 
+  generator or using a customized version of the mesh generators available in 
+  VEMLab. (See example "Creating and using a custom meshfile" in the VEMLab Primer 
+  for details).
+  
 Version 2.1 (17-MAY-2018):
 
 - Add customized wrench domain (for PolyMesher mesh generator only).
@@ -67,10 +82,10 @@ References:
 [1] C Talischi, GH Paulino, A Pereira, IFM Menezes, 
     "PolyMesher: A general-purpose mesh generator for polygonal elements 
     written in Matlab", 
-	Struct Multidisc Optim, 2012,
+	  Struct Multidisc Optim, 2012,
     DOI 10.1007/s00158-011-0706-z 
 
 [2] Per-Olof Persson and Gilbert Strang, 
     "A Simple Mesh Generator in MATLAB," 
-	SIAM Review Vol. 46 (2) 2004. 
+	  SIAM Review Vol. 46 (2) 2004. 
 	

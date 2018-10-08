@@ -135,7 +135,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
   
   % write stresses only if stressesT3 is not empty
   if ~isempty(stressesT3)  
-    fprintf(fid,'Result  "s11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -147,7 +147,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "s22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -159,7 +159,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "s33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -171,7 +171,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');       
 
-    fprintf(fid,'Result  "s12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -183,7 +183,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "s1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal stresses//s1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -195,7 +195,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "s2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal stresses//s2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -207,7 +207,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');  
 
-    fprintf(fid,'Result  "s3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal stresses//s3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -219,7 +219,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');       
 
-    fprintf(fid,'Result  "von-Mises"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//von-Mises"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -236,7 +236,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
   
   % write stresses only if strainsT3 is not empty
   if ~isempty(strainsT3)   
-    fprintf(fid,'Result  "e11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -248,7 +248,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "e22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -260,7 +260,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "e33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -272,7 +272,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');       
 
-    fprintf(fid,'Result  "e12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -284,7 +284,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');    
 
-    fprintf(fid,'Result  "e1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal strains//e1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -296,7 +296,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "e2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal strains//e2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -308,7 +308,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "e3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal strains//e3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -433,7 +433,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
   
   % write stresses only if stresses is not empty
   if ~isempty(stresses)   
-    fprintf(fid,'Result  "s11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -445,7 +445,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "s22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -457,7 +457,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "s33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -469,7 +469,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');       
 
-    fprintf(fid,'Result  "s12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//s12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -481,7 +481,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "s1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal stresses//s1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -493,7 +493,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "s2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal stresses//s2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -505,7 +505,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');  
 
-    fprintf(fid,'Result  "s3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal stresses//s3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -517,7 +517,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');       
 
-    fprintf(fid,'Result  "von-Mises"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Stresses//von-Mises"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -534,7 +534,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
   
   % write strains only if strains is not empty
   if ~isempty(strains)   
-    fprintf(fid,'Result  "e11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e11"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -546,7 +546,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "e22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e22"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -558,7 +558,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "e33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e33"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -570,7 +570,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');       
 
-    fprintf(fid,'Result  "e12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Strains//e12"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -582,7 +582,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');    
 
-    fprintf(fid,'Result  "e1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal strains//e1"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -594,7 +594,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "e2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal strains//e2"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -606,7 +606,7 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
     end
     fprintf(fid,'End Values\n'); 
 
-    fprintf(fid,'Result  "e3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Principal strains//e3"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel

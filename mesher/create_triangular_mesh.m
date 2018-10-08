@@ -185,8 +185,8 @@ function distmesh2VEMLab_rectangular_domain(Node,Element,NElem,...
   fprintf(fid,'# indices of nodes located on the right boundary\n');  
   fprintf(fid,'%d ',BoundaryNodes.right);    
   fprintf(fid,'\n');
-  % print xmax, xmin, ymax, ymin for the rectangular domain
-  fprintf(fid,'# xmax, xmin, ymax, ymin of the bounding box\n'); 
+  % print xmin, xmax, ymin, ymax for the rectangular domain
+  fprintf(fid,'# xmin, xmax, ymin, ymax of the bounding box\n'); 
   xmin=Node(BoundaryNodes.blcorner,1);
   xmax=Node(BoundaryNodes.trcorner,1);
   ymin=Node(BoundaryNodes.blcorner,2);

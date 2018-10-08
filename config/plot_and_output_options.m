@@ -1,9 +1,12 @@
 function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
           write_solutions_to_GiD_file,write_solutions_to_VTK_file,poisson2d_plot_scalar_field,...
           poisson2d_plot_flux,poisson2d_plot_grad,linelast2d_plot_displacement,...
-          linelast2d_plot_stress,linelast2d_plot_strain] = plot_and_output_options
+          linelast2d_plot_stress,linelast2d_plot_strain,linelast2d_plot_deformed_domain,...
+          linelast2d_scale_for_plotting_deformed_domain] = plot_and_output_options
   
-  % INSTRUCTIONS: SET VARIABLES WITH 'yes' or 'no' ONLY.
+  % INSTRUCTIONS: SET VARIABLES WITH 'yes' or 'no' ONLY, except 
+  %               linelast2d_scale_for_plotting_deformed_domain, which must be
+  %               assigned a positive number.
   %
   % NOTE: Currently, the MATLAB plotting of stresses and strains 
   %       (linear elastostatic problem) or fluxes and gradients (Poisson problem)
@@ -14,8 +17,8 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   %       refined mesh to see what is being said.
   %
   %       If quality colormap plots are required for stresses, strains, fluxes
-  %       and gradients, it is highly recommended using the GiD output files to
-  %       visualize them in "GiD the pre and postprocessor" (www.gidhome.com)
+  %       and gradients, it is highly recommended writing the GiD output files and
+  %       visualizing them in "GiD the pre and postprocessor" (www.gidhome.com)
   %
   disp('*** DONT FORGET TO SETUP THE PLOT AND OUTPUT OPTIONS ***');
   disp(' ');
@@ -30,8 +33,8 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   disp('and then a refined mesh to see what is being said.');
   disp(' ');    
   disp('If quality colormap plots are required for stresses, strains, fluxes');
-  disp('and gradients, it is higly recommended using the GiD output files to');
-  disp('visualize them in GiD the pre and postprocessor (www.gidhome.com)');
+  disp('and gradients, it is higly recommended writing the GiD output files and');
+  disp('visualizing them in GiD the pre and postprocessor (www.gidhome.com)');
   disp(' ');    
   disp('Press any key to continue ...');  
   disp(' ');    
@@ -40,35 +43,39 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   %% GENERAL
   
   plot_mesh='yes';
-  plot_mesh_over_results='no';
+  plot_mesh_over_results='yes';
   write_solutions_to_text_file='yes';
   write_solutions_to_GiD_file='yes';
   write_solutions_to_VTK_file='yes';  
   
   %% POISSON MODULE
   
-  % plotting of main variables
+  % plotting of main variables to MATLAB figures
   poisson2d_plot_scalar_field.u='yes';
   
-  % plotting of fluxes 
+  % plotting of fluxes to MATLAB figures
   poisson2d_plot_flux.qx='no';
   poisson2d_plot_flux.qy='no'; 
   poisson2d_plot_flux.qnorm='yes';   % norm of the flux
   
-  % plotting of gradients
+  % plotting of gradients to MATLAB figures
   poisson2d_plot_grad.dx='no';
   poisson2d_plot_grad.dy='no';   
   poisson2d_plot_grad.dnorm='yes';   % norm of the gradient
   
   %% LINELAST MODULE
+  
+  % options for plotting deformed domain to MATLAB figures
+  linelast2d_plot_deformed_domain='yes';
+  linelast2d_scale_for_plotting_deformed_domain=1; % a number > 1 will scale the deformed domain when plotting to MATLAB figures
 
-  % plotting of main variables
+  % plotting of main variables to MATLAB figures
   linelast2d_plot_displacement.ux='yes';  
   linelast2d_plot_displacement.uy='yes';  
   linelast2d_plot_displacement.unorm='yes';  % norm of the displacement
   
-  % plotting of stresses
-  linelast2d_plot_stress.s11='yes';
+  % plotting of stresses to MATLAB figures
+  linelast2d_plot_stress.s11='no';
   linelast2d_plot_stress.s12='no';
   linelast2d_plot_stress.s22='no';
   linelast2d_plot_stress.s33='no';
@@ -77,7 +84,7 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   linelast2d_plot_stress.s3='no';  
   linelast2d_plot_stress.vm='no';  
   
-  % plotting of strains
+  % plotting of strains to MATLAB figures
   linelast2d_plot_strain.e11='no';
   linelast2d_plot_strain.e12='no';
   linelast2d_plot_strain.e22='no';

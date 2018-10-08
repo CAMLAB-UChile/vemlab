@@ -42,6 +42,7 @@
 % ==========================
 % Mar. 17, 2018: first realease (by A. Ortiz-Bernardin)
 % Apr. 19, 2018: improve the plotting of axis and fonts
+% Sept. 16, 2018: add option to plot deformed domain for linelast2d
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -69,6 +70,11 @@ function plot_u_field(domainMesh,solution,config)
   displacementsX=solution(2*range-1);
   displacementsY=solution(2*range);  
   displacementsNorm=sqrt(displacementsX.*displacementsX+displacementsY.*displacementsY);
+  
+  if strcmp(config.linelast2d_plot_deformed_domain,'yes') 
+    scale=config.linelast2d_scale_for_plotting_deformed_domain;
+    nodes=[nodes(:,1)+displacementsX*scale, nodes(:,2)+displacementsY*scale];
+  end
   
   titleSolutionX='$u_x^h$'; 
   titleSolutionY='$u_y^h$'; 
@@ -197,7 +203,7 @@ function [stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,con
     else
       throw_error('Error in plot_numerical_solution_linelast2d.m --> plot_stress_and_strain: vemlab_method\n');
     end
-    plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,h_min,...
+    plot_stress_and_strain_linelast2d(solution,domainMesh,stress,strain,gp_list,h_min,...
                                       xmin,xmax,ymin,ymax,config);
   else % return empty stress and strain
     stress=[]; strain=[];
@@ -555,9 +561,17 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
   end
 end
 
-function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
+function plot_stress_and_strain_linelast2d(solution,domainMesh,stress,strain,gp_list,...
                                            h_min,xmin,xmax,ymin,ymax,config)  
-  nodes=domainMesh.coords;  
+  nodes=domainMesh.coords; 
+  nodesNumber=size(nodes,1); 
+  range=1:nodesNumber;
+  displacementsX=solution(2*range-1);
+  displacementsY=solution(2*range);   
+  if strcmp(config.linelast2d_plot_deformed_domain,'yes') 
+    scale=config.linelast2d_scale_for_plotting_deformed_domain;
+    nodes=[nodes(:,1)+displacementsX*scale, nodes(:,2)+displacementsY*scale];
+  end  
   [xq,yq]=meshgrid(xmin:0.05*h_min:xmax,ymin:0.05*h_min:ymax);  
   % plot numerical stress and strain
   if strcmp(config.linelast2d_plot_stress.s11,'yes')

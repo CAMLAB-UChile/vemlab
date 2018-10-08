@@ -23,8 +23,8 @@ function create_polygonal_mesh
   %    - PlateWithHoleDomain
   %
   
-  N_elems=1500;
-  mesh_filename='plate_with_hole_1500poly_elems.txt'; 
+  N_elems=100;
+  mesh_filename='PALITO2018_100.txt'; 
   
   % WARNING: DON'T CHANGE THE FOLLOWING TWO LINES IF YOU DON'T KNOW WHAT YOU ARE DOING!
   config=config_vemlab_mesher(opsystem,vemlab_root_dir,mesh_filename); % configure mesher
@@ -33,13 +33,13 @@ function create_polygonal_mesh
   % USE ONLY ONE OF THE FOLLOWING PolyMesher FUNCTIONS FOR CUSTOMIZED DOMAINS
   
   % RECTANGULAR DOMAIN
-  %[~,~,~,~,~]=PolyMesher(@RectangularDomain,N_elems,100,mesh_file);
+  [~,~,~,~,~]=PolyMesher(@RectangularDomain,N_elems,100,mesh_file);
   
   % WRENCH DOMAIN  
   %[~,~,~,~,~]=PolyMesher(@WrenchDomain,N_elems,100,mesh_file);  
   
   % PLATE WITH HOLE DOMAIN  
-  [~,~,~,~,~]=PolyMesher(@PlateWithHoleDomain,N_elems,100,mesh_file);  
+%   [~,~,~,~,~]=PolyMesher(@PlateWithHoleDomain,N_elems,100,mesh_file);  
   
   %%%%%%%%%%%%%%%%%%         END USER AREA         %%%%%%%%%%%%%%%%%%%%%%%  
   

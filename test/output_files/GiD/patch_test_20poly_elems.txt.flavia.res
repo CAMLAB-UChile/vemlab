@@ -9,48 +9,48 @@ ComponentNames  "X-Disp"   "Y-Disp"
 Values
 1         0.00000000005708000000         0.00000000011768220000
 2         0.21762095624428701000         0.21762095630488912000
-3         0.22319224365826959000         0.44111407090041471000
+3         0.22319224365826967000         0.44111407090041455000
 4         0.00000000006898720000         0.24023732207331722000
 5         0.00000000006898720000         0.44883944395180542000
 6         0.45645874239385120000         0.45645874244666018000
 7         0.72201494493148488000         0.72201494498429386000
 8         1.00000000070247010000         1.00000000075233620000
-9         0.26724948937590653000         0.52343370085153373000
-10         0.46232233840007064000         0.62724334414529315000
-11         0.28081454862186883000         0.63256201681499513000
-12         0.18071117260476130000         0.65752339648468128000
-13         0.22573192681319257000         0.81180776738801064000
-14         0.11397124829316252000         0.84804968390565061000
+9         0.26724948937590653000         0.52343370085153340000
+10         0.46232233840007081000         0.62724334414529292000
+11         0.28081454862186889000         0.63256201681499480000
+12         0.18071117260476124000         0.65752339648468094000
+13         0.22573192681319257000         0.81180776738801042000
+14         0.11397124829316248000         0.84804968390565028000
 15         0.00000000004865960000         0.74029839607575820000
 16         0.00000000005692910000         1.00000000066610920000
-17         0.55176415421038671000         0.79102792146412049000
+17         0.55176415421038683000         0.79102792146412060000
 18         0.72515482269411580000         0.87811801611684426000
 19         0.79425996572929525000         1.00813006416074360000
 20         1.00000000047614620000         1.16707264912561560000
-21         0.45217181957264607000         0.88987618821040859000
-22         0.55422206951427599000         0.90330755156550135000
-23         0.45588719865953953000         1.00747605077862380000
-24         0.35985342936117498000         0.98624454912352988000
-25         0.37470490133408935000         1.14881604278801720000
-26         0.24085309690610548000         1.09112560040042480000
+21         0.45217181957264613000         0.88987618821040793000
+22         0.55422206951427599000         0.90330755156550113000
+23         0.45588719865953919000         1.00747605077862330000
+24         0.35985342936117487000         0.98624454912352966000
+25         0.37470490133408901000         1.14881604278801720000
+26         0.24085309690610529000         1.09112560040042460000
 27         0.22575111787026070000         1.22575111847944070000
-28         0.72257833276407779000         1.15916374153618840000
-29         0.79532524782556868000         1.16701240881510730000
+28         0.72257833276407768000         1.15916374153618840000
+29         0.79532524782556879000         1.16701240881510730000
 30         1.00000000047614620000         1.41882347038618790000
-31         0.58862130891047915000         1.20858747411637850000
-32         0.72120836161928625000         1.26138252726010090000
-33         0.59326269266593223000         1.35711301859273140000
-34         0.48903331516606569000         1.32410749460092280000
+31         0.58862130891047859000         1.20858747411637850000
+32         0.72120836161928592000         1.26138252726010110000
+33         0.59326269266593190000         1.35711301859273090000
+34         0.48903331516606535000         1.32410749460092280000
 35         0.49408560438042071000         1.49408560489808150000
-36         0.80970914872024891000         1.42041017773118660000
+36         0.80970914872024879000         1.42041017773118660000
 37         1.00000000045330450000         1.56366235312815640000
-38         0.74429812668317974000         1.57048347394870260000
-39         0.80359955819190454000         1.58364830847923680000
+38         0.74429812668317930000         1.57048347394870210000
+39         0.80359955819190421000         1.58364830847923610000
 40         0.74239151793763170000         1.74239151844133720000
 41         1.00000000065269700000         1.81784927243492560000
 42         1.00000000065269700000         2.00000000115640250000
 End Values
-Result  "s11"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Stresses//s11"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 19230769.230769
 2 19230769.230769
@@ -118,7 +118,7 @@ Values
 64 19230769.230769
 65 19230769.230769
 End Values
-Result  "s22"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Stresses//s22"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 19230769.230769
 2 19230769.230769
@@ -186,7 +186,7 @@ Values
 64 19230769.230769
 65 19230769.230769
 End Values
-Result  "s33"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Stresses//s33"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 11538461.538462
 2 11538461.538462
@@ -254,7 +254,7 @@ Values
 64 11538461.538462
 65 11538461.538462
 End Values
-Result  "s12"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Stresses//s12"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 3846153.846154
 2 3846153.846154
@@ -322,7 +322,7 @@ Values
 64 3846153.846154
 65 3846153.846154
 End Values
-Result  "s1"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Principal stresses//s1"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 23076923.076923
 2 23076923.076923
@@ -390,7 +390,7 @@ Values
 64 23076923.076923
 65 23076923.076923
 End Values
-Result  "s2"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Principal stresses//s2"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 15384615.384615
 2 15384615.384615
@@ -458,7 +458,7 @@ Values
 64 15384615.384615
 65 15384615.384615
 End Values
-Result  "s3"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Principal stresses//s3"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 11538461.538462
 2 11538461.538462
@@ -526,7 +526,7 @@ Values
 64 11538461.538462
 65 11538461.538462
 End Values
-Result  "von-Mises"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Stresses//von-Mises"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 10175966.581018
 2 10175966.581018
@@ -594,7 +594,7 @@ Values
 64 10175966.581018
 65 10175966.581018
 End Values
-Result  "e11"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Strains//e11"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 1.000000
 2 1.000000
@@ -662,7 +662,7 @@ Values
 64 1.000000
 65 1.000000
 End Values
-Result  "e22"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Strains//e22"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 1.000000
 2 1.000000
@@ -730,7 +730,7 @@ Values
 64 1.000000
 65 1.000000
 End Values
-Result  "e33"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Strains//e33"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 0.000000
 2 0.000000
@@ -798,7 +798,7 @@ Values
 64 0.000000
 65 0.000000
 End Values
-Result  "e12"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Strains//e12"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 0.500000
 2 0.500000
@@ -866,7 +866,7 @@ Values
 64 0.500000
 65 0.500000
 End Values
-Result  "e1"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Principal strains//e1"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 1.500000
 2 1.500000
@@ -934,7 +934,7 @@ Values
 64 1.500000
 65 1.500000
 End Values
-Result  "e2"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Principal strains//e2"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 0.500000
 2 0.500000
@@ -1002,7 +1002,7 @@ Values
 64 0.500000
 65 0.500000
 End Values
-Result  "e3"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
+Result  "Principal strains//e3"   "Load Analysis"   1   Scalar OnGaussPoints "Given gauss points"
 Values
 1 0.000000
 2 0.000000

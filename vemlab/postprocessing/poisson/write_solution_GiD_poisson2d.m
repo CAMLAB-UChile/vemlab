@@ -123,7 +123,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
   
   %% WRITE SCALAR SOLUTION
   step=1;
-  fprintf(fid,'Result  "Scalar Field"   "Load Analysis"   %d   Scalar OnNodes\n',step);
+  fprintf(fid,'Result  "Scalar field//Scalar Field"   "Load Analysis"   %d   Scalar OnNodes\n',step);
   fprintf(fid,'Values\n');
   for i=1:nnodes
     fprintf(fid,'%d %30.20f\n',i,scalar_sol(i));
@@ -136,7 +136,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
   if ~isempty(fluxT3)    
     fluxNorm=sqrt((fluxT3.qx).*(fluxT3.qx)+(fluxT3.qy).*(fluxT3.qy));      
     
-    fprintf(fid,'Result  "Flux-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Fluxes//Flux-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -148,7 +148,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "Flux-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Fluxes//Flux-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -160,7 +160,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
     end
     fprintf(fid,'End Values\n'); 
     
-    fprintf(fid,'Result  "||Flux||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Fluxes//||Flux||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -179,7 +179,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
   if ~isempty(gradientT3)   
     gradNorm=sqrt((gradientT3.dx).*(gradientT3.dx)+(gradientT3.dy).*(gradientT3.dy));  
     
-    fprintf(fid,'Result  "Grad-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Gradient//Grad-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -191,7 +191,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "Grad-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Gradient//Grad-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -203,7 +203,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
     end
     fprintf(fid,'End Values\n'); 
     
-    fprintf(fid,'Result  "||Grad||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Gradient//||Grad||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:num_triangles
@@ -314,7 +314,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
   
   %% WRITE SCALAR SOLUTION
   step=1;
-  fprintf(fid,'Result  "Scalar Field"   "Load Analysis"   %d   Scalar OnNodes\n',step);
+  fprintf(fid,'Result  "Scalar field//Scalar Field"   "Load Analysis"   %d   Scalar OnNodes\n',step);
   fprintf(fid,'Values\n');
   for i=1:nnodes
     fprintf(fid,'%d %30.20f\n',i,scalar_sol(i));
@@ -327,7 +327,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
   if ~isempty(flux)      
     fluxNorm=sqrt((flux.qx).*(flux.qx)+(flux.qy).*(flux.qy));  
     
-    fprintf(fid,'Result  "Flux-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Fluxes//Flux-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -339,7 +339,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "Flux-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Fluxes//Flux-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -351,7 +351,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
     end
     fprintf(fid,'End Values\n');  
     
-    fprintf(fid,'Result  "||Flux||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Fluxes//||Flux||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -370,7 +370,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
   if ~isempty(grad)  
     gradNorm=sqrt((grad.dx).*(grad.dx)+(grad.dy).*(grad.dy)); 
     
-    fprintf(fid,'Result  "Grad-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Gradient//Grad-x"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -382,7 +382,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
     end
     fprintf(fid,'End Values\n');
 
-    fprintf(fid,'Result  "Grad-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Gradient//Grad-y"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel
@@ -394,7 +394,7 @@ function write_solution_GiD_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,grad,co
     end
     fprintf(fid,'End Values\n');  
     
-    fprintf(fid,'Result  "||Grad||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Result  "Gradient//||Grad||"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
     fprintf(fid,'Values\n');
     kk=1;
     for i=1:numel

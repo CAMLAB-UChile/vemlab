@@ -1,5 +1,5 @@
 ********************************************************
-*                      VEMLab 2.0.3                      *
+*                      VEMLab 2.1                      *
 *      http://camlab.cl/research/software/vemlab       *
 *------------------------------------------------------*
 *               Linear Elastostatics                   *
@@ -7,8 +7,8 @@
 
 Mesh filename: patch_test_20poly_elems.txt
 Method: VEM2D
-Date: 17-5-2018
-Time: 19:49 hrs
+Date: 28-9-2018
+Time: 17:44 hrs
 
 Nodal Displacements: 
  Node      Coords         u1       u2 

@@ -12,7 +12,7 @@ This repository contains the code for an open source MATLAB library for the virt
 </ul>
 <h2>About plotting capabilities</h2>
 <a>Currently, the MATLAB plotting of stresses and strains (linear elastostatic problem) or fluxes and gradients (Poisson problem) is very limited and won't recognize holes that might come with the domain geometries. It will work ok with rectangular geometries without holes, but the mesh will need to be very refined to obtain a colormap on the whole geometry ... just try a coarse mesh and then a refined mesh to see what is being said.
-If quality colormap plots are required for stresses, strains, fluxes and gradients, it is highly recommended using the GiD output files to visualize them in "GiD the pre and postprocessor" (www.gidhome.com).<a/>
+If quality colormap plots are required for stresses, strains, fluxes and gradients, it is highly recommended writing the GiD output files and visualizing them in "GiD the pre and postprocessor" (www.gidhome.com).<a/>
 <a>On the other hand, the MATLAB plotting of primary field variables (like displacements) presents no limitations and produces quality colormaps.<a/>
 <h2>Author</h2>
 <a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>

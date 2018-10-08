@@ -1,5 +1,5 @@
 ********************************************************
-*                      VEMLab 2.0.3                      *
+*                      VEMLab 2.2                      *
 *      http://camlab.cl/research/software/vemlab       *
 *------------------------------------------------------*
 *                   Poisson Problem                    *
@@ -7,8 +7,8 @@
 
 Mesh filename: square_plate_poisson2d_1000poly_elems.txt
 Method: VEM2D
-Date: 17-5-2018
-Time: 15:16 hrs
+Date: 7-10-2018
+Time: 16:32 hrs
 
 Nodal Scalar Field: 
  Node      Coords         u 

@@ -106,8 +106,8 @@ function PolyMesher2VEMLab_rectangular_domain(Node,Element,NElem,...
   fprintf(fid,'# indices of nodes located on the right boundary\n');  
   fprintf(fid,'%d ',BoundaryNodes.right);    
   fprintf(fid,'\n');
-  % print xmax, xmin, ymax, ymin for the rectangular domain
-  fprintf(fid,'# xmax, xmin, ymax, ymin of the bounding box\n');  
+  % print xmin, xmax, ymin, ymax for the rectangular domain
+  fprintf(fid,'# xmin, xmax, ymin, ymax of the bounding box\n');  
   xmin=Node(BoundaryNodes.blcorner,1);
   xmax=Node(BoundaryNodes.trcorner,1);
   ymin=Node(BoundaryNodes.blcorner,2);
@@ -149,8 +149,8 @@ function PolyMesher2VEMLab_wrench_domain(Node,Element,NElem,BoundaryNodes,...
   fprintf(fid,'# indices of nodes located on the left half circle boundary\n');  
   fprintf(fid,'%d ',BoundaryNodes.LeftHalfCircle);
   fprintf(fid,'\n');  
-  % print xmax, xmin, ymax, ymin of the bounding box
-  fprintf(fid,'# xmax, xmin, ymax, ymin of the bounding box\n');   
+  % print xmin, xmax, ymin, ymax for the wrench domain
+  fprintf(fid,'# xmin, xmax, ymin, ymax of the bounding box\n'); 
   xmin=BdBox(1);
   xmax=BdBox(2);
   ymin=BdBox(3);
@@ -196,8 +196,8 @@ function PolyMesher2VEMLab_plate_with_hole_domain(Node,Element,NElem,BoundaryNod
   fprintf(fid,'# index of the node located on the middle of the right boundary\n');  
   fprintf(fid,'%d ',BoundaryNodes.MidNodeRightFace);
   fprintf(fid,'\n');    
-  % print xmax, xmin, ymax, ymin of the bounding box
-  fprintf(fid,'# xmax, xmin, ymax, ymin of the bounding box\n');   
+  % print xmin, xmax, ymin, ymax for the plate with hole domain
+  fprintf(fid,'# xmin, xmax, ymin, ymax of the bounding box\n');   
   xmin=BdBox(1);
   xmax=BdBox(2);
   ymin=BdBox(3);

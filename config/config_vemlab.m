@@ -56,13 +56,14 @@
 function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
                                 vemlab_module,vemlab_method)
   % VEMLab version
-  config.vemlab_version='2.1';
+  config.vemlab_version='2.2';
   
   % program options
   [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
    write_solutions_to_GiD_file,write_solutions_to_VTK_file,poisson2d_plot_scalar_field,...
    poisson2d_plot_flux,poisson2d_plot_grad,linelast2d_plot_displacement,...
-   linelast2d_plot_stress,linelast2d_plot_strain]=plot_and_output_options; 
+   linelast2d_plot_stress,linelast2d_plot_strain,linelast2d_plot_deformed_domain,...
+   linelast2d_scale_for_plotting_deformed_domain]=plot_and_output_options; 
   
   config.opsystem=opsystem;
   config.vemlab_root_dir=vemlab_root_dir;  
@@ -80,6 +81,9 @@ function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
   config.linelast2d_plot_strain=linelast2d_plot_strain;
   config.vemlab_module=vemlab_module;  
   config.vemlab_method=vemlab_method;
+  
+  config.linelast2d_plot_deformed_domain=linelast2d_plot_deformed_domain;
+  config.linelast2d_scale_for_plotting_deformed_domain=linelast2d_scale_for_plotting_deformed_domain;
   
   config.number_of_gauss_points_per_axis_FEM2DQ4=2; % for Poisson and 
                                                     % linear elastostatic problems, 

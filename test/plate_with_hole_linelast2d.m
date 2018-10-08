@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.1                      
-%  Date         : May 17, 2018
+%  Version      : 2.2                       
+%  Date         : October 6, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -187,7 +187,7 @@ function fx = fx_Neumann_fun(x,y)
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "fx" is an array that has the same form of the input "x" or "y"
   
-  fx=1000;  % is used as a force per length   
+  fx=100;  % is used as a force per length   
 end
 function fy = fy_Neumann_fun(x,y)
   % Use something like x.*y (i.e., use the dot symbol) if the return "fy"

@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.1                        
-%  Date         : May 17, 2018
+%  Version      : 2.2                       
+%  Date         : October 6, 2018
 %  Source code  : http://camlab.cl/research/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -56,7 +56,7 @@ function linear_patch_test_linelast2d
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
-  mesh_filename='patch_test_20poly_elems.txt';  
+  mesh_filename='patch_test_4poly_elems.txt';  
   
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
