@@ -15,7 +15,7 @@ This repository contains the code for an open source MATLAB library for the virt
 If quality colormap plots are required for stresses, strains, fluxes and gradients, it is highly recommended writing the GiD output files and visualizing them in "GiD the pre and postprocessor" (www.gidhome.com).<a/>
 <a>On the other hand, the MATLAB plotting of primary field variables (like displacements) presents no limitations and produces quality colormaps.<a/>
 <h2>Author</h2>
-<a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>
+<a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>, Assistant Professor, Department of Mechanical Engineering, Universidad de Chile.
 <h2>Running VEMLab</h2>
 <a>VEMLab is a library. You need to create a main .m file and place it inside the folder “test.” The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder 'doc.'</a>
 <h2>License</h2>
