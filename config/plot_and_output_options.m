@@ -1,4 +1,4 @@
-function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
+function [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
           write_solutions_to_GiD_file,write_solutions_to_VTK_file,poisson2d_plot_scalar_field,...
           poisson2d_plot_flux,poisson2d_plot_grad,linelast2d_plot_displacement,...
           linelast2d_plot_stress,linelast2d_plot_strain,linelast2d_plot_deformed_domain,...
@@ -35,13 +35,17 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   disp('If quality colormap plots are required for stresses, strains, fluxes');
   disp('and gradients, it is higly recommended writing the GiD output files and');
   disp('visualizing them in GiD the pre and postprocessor (www.gidhome.com)');
-  disp(' ');    
+  disp(' '); 
+  disp('CAUTION: however, a correct visualization in GiD requires a poygonal mesh');
+  disp('that is formed by CONVEX POLYGONS.');
+  disp(' ');   
   disp('Press any key to continue ...');  
   disp(' ');    
   pause;
   
   %% GENERAL
   
+  create_matlab_contour_plots='yes';
   plot_mesh='yes';
   plot_mesh_over_results='yes';
   write_solutions_to_text_file='yes';
@@ -50,15 +54,15 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   
   %% POISSON MODULE
   
-  % plotting of main variables to MATLAB figures
+  % plotting of main variables to MATLAB/GiD/VTK figures
   poisson2d_plot_scalar_field.u='yes';
   
-  % plotting of fluxes to MATLAB figures
+  % plotting of fluxes to MATLAB/GiD figures
   poisson2d_plot_flux.qx='no';
   poisson2d_plot_flux.qy='no'; 
   poisson2d_plot_flux.qnorm='yes';   % norm of the flux
   
-  % plotting of gradients to MATLAB figures
+  % plotting of gradients to MATLAB/GiD figures
   poisson2d_plot_grad.dx='no';
   poisson2d_plot_grad.dy='no';   
   poisson2d_plot_grad.dnorm='yes';   % norm of the gradient
@@ -69,12 +73,12 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   linelast2d_plot_deformed_domain='yes';
   linelast2d_scale_for_plotting_deformed_domain=1; % a number > 1 will scale the deformed domain when plotting to MATLAB figures
 
-  % plotting of main variables to MATLAB figures
+  % plotting of main variables to MATLAB/GiD/VTK figures
   linelast2d_plot_displacement.ux='yes';  
   linelast2d_plot_displacement.uy='yes';  
   linelast2d_plot_displacement.unorm='yes';  % norm of the displacement
   
-  % plotting of stresses to MATLAB figures
+  % plotting of stresses to MATLAB/GiD figures
   linelast2d_plot_stress.s11='no';
   linelast2d_plot_stress.s12='no';
   linelast2d_plot_stress.s22='no';
@@ -84,7 +88,7 @@ function [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
   linelast2d_plot_stress.s3='no';  
   linelast2d_plot_stress.vm='no';  
   
-  % plotting of strains to MATLAB figures
+  % plotting of strains to MATLAB/GiD figures
   linelast2d_plot_strain.e11='no';
   linelast2d_plot_strain.e12='no';
   linelast2d_plot_strain.e22='no';

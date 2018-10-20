@@ -1,13 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.2                       
-%  Date         : October 6, 2018
-%  Source code  : http://camlab.cl/research/software/vemlab
+%  Version      : 2.2.1                       
+%  Date         : October 20, 2018
+%  Source code  : http://camlab.cl/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
-%              (See Copyright and License notice in "License.txt")
-%              (See updates and version details in "Version.txt")
+%              (See Copyright and License notice in "license.txt")
+%              (See updates and version details in "version.txt")
 %-------------------------------------------------------------------------------
 %
 %                       Square Plate with a Source

@@ -2,9 +2,9 @@
 %                                   VEMLab
 %------------------------------------------------------------------------------
 %                                  
-%            Version      : 2.2                       
-%            Date         : 6-OCT-2018  
-%            Source code  : http://camlab.cl/research/software/vemlab/
+%            Version      : 2.2.1                       
+%            Date         : 20-OCT-2018  
+%            Source code  : http://camlab.cl/software/vemlab/
 %
 %------------------------------------------------------------------------------
 %

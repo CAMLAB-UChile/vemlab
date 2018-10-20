@@ -44,22 +44,25 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
-% Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
-% Mar. 17, 2018: add Poisson module (by A. Ortiz-Bernardin)
-% Mar. 22, 2018: add options for plotting purposes (by A. Ortiz-Bernardin)
+% Oct. 19, 2018: add variable "config.create_matlab_contour_plots" to control
+%                whether matlab contour plots must be created or not 
+%                (by A. Ortiz-Bernardin)
 % May 13, 2018: add variable "config.number_of_gauss_points_per_axis_FEM2DQ4"
 %               to set the number of Gauss points to integrate the FEM2DQ4 
 %               stiffness matrix and body force vector (by A. Ortiz-Bernardin)
+% Mar. 22, 2018: add options for plotting purposes (by A. Ortiz-Bernardin)
+% Mar. 17, 2018: add Poisson module (by A. Ortiz-Bernardin)
+% Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
                                 vemlab_module,vemlab_method)
   % VEMLab version
-  config.vemlab_version='2.2';
+  config.vemlab_version='2.2.1';
   
   % program options
-  [plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
+  [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
    write_solutions_to_GiD_file,write_solutions_to_VTK_file,poisson2d_plot_scalar_field,...
    poisson2d_plot_flux,poisson2d_plot_grad,linelast2d_plot_displacement,...
    linelast2d_plot_stress,linelast2d_plot_strain,linelast2d_plot_deformed_domain,...
@@ -67,7 +70,8 @@ function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
   
   config.opsystem=opsystem;
   config.vemlab_root_dir=vemlab_root_dir;  
-  config.mesh_filename=mesh_filename; 
+  config.mesh_filename=mesh_filename;
+  config.create_matlab_contour_plots=create_matlab_contour_plots;   
   config.plot_mesh=plot_mesh;  
   config.plot_mesh_over_results=plot_mesh_over_results;   
   config.write_solutions_to_text_file=write_solutions_to_text_file;  

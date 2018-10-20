@@ -40,9 +40,10 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% Oct. 20, 2018: add option to switch off all matlab contour plots (by A. Ortiz-Bernardin)
+% Sept. 16, 2018: add option to plot deformed domain for linelast2d (by A. Ortiz-Bernardin)
+% Apr. 19, 2018: improve the plotting of axis and fonts (by A. Ortiz-Bernardin)
 % Mar. 17, 2018: first realease (by A. Ortiz-Bernardin)
-% Apr. 19, 2018: improve the plotting of axis and fonts
-% Sept. 16, 2018: add option to plot deformed domain for linelast2d
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -57,138 +58,140 @@ function [stress,strain] = plot_numerical_solution_linelast2d(domainMesh,...
 end
 
 function plot_u_field(domainMesh,solution,config)
-  solutionType=config.vemlab_method;
-  plotMeshOverResults=config.plot_mesh_over_results;
-  
-  fprintf('\n'); 
-  fprintf('Plotting %s solution...\n',solutionType);   
-  nodes=domainMesh.coords;
-  nodesNumber=size(nodes,1);  
-  polygons=domainMesh.connect;
-  
-  range=1:nodesNumber;
-  displacementsX=solution(2*range-1);
-  displacementsY=solution(2*range);  
-  displacementsNorm=sqrt(displacementsX.*displacementsX+displacementsY.*displacementsY);
-  
-  if strcmp(config.linelast2d_plot_deformed_domain,'yes') 
-    scale=config.linelast2d_scale_for_plotting_deformed_domain;
-    nodes=[nodes(:,1)+displacementsX*scale, nodes(:,2)+displacementsY*scale];
-  end
-  
-  titleSolutionX='$u_x^h$'; 
-  titleSolutionY='$u_y^h$'; 
-  titleSolutionNorm='$||u^h||$';   
+  if strcmp(config.create_matlab_contour_plots,'yes') 
+    solutionType=config.vemlab_method;
+    plotMeshOverResults=config.plot_mesh_over_results;
 
-  if strcmp(config.linelast2d_plot_displacement.unorm,'yes')
-    figure; 
-    title(titleSolutionNorm,'FontWeight','bold','FontSize',20,'FontName',...
-          'Times New Roman','Interpreter','latex');
-    maxNumVertices = max(cellfun(@numel,polygons));
-    padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
-    elements = cellfun(padFunc,polygons,'UniformOutput',false);
-    elements = vertcat(elements{:});
-    data = [nodes,displacementsNorm];
-    if strcmp(plotMeshOverResults,'yes')
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','CData',displacementsNorm);  
-    else
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','EdgeColor','interp','CData',displacementsNorm);
-    end  
-  %   axis('square') 
-    axis equal;  
-    dx = 0; dy = 0; dz = 0;
-    xlim([min(nodes(:, 1)) - dx, max(nodes(:, 1)) + dx])
-    ylim([min(nodes(:, 2)) - dy, max(nodes(:, 2)) + dy])  
-    if min(displacementsNorm)~=max(displacementsNorm)
-      zlim([min(displacementsNorm) - dz, max(displacementsNorm) + dz])
+    fprintf('\n'); 
+    fprintf('Plotting %s solution...\n',solutionType);   
+    nodes=domainMesh.coords;
+    nodesNumber=size(nodes,1);  
+    polygons=domainMesh.connect;
+
+    range=1:nodesNumber;
+    displacementsX=solution(2*range-1);
+    displacementsY=solution(2*range);  
+    displacementsNorm=sqrt(displacementsX.*displacementsX+displacementsY.*displacementsY);
+
+    if strcmp(config.linelast2d_plot_deformed_domain,'yes') 
+      scale=config.linelast2d_scale_for_plotting_deformed_domain;
+      nodes=[nodes(:,1)+displacementsX*scale, nodes(:,2)+displacementsY*scale];
     end
-    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    zlabel(titleSolutionNorm,'FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
-    colormap jet
-    %set(gcf,'Renderer','painters')    
-    set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
-  end
-  
-  if strcmp(config.linelast2d_plot_displacement.ux,'yes')  
-    figure; 
-    title(titleSolutionX,'FontWeight','bold','FontSize',20,'FontName',...
-          'Times New Roman','Interpreter','latex');
-    maxNumVertices = max(cellfun(@numel,polygons));
-    padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
-    elements = cellfun(padFunc,polygons,'UniformOutput',false);
-    elements = vertcat(elements{:});
-    data = [nodes,displacementsX];
-    if strcmp(plotMeshOverResults,'yes')
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','CData',displacementsX);  
-    else
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','EdgeColor','interp','CData',displacementsX);
-    end      
-  %   axis('square') 
-    axis equal;  
-    dx = 0; dy = 0; dz = 0;
-    xlim([min(nodes(:,1)) - dx, max(nodes(:,1)) + dx])
-    ylim([min(nodes(:,2)) - dy, max(nodes(:,2)) + dy])
-    if min(displacementsX)~=max(displacementsX)
-      zlim([min(displacementsX) - dz, max(displacementsX) + dz])
-    end    
-    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    zlabel(titleSolutionX,'FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
-    colormap jet
-    %set(gcf,'Renderer','painters')    
-    set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');    
-  end
-  
-  if strcmp(config.linelast2d_plot_displacement.uy,'yes')  
-    figure; 
-    title(titleSolutionY,'FontWeight','bold','FontSize',20,'FontName',...
-          'Times New Roman','Interpreter','latex');
-    maxNumVertices = max(cellfun(@numel,polygons));
-    padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
-    elements = cellfun(padFunc,polygons,'UniformOutput',false);
-    elements = vertcat(elements{:});
-    data = [nodes,displacementsY];
-    if strcmp(plotMeshOverResults,'yes')
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','CData',displacementsY);  
-    else
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','EdgeColor','interp','CData',displacementsY);
-    end   
-  %   axis('square') 
-    axis equal;  
-    dx = 0; dy = 0; dz = 0;
-    xlim([min(nodes(:,1)) - dx, max(nodes(:,1)) + dx])
-    ylim([min(nodes(:,2)) - dy, max(nodes(:,2)) + dy])
-    if min(displacementsY)~=max(displacementsY)
-      zlim([min(displacementsY) - dz, max(displacementsY) + dz])
+
+    titleSolutionX='$u_x^h$'; 
+    titleSolutionY='$u_y^h$'; 
+    titleSolutionNorm='$||u^h||$';   
+
+    if strcmp(config.linelast2d_plot_displacement.unorm,'yes')
+      figure; 
+      title(titleSolutionNorm,'FontWeight','bold','FontSize',20,'FontName',...
+            'Times New Roman','Interpreter','latex');
+      maxNumVertices = max(cellfun(@numel,polygons));
+      padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
+      elements = cellfun(padFunc,polygons,'UniformOutput',false);
+      elements = vertcat(elements{:});
+      data = [nodes,displacementsNorm];
+      if strcmp(plotMeshOverResults,'yes')
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','CData',displacementsNorm);  
+      else
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','EdgeColor','interp','CData',displacementsNorm);
+      end  
+    %   axis('square') 
+      axis equal;  
+      dx = 0; dy = 0; dz = 0;
+      xlim([min(nodes(:, 1)) - dx, max(nodes(:, 1)) + dx])
+      ylim([min(nodes(:, 2)) - dy, max(nodes(:, 2)) + dy])  
+      if min(displacementsNorm)~=max(displacementsNorm)
+        zlim([min(displacementsNorm) - dz, max(displacementsNorm) + dz])
+      end
+      xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      zlabel(titleSolutionNorm,'FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+      colormap jet
+      %set(gcf,'Renderer','painters')    
+      set(gcf,'InvertHardcopy','off','Color',[1 1 1])
+      set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
     end
-    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    zlabel(titleSolutionY,'FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
-    colormap jet
-    %set(gcf,'Renderer','painters')    
-    set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');  
+
+    if strcmp(config.linelast2d_plot_displacement.ux,'yes')  
+      figure; 
+      title(titleSolutionX,'FontWeight','bold','FontSize',20,'FontName',...
+            'Times New Roman','Interpreter','latex');
+      maxNumVertices = max(cellfun(@numel,polygons));
+      padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
+      elements = cellfun(padFunc,polygons,'UniformOutput',false);
+      elements = vertcat(elements{:});
+      data = [nodes,displacementsX];
+      if strcmp(plotMeshOverResults,'yes')
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','CData',displacementsX);  
+      else
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','EdgeColor','interp','CData',displacementsX);
+      end      
+    %   axis('square') 
+      axis equal;  
+      dx = 0; dy = 0; dz = 0;
+      xlim([min(nodes(:,1)) - dx, max(nodes(:,1)) + dx])
+      ylim([min(nodes(:,2)) - dy, max(nodes(:,2)) + dy])
+      if min(displacementsX)~=max(displacementsX)
+        zlim([min(displacementsX) - dz, max(displacementsX) + dz])
+      end    
+      xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      zlabel(titleSolutionX,'FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+      colormap jet
+      %set(gcf,'Renderer','painters')    
+      set(gcf,'InvertHardcopy','off','Color',[1 1 1])
+      set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');    
+    end
+
+    if strcmp(config.linelast2d_plot_displacement.uy,'yes')  
+      figure; 
+      title(titleSolutionY,'FontWeight','bold','FontSize',20,'FontName',...
+            'Times New Roman','Interpreter','latex');
+      maxNumVertices = max(cellfun(@numel,polygons));
+      padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
+      elements = cellfun(padFunc,polygons,'UniformOutput',false);
+      elements = vertcat(elements{:});
+      data = [nodes,displacementsY];
+      if strcmp(plotMeshOverResults,'yes')
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','CData',displacementsY);  
+      else
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','EdgeColor','interp','CData',displacementsY);
+      end   
+    %   axis('square') 
+      axis equal;  
+      dx = 0; dy = 0; dz = 0;
+      xlim([min(nodes(:,1)) - dx, max(nodes(:,1)) + dx])
+      ylim([min(nodes(:,2)) - dy, max(nodes(:,2)) + dy])
+      if min(displacementsY)~=max(displacementsY)
+        zlim([min(displacementsY) - dz, max(displacementsY) + dz])
+      end
+      xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      zlabel(titleSolutionY,'FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+      colormap jet
+      %set(gcf,'Renderer','painters')    
+      set(gcf,'InvertHardcopy','off','Color',[1 1 1])
+      set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');  
+    end
   end
 end
 
@@ -203,8 +206,10 @@ function [stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,con
     else
       throw_error('Error in plot_numerical_solution_linelast2d.m --> plot_stress_and_strain: vemlab_method\n');
     end
-    plot_stress_and_strain_linelast2d(solution,domainMesh,stress,strain,gp_list,h_min,...
-                                      xmin,xmax,ymin,ymax,config);
+    if strcmp(config.create_matlab_contour_plots,'yes')
+      plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,h_min,...
+                                        xmin,xmax,ymin,ymax,config);
+    end
   else % return empty stress and strain
     stress=[]; strain=[];
   end
@@ -561,17 +566,9 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
   end
 end
 
-function plot_stress_and_strain_linelast2d(solution,domainMesh,stress,strain,gp_list,...
+function plot_stress_and_strain_linelast2d(domainMesh,stress,strain,gp_list,...
                                            h_min,xmin,xmax,ymin,ymax,config)  
   nodes=domainMesh.coords; 
-  nodesNumber=size(nodes,1); 
-  range=1:nodesNumber;
-  displacementsX=solution(2*range-1);
-  displacementsY=solution(2*range);   
-  if strcmp(config.linelast2d_plot_deformed_domain,'yes') 
-    scale=config.linelast2d_scale_for_plotting_deformed_domain;
-    nodes=[nodes(:,1)+displacementsX*scale, nodes(:,2)+displacementsY*scale];
-  end  
   [xq,yq]=meshgrid(xmin:0.05*h_min:xmax,ymin:0.05*h_min:ymax);  
   % plot numerical stress and strain
   if strcmp(config.linelast2d_plot_stress.s11,'yes')

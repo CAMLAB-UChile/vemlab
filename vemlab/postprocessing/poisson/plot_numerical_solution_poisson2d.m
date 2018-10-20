@@ -40,8 +40,9 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% Oct. 20, 2018: add option to switch off all matlab contour plots (by A. Ortiz-Bernardin)
+% Apr. 19, 2018: improve the plotting of axis and fonts (by A. Ortiz-Bernardin)
 % Mar. 17, 2018: first realease (by A. Ortiz-Bernardin)
-% Apr. 19, 2018: improve the plotting of axis and fonts
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -55,52 +56,54 @@ function [flux,grad] = plot_numerical_solution_poisson2d(domainMesh,solution,...
 end
 
 
-function plot_u_field(domainMesh,solution,config)  
-  solutionType=config.vemlab_method;
-  plotMeshOverResults=config.plot_mesh_over_results;  
-  
-  fprintf('\n');
-  fprintf('Plotting %s solution...\n',solutionType);   
-  
-  nodes=domainMesh.coords; 
-  polygons=domainMesh.connect;
-  titleSolution='$u^h$';  
-  
-  if strcmp(config.poisson2d_plot_scalar_field.u,'yes')
-    figure; 
-    title(titleSolution,'FontWeight','bold','FontSize',20,'FontName',...
-          'Times New Roman','Interpreter','latex');
-    maxNumVertices = max(cellfun(@numel,polygons));
-    padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
-    elements = cellfun(padFunc,polygons,'UniformOutput',false);
-    elements = vertcat(elements{:});
-    data = [nodes,solution];
-    if strcmp(plotMeshOverResults,'yes')
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','CData',solution);  
-    else
-      patch('Faces',elements,'Vertices',data,...
-            'FaceColor','interp','EdgeColor','interp','CData',solution);
-    end  
-  %   axis('square') 
-    axis equal;  
-    dx = 0; dy = 0; dz = 0;
-    xlim([min(nodes(:, 1)) - dx, max(nodes(:, 1)) + dx])
-    ylim([min(nodes(:, 2)) - dy, max(nodes(:, 2)) + dy]) 
-    if min(solution)~=max(solution)
-      zlim([min(solution) - dz, max(solution) + dz])
+function plot_u_field(domainMesh,solution,config)
+  if strcmp(config.create_matlab_contour_plots,'yes')
+    solutionType=config.vemlab_method;
+    plotMeshOverResults=config.plot_mesh_over_results;  
+
+    fprintf('\n');
+    fprintf('Plotting %s solution...\n',solutionType);   
+
+    nodes=domainMesh.coords; 
+    polygons=domainMesh.connect;
+    titleSolution='$u^h$';  
+
+    if strcmp(config.poisson2d_plot_scalar_field.u,'yes')
+      figure; 
+      title(titleSolution,'FontWeight','bold','FontSize',20,'FontName',...
+            'Times New Roman','Interpreter','latex');
+      maxNumVertices = max(cellfun(@numel,polygons));
+      padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
+      elements = cellfun(padFunc,polygons,'UniformOutput',false);
+      elements = vertcat(elements{:});
+      data = [nodes,solution];
+      if strcmp(plotMeshOverResults,'yes')
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','CData',solution);  
+      else
+        patch('Faces',elements,'Vertices',data,...
+              'FaceColor','interp','EdgeColor','interp','CData',solution);
+      end  
+    %   axis('square') 
+      axis equal;  
+      dx = 0; dy = 0; dz = 0;
+      xlim([min(nodes(:, 1)) - dx, max(nodes(:, 1)) + dx])
+      ylim([min(nodes(:, 2)) - dy, max(nodes(:, 2)) + dy]) 
+      if min(solution)~=max(solution)
+        zlim([min(solution) - dz, max(solution) + dz])
+      end
+      xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      zlabel(titleSolution,'FontWeight','bold','FontSize',20,'FontName',...
+             'Times New Roman','Interpreter','latex');
+      colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
+      colormap jet
+      %set(gcf,'Renderer','painters')    
+      set(gcf,'InvertHardcopy','off','Color',[1 1 1])
+      set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
     end
-    xlabel('$x$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    ylabel('$y$','FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    zlabel(titleSolution,'FontWeight','bold','FontSize',20,'FontName',...
-           'Times New Roman','Interpreter','latex');
-    colorbar('FontName','Times New Roman','FontSize',14,'FontWeight','bold');
-    colormap jet
-    %set(gcf,'Renderer','painters')    
-    set(gcf,'InvertHardcopy','off','Color',[1 1 1])
-    set(gca,'FontName','Times New Roman','FontSize',14,'FontWeight','bold');
   end
 end
 
@@ -115,8 +118,10 @@ function [flux,grad]=plot_flux_and_gradient(solution,domainMesh,matProps,config)
     else
       throw_error('Error in plot_numerical_solution_poisson2d.m --> plot_flux_and_gradient: vemlab_method\n');
     end
-    plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,h_min,...
-                                     xmin,xmax,ymin,ymax,config);
+    if strcmp(config.create_matlab_contour_plots,'yes')
+      plot_flux_and_gradient_poisson2d(domainMesh,flux,grad,gp_list,h_min,...
+                                       xmin,xmax,ymin,ymax,config);
+    end
   else
     flux=[]; grad=[];
   end
