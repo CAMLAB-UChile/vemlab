@@ -35,7 +35,8 @@ while(It<=MaxIter && Err>Tol)
   if NElem<=6000, PolyMshr_PlotMsh(Node,Element,NElem); end
 end
 [Node,Element] = PolyMshr_ExtrNds(NElem,Node,Element);  %Extract node list
-[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,0.1);  %Remove small edges
+%[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,0.1);  %Remove small edges
+[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,0.2);  %AOB: Remove small edges
 [Node,Element] = PolyMshr_RsqsNds(Node,Element);        %Reoder Nodes
 BC=Domain('BC',{Node,Element}); Supp=BC{1}; Load=BC{2}; %Recover BC arrays
 PolyMshr_PlotMsh(Node,Element,NElem,Supp,Load);         %Plot mesh and BCs

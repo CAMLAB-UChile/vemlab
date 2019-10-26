@@ -23,8 +23,8 @@ function create_polygonal_mesh
   %    - PlateWithHoleDomain
   %
   
-  N_elems=100;
-  mesh_filename='PALITO2018_100.txt'; 
+  N_elems=4000;
+  mesh_filename='big_wrench_4000poly_elems.txt'; 
   
   % WARNING: DON'T CHANGE THE FOLLOWING TWO LINES IF YOU DON'T KNOW WHAT YOU ARE DOING!
   config=config_vemlab_mesher(opsystem,vemlab_root_dir,mesh_filename); % configure mesher
@@ -33,13 +33,17 @@ function create_polygonal_mesh
   % USE ONLY ONE OF THE FOLLOWING PolyMesher FUNCTIONS FOR CUSTOMIZED DOMAINS
   
   % RECTANGULAR DOMAIN
-  [~,~,~,~,~]=PolyMesher(@RectangularDomain,N_elems,100,mesh_file);
+%   [~,~,~,~,~]=PolyMesher(@RectangularDomain,N_elems,100,mesh_file);
   
   % WRENCH DOMAIN  
-  %[~,~,~,~,~]=PolyMesher(@WrenchDomain,N_elems,100,mesh_file);  
+%   [~,~,~,~,~]=PolyMesher(@WrenchDomain,N_elems,100,mesh_file);  
+
+  % BIG WRENCH DOMAIN  
+  [~,~,~,~,~]=PolyMesher(@BigWrenchDomain,N_elems,100,mesh_file);  
   
   % PLATE WITH HOLE DOMAIN  
 %   [~,~,~,~,~]=PolyMesher(@PlateWithHoleDomain,N_elems,100,mesh_file);  
+
   
   %%%%%%%%%%%%%%%%%%         END USER AREA         %%%%%%%%%%%%%%%%%%%%%%%  
   
@@ -114,7 +118,7 @@ function [x] = WrenchDomain(Demand,Arg)
   BdBox = [-0.3 2.5 -0.5 0.5]; % [xmin xmax ymin ymax]: in this case, BdBox
                                % defines a box within which the wrench domain
                                % will reside. The actual wrench domain is
-                               % defined in function DistFnc below.
+                               % defined in function DistFnc below. 
   switch(Demand)
     case('Dist');  x = DistFnc(Arg,BdBox);
     case('BC');    x = BndryCnds(Arg{:},BdBox);
@@ -155,6 +159,57 @@ function [x] = WrenchDomain(Demand,Arg)
         find(abs(sqrt((Node(:,1)-2).^2+ Node(:,2).^2)-0.3)<eps);   
     BoundaryNodes.LeftHalfCircle = ...
         find(abs(max(sqrt(Node(:,1).^2+Node(:,2).^2)-0.175,Node(:,2)))<eps);    
+  end 
+end
+
+%% 
+% BIG WRENCH DOMAIN
+%
+function [x] = BigWrenchDomain(Demand,Arg)
+  BdBox = [-8 63 -13 13]; % [xmin xmax ymin ymax]: in this case, BdBox
+                               % defines a box within which the wrench domain
+                               % will reside. The actual wrench domain is
+                               % defined in function DistFnc below.    
+  switch(Demand)
+    case('Dist');  x = DistFnc(Arg,BdBox);
+    case('BC');    x = BndryCnds(Arg{:},BdBox);
+    case('BdBox'); x = BdBox;
+    case('PFix');  x = FixedPoints(BdBox);
+    case('Boundary'); x = BoundaryWrenchDomain(Arg{:},BdBox); % added by A.O-B 
+    case('DomainType'); x = 'WrenchDomain'; % added by A.O-B      
+  end
+  %----------------------------------------------- COMPUTE DISTANCE FUNCTIONS
+  function Dist = DistFnc(P,BdBox) 
+    % Update this function to change the dimensions of the wrench domain;
+    % if updated also update BdBox above.
+    d1 = dLine(P,0,8,0,-8);
+    d2 = dLine(P,0,-8,50,-13);
+    d3 = dLine(P,50,-13,50,13);
+    d4 = dLine(P,50,13,0,8);
+    d5 = dCircle(P,0,0,8);
+    d6 = dCircle(P,50,0,13);
+    douter = dUnion(d6,dUnion(d5,...
+             dIntersect(d4,dIntersect(d3,dIntersect(d2,d1)))));
+    d7 = dCircle(P,0,0,4);
+    d8 = dCircle(P,50,0,7);
+    din = dUnion(d8,d7);
+    Dist = dDiff(douter,din);
+  end
+  %---------------------------------------------- SPECIFY BOUNDARY CONDITIONS
+  function [x] = BndryCnds(Node,Element,BdBox)
+    x = {[],[]};
+  end
+  %----------------------------------------------------- SPECIFY FIXED POINTS
+  function [PFix] = FixedPoints(BdBox)
+    PFix = [];
+  end
+  %----------------------------------------------------- GET BOUNDARY (added by A.O-B)
+  function [BoundaryNodes] = BoundaryWrenchDomain(Node,BdBox)
+    eps = 0.1*sqrt((BdBox(2)-BdBox(1))*(BdBox(4)-BdBox(3))/size(Node,1));
+    BoundaryNodes.RightCircle = ...
+        find(abs(sqrt((Node(:,1)-50).^2+ Node(:,2).^2)-7)<eps);   
+    BoundaryNodes.LeftHalfCircle = ...
+        find(abs(max(sqrt(Node(:,1).^2+Node(:,2).^2)-4,Node(:,2)))<eps);    
   end 
 end
 

@@ -86,7 +86,7 @@ function [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_sol
   linelast2d_plot_stress.s1='no';
   linelast2d_plot_stress.s2='no';  
   linelast2d_plot_stress.s3='no';  
-  linelast2d_plot_stress.vm='no';  
+  linelast2d_plot_stress.vm='yes';  
   
   % plotting of strains to MATLAB/GiD figures
   linelast2d_plot_strain.e11='no';

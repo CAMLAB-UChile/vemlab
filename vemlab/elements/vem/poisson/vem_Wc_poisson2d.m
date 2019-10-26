@@ -1,7 +1,8 @@
 function [Wc] = vem_Wc_poisson2d(verts)
 
-  area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).* verts(:,2);
-  area=0.5*abs(sum(area_components));
+%   area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).* verts(:,2);
+%   area=0.5*abs(sum(area_components));
+  area=polyarea(verts(:,1),verts(:,2));
 
   v1=[verts; verts(1,:)];
 

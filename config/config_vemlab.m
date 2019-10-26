@@ -59,7 +59,7 @@
 function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
                                 vemlab_module,vemlab_method)
   % VEMLab version
-  config.vemlab_version='2.2.1';
+  config.vemlab_version='2.2.2';
   
   % program options
   [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...

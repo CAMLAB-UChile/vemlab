@@ -1,7 +1,8 @@
 function [Kvem]=vem_stiffness_linelast2d(verts,matProps)
   % area of the element
-  area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).*verts(:,2);
-  area=0.5*abs(sum(area_components));
+%   area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).*verts(:,2);
+%   area=0.5*abs(sum(area_components));
+  area=polyarea(verts(:,1),verts(:,2));
   % VEM element matrices
   Wc=vem_Wc_linelast2d(verts);
   Wr=vem_Wr_linelast2d(verts);
@@ -14,5 +15,7 @@ function [Kvem]=vem_stiffness_linelast2d(verts,matProps)
   alpha=gamma*area*trace(matProps.D)/trace(Hc'*Hc);
   % VEM element stiffness
   Se=alpha*I_2N;
+
+  %Se = diag(diag(area*Wc*(matProps.D)*Wc'));
   Kvem=area*Wc*(matProps.D)*Wc'+(I_2N-Pp)'*Se*(I_2N-Pp);
 end

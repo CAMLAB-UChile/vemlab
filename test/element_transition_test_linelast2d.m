@@ -10,8 +10,8 @@
 %              (See updates and version details in "version.txt")
 %-------------------------------------------------------------------------------
 %
-%                          2D Rigid Body Patch Test
-%                  Plane Strain - Linear Elastic Material
+%                          Element Transition Test
+%                  Plane Stress - Linear Elastic Material
 %
 %-------------------------------------------------------------------------------
 % References 
@@ -22,11 +22,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function rigidrotation_patch_test_linelast2d
+function element_transition_test_linelast2d
 
   close all;
   clc;
-  
+
   %% THIS BLOCK MUST BE PUT ON EVERY TEST FILE
   
   % add all vemlab folders to the path
@@ -37,14 +37,14 @@ function rigidrotation_patch_test_linelast2d
     cd ..\; vemlab_root_dir=setpath;
   elseif is_Linux
     cd ../; vemlab_root_dir=setpath;
-  end    
+  end   
   
   %% INPUT DATA 
   
   % set material parameters
-  Ey=10^7;                               % Young's modulus
+  Ey=210000;                             % Young's modulus
   nu=0.3;                                % Poisson's ratio
-  elastic_state='plane_strain';          % 'plane_strain' or 'plane_stress'  
+  elastic_state='plane_stress';          % 'plane_strain' or 'plane_stress'  
   
   % mesh filename: see available sample mesh files in folder "test/mesh_files/"
   %
@@ -56,19 +56,20 @@ function rigidrotation_patch_test_linelast2d
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
-  mesh_filename='rigidrotation_patch_test_4poly_elems.txt';  
+  
+  mesh_filename='element_transition_test_xfine_q4.txt';   
   
   % method
-  vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
+  vemlab_method='FEM2DQ4';    % 'VEM2D' (polygons - linear VEM) or
                               % 'FEM2DT3' (3-node triangles - linear FEM) or
                               % 'FEM2DQ4' (4-node quadrilaterals - bilinear FEM)
   
   % module
-  vemlab_module='LinearElastostatics';   % 'LinearElastostatics' or 'Poisson'
+  vemlab_module='LinearElastostatics';  % 'LinearElastostatics' or 'Poisson'
   
   %% PLOT AND OUTPUT OPTIONS
   % to setup plot and output options go to folder 'config' and 
-  % set the parameters inside function 'plot_and_output_options.m'
+  % set the parameters inside function 'plot_and_output_options.m'  
   
   %% VEMLAB CONFIGURATION
   
@@ -105,15 +106,27 @@ function rigidrotation_patch_test_linelast2d
   fprintf('Assemblying element matrices...\n'); 
   [K_global,f_global]=assembly(domainMesh,config,matProps,body_force_fun_values);
   
-  
-  %% DIRICHLET BOUNDARY NODES/DOFS/FUNCTIONS (entire boundary) 
+  %% NEUMANN BOUNDARY NODES/DOFS/FUNCTIONS (right side of the beam) 
   % (see definition of functions at the bottom of this file)
   
-  Dirichet_boundary_nodes=domainMesh.boundary_nodes.all;
-  Dirichet_boundary_dofs=domainMesh.boundary_dofs.all; 
+  Neumann_boundary_nodes=domainMesh.boundary_nodes.Neumann;
+  Neumann_boundary_dofs=domainMesh.boundary_dofs.Neumann; 
+  Neumann_fun_values.fx=@(x,y)fx_Neumann_fun(x,y);  
+  Neumann_fun_values.fy=@(x,y)fy_Neumann_fun(x,y);  
+  
+  %% APPLY NEUMANN BCS ON THE BOUNDARY NODES 
+  
+  fprintf('Applying Neumann boundary conditions...\n');   
+  Neumann_BCs=compute_Neumann_BCs(domainMesh,config,Neumann_boundary_nodes,Neumann_boundary_dofs,Neumann_fun_values); 
+  f_global(Neumann_BCs.indexes)=f_global(Neumann_BCs.indexes)+Neumann_BCs.values;
+  
+  %% DIRICHLET BOUNDARY NODES/DOFS/FUNCTIONS (left side of the beam) 
+  % (see definition of functions at the bottom of this file)
+  
+  Dirichet_boundary_nodes=domainMesh.boundary_nodes.Dirichlet;
+  Dirichet_boundary_dofs=domainMesh.boundary_dofs.Dirichlet; 
   Dirichlet_fun_values.ux=@(x,y)ux_Dirichlet_fun(x,y);  
-  Dirichlet_fun_values.uy=@(x,y)uy_Dirichlet_fun(x,y);                            
-                         
+  Dirichlet_fun_values.uy=@(x,y)uy_Dirichlet_fun(x,y);   
 
   %% ENFORCE DIRICHLET BCS ON THE BOUNDARY NODES
   
@@ -130,38 +143,19 @@ function rigidrotation_patch_test_linelast2d
   num_nodes=length(domainMesh.coords(:,1));    
   free_dofs=setdiff(1:2*num_nodes,DB_dofs.indexes); % dofs that do not have Dirichlet boundary conditions associated  
   u_nodal_sol(free_dofs)=K_global(free_dofs,free_dofs)\f_global(free_dofs); % nodal solution at free dofs
-  toc
-  
-  %% EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
-  % (see definition of functions at the bottom of this file)
-  
-  exact_solution_handle.ux=@(x,y)ux_exact(x,y);
-  exact_solution_handle.uy=@(x,y)uy_exact(x,y);
-  exact_solution_handle.duxdx=@(x,y)duxdx_exact(x,y);  
-  exact_solution_handle.duydx=@(x,y)duydx_exact(x,y);  
-  exact_solution_handle.duxdy=@(x,y)duxdy_exact(x,y);  
-  exact_solution_handle.duydy=@(x,y)duydy_exact(x,y);   
-  
-  %% NORMS OF THE ERROR
-  
-  fprintf('\n');
-  fprintf('Computing norms of the solution error...\n');   
-  compute_norms_of_the_error(exact_solution_handle,u_nodal_sol,domainMesh,config,matProps);  
+  toc 
   
   %% POSTPROCESSING
   
   % plot numerical solutions  
   postprocess_numerical_solution_linelast2d(domainMesh,u_nodal_sol,matProps,config);
   
-  % plot exact solutions    
-  postprocess_exact_solution_linelast2d(domainMesh,exact_solution_handle,matProps,config); 
-  
   %% PRINT END MESSAGE TO SCREEN
   end_message;  
   
 end
 
-%% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE LINEAR PATCH TEST
+%% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE CANTILEVER BEAM
 
 function bx = bx_body_force_fun(x,y)
   % Use something like x.*y (i.e., use the dot symbol) if the return "bx"
@@ -180,7 +174,26 @@ function by = by_body_force_fun(x,y)
   by=0;  % is used as a force per volume
 end
 
-%% DEFINITION OF DIRICHLET FUNCTIONS FOR THE LINEAR PATCH TEST
+%% DEFINITION OF NEUMANN FUNCTIONS FOR THE WRENCH
+
+function fx = fx_Neumann_fun(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the return "fx"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "fx" is an array that has the same form of the input "x" or "y"
+  
+  fx=0;  % is used as a force per length    
+end
+function fy = fy_Neumann_fun(x,y)
+  % Use something like x.*y (i.e., use the dot symbol) if the return "fy"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "fy" is an array that has the same form of the input "x" or "y"
+  
+  fy=-5;  % is used as a force per length 
+end
+
+%% DEFINITION OF DIRICHLET FUNCTIONS FOR THE WRENCH
 
 function ux = ux_Dirichlet_fun(x,y)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
@@ -195,16 +208,7 @@ function ux = ux_Dirichlet_fun(x,y)
   
   ux=zeros(length(x),2); % first column = value; second column = free (1) or fixed (0)
                          % In this case, all ux dofs are fixed and have the
-                         % values of ux(:,1)
-%   ux(1,1)=-0.207;   % update the value bottom side
-%   ux(2,1)=-0.5;   % update the value bottom side
-%   ux(3,1)=0.207;   % update the value bottom side
-%   ux(4,1)=0.5;   % update the value bottom side
-%   ux(5,1)=0;
-  
-  ux(:,1)=(x.*(sqrt(2)/2)-y.*(sqrt(2)/2))-x;  
-  
-  
+                         % values of ux(:,1)    
 end
 function uy = uy_Dirichlet_fun(x,y)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
@@ -219,68 +223,7 @@ function uy = uy_Dirichlet_fun(x,y)
   
   uy=zeros(length(y),2); % first column = value; second column = free (1) or fixed (0)
                          % In this case, all uy dofs are fixed and have the
-                         % values of uy(:,1)
-%   uy(1,1)=0.5;   % update the value  
-%   uy(2,1)=-0.207;   % update the value bottom side
-%   uy(3,1)=-0.5;   % update the value bottom side
-%   uy(4,1)=0.207;   % update the value bottom side 
-%   uy(5,1)=0;  
-  
-  uy(:,1)=(x.*(sqrt(2)/2)+y.*(sqrt(2)/2))-y;
-
-end
-
-%% DEFINITION OF THE EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
-
-function ux = ux_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "ux" is an array that has the same form of the input "x" or "y"
-  
-%   ux=0.5;  
-  ux=(x.*(sqrt(2)/2)-y.*(sqrt(2)/2))-x;   
-end
-function uy = uy_exact(x,y)  
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "uy" is an array that has the same form of the input "x" or "y"
-  
-%   uy=0.5;  
-  uy=(x.*(sqrt(2)/2)+y.*(sqrt(2)/2))-y;  
-end
-function duxdx = duxdx_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duxdx" is an array that has the same form of the input "x" or "y"
-  
-  duxdx=0;
-end
-function duydx = duydx_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duydx" is an array that has the same form of the input "x" or "y"
-  
-  duydx=0;
-end
-function duxdy = duxdy_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duxdy" is an array that has the same form of the input "x" or "y"
-  
-  duxdy=0;
-end
-function duydy = duydy_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duydy" is an array that has the same form of the input "x" or "y"
-  
-  duydy=0;
+                         % values of uy(:,1)    
 end
 
 

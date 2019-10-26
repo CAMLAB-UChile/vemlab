@@ -42,9 +42,10 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
-% Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
-% May 15, 2018: add wrench domain (by A. Ortiz-Bernardin)
+% Nov 5, 2018: add plate with a quarter hole domain (by A. Ortiz-Bernardin)
 % May 16, 2018: add plate with a hole domain (by A. Ortiz-Bernardin)
+% May 15, 2018: add wrench domain (by A. Ortiz-Bernardin)
+% Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -59,7 +60,10 @@ function PolyMesher2VEMLab(Node,Element,NElem,BoundaryNodes,MeshFile,...
                                     MeshFile,DomainType,BdBox);  
   elseif strcmp(DomainType,'PlateWithHoleDomain')
     PolyMesher2VEMLab_plate_with_hole_domain(Node,Element,NElem,BoundaryNodes,...
-                                             MeshFile,DomainType,BdBox);                                       
+                                             MeshFile,DomainType,BdBox);
+  elseif strcmp(DomainType,'PlateWithQuarterHoleDomain')
+    PolyMesher2VEMLab_plate_with_quarter_hole_domain(Node,Element,NElem,BoundaryNodes,...
+                                                     MeshFile,DomainType,BdBox);                                            
   else
     throw_error('Error in PolyMesher2VEMLab.m --> DomainType\n');
   end
@@ -161,6 +165,53 @@ end
 
 function PolyMesher2VEMLab_plate_with_hole_domain(Node,Element,NElem,BoundaryNodes,...
                                                   MeshFile,DomainType,BdBox)
+  fprintf('Printing mesh to a VEMLab mesh format...\n'); 
+  fid = fopen(MeshFile,'w');
+  % print domain type
+  fprintf(fid,'# domain type\n');  
+  fprintf(fid,'%s\n',DomainType);  
+  % print nodal coordinates
+  fprintf(fid,'# nodal coordinates: number of nodes followed by the coordinates\n');
+  nnode = size(Node,1);
+  fprintf(fid,'%d\n',nnode);                                    
+  for node_i = 1:nnode
+    fprintf(fid,'%.16f %.16f\n', Node(node_i,1), Node(node_i,2));  
+  end
+  % print element connectivity
+  fprintf(fid,'# element connectivity: number of elements followed by the connectivity (each line: nodes_per_element(nel) node1 node 2 ... node_nel)\n');  
+  fprintf(fid,'%d\n',NElem);                                 
+  for el = 1:NElem
+    NVertex = length(Element{el});
+    fprintf(fid,'%d ', NVertex);
+    for vertex = 1:(NVertex-1)
+      fprintf(fid,'%d ', Element{el}(vertex));
+    end
+    fprintf(fid,'%d\n', Element{el}(NVertex));
+  end
+  % print left circle boundary  
+  fprintf(fid,'# indices of nodes located on the left boundary\n');
+  fprintf(fid,'%d ',BoundaryNodes.Left);  
+  fprintf(fid,'\n');
+  % print right boundary  
+  fprintf(fid,'# indices of nodes located on the right boundary\n');  
+  fprintf(fid,'%d ',BoundaryNodes.Right);
+  fprintf(fid,'\n');   
+  % print node located on the middle of the right boundary  
+  fprintf(fid,'# index of the node located on the middle of the right boundary\n');  
+  fprintf(fid,'%d ',BoundaryNodes.MidNodeRightFace);
+  fprintf(fid,'\n');    
+  % print xmin, xmax, ymin, ymax for the plate with hole domain
+  fprintf(fid,'# xmin, xmax, ymin, ymax of the bounding box\n');   
+  xmin=BdBox(1);
+  xmax=BdBox(2);
+  ymin=BdBox(3);
+  ymax=BdBox(4);  
+  fprintf(fid,'%.16f %.16f %.16f %.16f\n', xmin, xmax, ymin, ymax);   
+  fclose(fid);
+end
+
+function PolyMesher2VEMLab_plate_with_quarter_hole_domain(Node,Element,NElem,BoundaryNodes,...
+                                                          MeshFile,DomainType,BdBox)
   fprintf('Printing mesh to a VEMLab mesh format...\n'); 
   fid = fopen(MeshFile,'w');
   % print domain type

@@ -1,7 +1,8 @@
 function fb=vem_source_vector_poisson2d(verts,source_term_fun_values)
   % area of the element  
-  area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).*verts(:,2);
-  area=0.5*abs(sum(area_components));
+%   area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).*verts(:,2);
+%   area=0.5*abs(sum(area_components));
+  area=polyarea(verts(:,1),verts(:,2));
   % number of vertices
   N=length(verts);
   % vector of nodal source terms

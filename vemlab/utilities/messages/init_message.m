@@ -5,7 +5,7 @@ function init_message(config)
     fprintf('Method: %s\n',config.vemlab_method);    
     fprintf('Mesh filename: %s\n',config.mesh_filename);   
     fprintf('Date: %d-%d-%d\n',time_date(3),time_date(2),time_date(1)); 
-    fprintf('Time: %2.0d:%2.0d hrs\n\n',time_date(4),time_date(5));  
+    fprintf('Time: %2.0d:%2.0d hrs\n\n',time_date(4),time_date(5));      
   elseif strcmp(config.vemlab_module,'Poisson')
     fprintf('***   Starting VEMLab %s - Poisson Problem   ***\n\n',config.vemlab_version); 
     fprintf('Method: %s\n',config.vemlab_method);    

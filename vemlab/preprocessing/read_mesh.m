@@ -56,18 +56,20 @@ function domainMesh = read_mesh(config)
   fclose(mesh_file);  
   % for VEM2D, rectangular, wrench and plate with hole domains are available 
   % for FEM2DQ4 and FEM2DT3, only rectangular domain is available
-  if strcmp(config.vemlab_module,'LinearElastostatics')
+  if strcmp(config.vemlab_module,'LinearElastostatics')||strcmp(config.vemlab_module,'ElastoPlasticStatics')
     if strcmp(domain_type,'RectangularDomain')
       domainMesh = read_mesh_rectangular_domain_linelast2d(meshFile);
     elseif strcmp(domain_type,'WrenchDomain')
       domainMesh = read_mesh_wrench_domain_linelast2d(meshFile);
     elseif strcmp(domain_type,'PlateWithHoleDomain')
-      domainMesh = read_mesh_plate_with_hole_domain_linelast2d(meshFile);   
+      domainMesh = read_mesh_plate_with_hole_domain_linelast2d(meshFile);         
     elseif strcmp(domain_type,'Custom')
-      domainMesh = read_mesh_custom_linelast2d(meshFile);        
+      domainMesh = read_mesh_custom_linelast2d(meshFile);   
+    elseif strcmp(domain_type,'CustomNoBoundaryData')
+      domainMesh = read_mesh_custom_without_boundary_data_linelast2d(meshFile);       
     else
       throw_error('In read_mesh.m: domain_type\n');      
-    end
+    end  
   elseif strcmp(config.vemlab_module,'Poisson')    
     if strcmp(domain_type,'RectangularDomain')
       domainMesh = read_mesh_rectangular_domain_poisson2d(meshFile);
@@ -317,6 +319,36 @@ function domainMesh = read_mesh_custom_linelast2d(meshFile)
   range=1:length(domainMesh.boundary_nodes.Neumann);
   domainMesh.boundary_dofs.Neumann(2*range-1)=2*domainMesh.boundary_nodes.Neumann-1;
   domainMesh.boundary_dofs.Neumann(2*range)=2*domainMesh.boundary_nodes.Neumann;       
+end
+
+function domainMesh = read_mesh_custom_without_boundary_data_linelast2d(meshFile)
+  mesh_file = fopen(meshFile);
+  % read domain type 
+  line = fgets(mesh_file); % read commented line  
+  domain_type = sscanf(fgets(mesh_file),'%s');
+  % read nodal coordinates
+  line = fgets(mesh_file); % read commented line
+  nodes_number = sscanf(fgets(mesh_file),'%d');
+  domainMesh.coords = zeros(nodes_number,2);
+  for i=1:nodes_number
+    line = fgets(mesh_file);
+    coordinates = sscanf(line,'%f');
+    domainMesh.coords(i,1) = coordinates(1); domainMesh.coords(i,2) = coordinates(2);
+  end
+  % read connectivities
+  line = fgets(mesh_file); % read commented line
+  polygons_number = sscanf(fgets(mesh_file),'%d');
+  domainMesh.connect = cell(polygons_number,1);
+  for i=1:polygons_number
+    line = fgets(mesh_file); 
+    indexes = sscanf(line,'%d');
+    domainMesh.connect{i,1} = indexes(2:indexes(1)+1);
+  end
+  % read xmax, xmin, ymax, ymin for the bounding box
+  line = fgets(mesh_file); % read commented line   
+  line = fgets(mesh_file);
+  domainMesh.BdBox = sscanf(line,'%f');  
+  fclose(mesh_file);
 end
 
 function domainMesh = read_mesh_rectangular_domain_poisson2d(meshFile)
