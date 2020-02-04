@@ -1,5 +1,7 @@
-function [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
-          write_solutions_to_GiD_file,write_solutions_to_VTK_file,poisson2d_plot_scalar_field,...
+function [create_matlab_contour_plots,plot_mesh,plot_mesh_linewidth,plot_mesh_nodes,...
+          plot_mesh_nodesize,plot_mesh_axis,plot_mesh_over_results,write_solutions_to_text_file,...
+          write_solutions_to_GiD_file,write_solutions_to_VTK_file,write_solutions_to_CPP_file,...
+          poisson2d_plot_scalar_field,...
           poisson2d_plot_flux,poisson2d_plot_grad,linelast2d_plot_displacement,...
           linelast2d_plot_stress,linelast2d_plot_strain,linelast2d_plot_deformed_domain,...
           linelast2d_scale_for_plotting_deformed_domain] = plot_and_output_options
@@ -46,11 +48,19 @@ function [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_sol
   %% GENERAL
   
   create_matlab_contour_plots='yes';
-  plot_mesh='yes';
   plot_mesh_over_results='yes';
   write_solutions_to_text_file='yes';
   write_solutions_to_GiD_file='yes';
   write_solutions_to_VTK_file='yes';  
+  write_solutions_to_CPP_file='yes';  
+
+  %% MESH PLOTTING
+  
+  plot_mesh='yes';  
+  plot_mesh_linewidth = 1.0;  
+  plot_mesh_nodes = 'yes';
+  plot_mesh_nodesize = 2.0;
+  plot_mesh_axis = 'yes';
   
   %% POISSON MODULE
   

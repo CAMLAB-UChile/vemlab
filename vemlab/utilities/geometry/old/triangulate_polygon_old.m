@@ -14,8 +14,7 @@
 %-------------------------------------------------------------------------------
 % Purpose
 % =======
-% Divide a polygon into triangles using triangulation Matlab's built-in function.
-% This works for any polygon (convex or non-convex).
+% Divide a polygon into triangles using the polygon's vertices.
 %
 % Usage
 % =====
@@ -38,21 +37,16 @@
 % Function's updates history
 % ==========================
 % Dec. 26, 2017: first realease (by A. Ortiz-Bernardin)
-% Jan. 31, 2020: triangulate using Matlab's triangulation built-in function
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function connect = triangulate_polygon(domainMesh,element_id)
-
-%   fprintf('******* Triangulating element %d\n',element_id);
-  
-  elem_nodes=domainMesh.connect{element_id,1};
-  elem_coords=domainMesh.coords(elem_nodes,:);
-  T = triangulation(polyshape(elem_coords));
-  num_triangles = size(T.ConnectivityList,1);
-  connect = zeros(num_triangles,3);
-  for e = 1:num_triangles
-    connect(e,:) = elem_nodes(T.ConnectivityList(e,:));
-  end
+function connect = triangulate_polygon_old(domainMesh,element_id)
+  elem_nodes=domainMesh.connect(element_id,:);
+  elem_num_nodes=length(elem_nodes{1});
+  num_triangles=elem_num_nodes-2;
+  connect=zeros(num_triangles,3);
+  for elem_i=1:num_triangles
+    connect(elem_i,:)=[elem_nodes{1}(1),elem_nodes{1}(elem_i+1),elem_nodes{1}(elem_i+2)];
+  end  
 end
 

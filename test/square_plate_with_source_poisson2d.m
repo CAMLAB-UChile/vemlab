@@ -56,6 +56,7 @@ function square_plate_with_source_poisson2d
   %
     
   mesh_filename='square_plate_poisson2d_50poly_elems.txt';  
+  %mesh_filename='square_plate_poisson2d_t3_hsize_01.txt';
 
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or

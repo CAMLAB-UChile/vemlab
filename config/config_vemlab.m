@@ -44,6 +44,8 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% Feb. 2, 2020: add some control variables for mesh plotting; add option to
+%               write a result file to be read a Convex Polygon Packing (CPP) program
 % Oct. 19, 2018: add variable "config.create_matlab_contour_plots" to control
 %                whether matlab contour plots must be created or not 
 %                (by A. Ortiz-Bernardin)
@@ -62,21 +64,28 @@ function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
   config.vemlab_version='2.2.2';
   
   % program options
-  [create_matlab_contour_plots,plot_mesh,plot_mesh_over_results,write_solutions_to_text_file,...
-   write_solutions_to_GiD_file,write_solutions_to_VTK_file,poisson2d_plot_scalar_field,...
+  [create_matlab_contour_plots,plot_mesh,plot_mesh_linewidth,plot_mesh_nodes,...
+   plot_mesh_nodesize,plot_mesh_axis,plot_mesh_over_results,write_solutions_to_text_file,...
+   write_solutions_to_GiD_file,write_solutions_to_VTK_file,write_solutions_to_CPP_file,...
+   poisson2d_plot_scalar_field,...
    poisson2d_plot_flux,poisson2d_plot_grad,linelast2d_plot_displacement,...
    linelast2d_plot_stress,linelast2d_plot_strain,linelast2d_plot_deformed_domain,...
-   linelast2d_scale_for_plotting_deformed_domain]=plot_and_output_options; 
+   linelast2d_scale_for_plotting_deformed_domain]=plot_and_output_options;
   
   config.opsystem=opsystem;
   config.vemlab_root_dir=vemlab_root_dir;  
   config.mesh_filename=mesh_filename;
   config.create_matlab_contour_plots=create_matlab_contour_plots;   
-  config.plot_mesh=plot_mesh;  
+  config.plot_mesh=plot_mesh;
+  config.plot_mesh_linewidth=plot_mesh_linewidth;  
+  config.plot_mesh_nodes=plot_mesh_nodes;
+  config.plot_mesh_nodesize=plot_mesh_nodesize;
+  config.plot_mesh_axis=plot_mesh_axis;      
   config.plot_mesh_over_results=plot_mesh_over_results;   
   config.write_solutions_to_text_file=write_solutions_to_text_file;  
   config.write_solutions_to_GiD_file=write_solutions_to_GiD_file; 
   config.write_solutions_to_VTK_file=write_solutions_to_VTK_file;  
+  config.write_solutions_to_CPP_file=write_solutions_to_CPP_file;   
   config.poisson2d_plot_scalar_field=poisson2d_plot_scalar_field;  
   config.poisson2d_plot_flux=poisson2d_plot_flux;
   config.poisson2d_plot_grad=poisson2d_plot_grad;
@@ -134,12 +143,14 @@ function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
   if is_Windows
     config.txt_output_folder_location=[vemlab_root_dir,'\test\output_files\txt\'];
     config.GiD_output_folder_location=[vemlab_root_dir,'\test\output_files\GiD\'];
-    config.VTK_output_folder_location=[vemlab_root_dir,'\test\output_files\VTK\'];      
+    config.VTK_output_folder_location=[vemlab_root_dir,'\test\output_files\VTK\']; 
+    config.CPP_output_folder_location=[vemlab_root_dir,'\test\output_files\CPP\'];          
     config.mesh_folder_location=[vemlab_root_dir,'\test\mesh_files\'];
   elseif is_Linux
     config.txt_output_folder_location=[vemlab_root_dir,'/test/output_files/txt/'];
     config.GiD_output_folder_location=[vemlab_root_dir,'/test/output_files/GiD/'];
-    config.VTK_output_folder_location=[vemlab_root_dir,'/test/output_files/VTK/'];     
+    config.VTK_output_folder_location=[vemlab_root_dir,'/test/output_files/VTK/']; 
+    config.CPP_output_folder_location=[vemlab_root_dir,'/test/output_files/CPP/'];        
     config.mesh_folder_location=[vemlab_root_dir,'/test/mesh_files/'];  
   end 
   

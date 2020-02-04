@@ -18,8 +18,8 @@
 %
 % Usage
 % =====
-% [flux,grad] = plot_numerical_solution_linelast2d(domainMesh,solution,...
-%                                                 matProps,config)
+% [triangles_per_polygon,stress,strain] = plot_numerical_solution_linelast2d(domainMesh,solution,...
+%                                                                            matProps,config)
 %
 % Input
 % =====
@@ -30,6 +30,8 @@
 %
 % Output
 % ======
+% triangles_per_polygon : array containing the number of triangles that 
+%                         subdivide each polygon (VEM case only)
 % stress : struct. storing numerical stress tensor at Gauss points
 % strain : struct. storing numerical strain tensor at Gauss points
 %
@@ -40,6 +42,9 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% Feb. 1, 2020: add a return array variable called triangles_per_polygon, which
+%               is used to fix an error in the plotting of VEM stresses and strains 
+%               into a text file stage (by A. Ortiz-Bernardin)
 % Oct. 20, 2018: add option to switch off all matlab contour plots (by A. Ortiz-Bernardin)
 % Sept. 16, 2018: add option to plot deformed domain for linelast2d (by A. Ortiz-Bernardin)
 % Apr. 19, 2018: improve the plotting of axis and fonts (by A. Ortiz-Bernardin)
@@ -48,13 +53,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [stress,strain] = plot_numerical_solution_linelast2d(domainMesh,...
-                                                              solution,...
-                                                              matProps,config)
+function [triangles_per_polygon,stress,strain] = ...
+                   plot_numerical_solution_linelast2d(domainMesh,solution,matProps,config)
   % plot u field                                       
   plot_u_field(domainMesh,solution,config);
   % plot flux and gradient
-  [stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,config);
+  [triangles_per_polygon,stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,config);
 end
 
 function plot_u_field(domainMesh,solution,config)
@@ -195,12 +199,13 @@ function plot_u_field(domainMesh,solution,config)
   end
 end
 
-function [stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,config)
+function [triangles_per_polygon,stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,config)
   if strcmp(config.linelast2d_plot_stress_and_strain,'yes')
     if strcmp(config.vemlab_method,'VEM2D')
-      [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax]=...
+      [triangles_per_polygon,stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax]=...
         vem_stress_and_strain_linelast2d(solution,domainMesh,matProps,config);
     elseif strcmp(config.vemlab_method,'FEM2DT3')||strcmp(config.vemlab_method,'FEM2DQ4')
+      triangles_per_polygon=[]; % no subtriangulation is performed inside fem_stress_and_strain_linelast2d
       [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax]=...
         fem_stress_and_strain_linelast2d(solution,domainMesh,matProps,config);     
     else
@@ -215,7 +220,7 @@ function [stress,strain]=plot_stress_and_strain(solution,domainMesh,matProps,con
   end
 end
 
-function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
+function [triangles_per_polygon,stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
        vem_stress_and_strain_linelast2d(solution,domainMesh,matProps,config) 
      
   fprintf('Postprocessing %s stress and strain at Gauss points...\n',...
@@ -230,6 +235,7 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
   coords=domainMesh.coords;
   connect=domainMesh.connect;    
   num_elem=length(connect); 
+  triangles_per_polygon=zeros(num_elem,1); % an entry stores the number of triangles that subdivide the polygon
   % loop over elements
   gp=0;   
   for i=1:num_elem
@@ -298,7 +304,9 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
     stress_h.vm(i)=VM_h; 
     % triangulate and assign the constant stress and strain to the subtriangles
     newconnect=triangulate_polygon(domainMesh,i);
-    for tr_i=1:size(newconnect,1)
+    num_triangles=size(newconnect,1);
+    triangles_per_polygon(i)=num_triangles;
+    for tr_i=1:num_triangles
       gp=gp+1;   
       % assign constant stress and strain to the subtriangle Gauss point (1-pt rule)
       subtriangle_coords=domainMesh.coords(newconnect(tr_i,:),:);

@@ -1,4 +1,4 @@
-function Kfem = fem_stiffness_poisson2d(verts,matProps,config)
+function Kfem = fem_stiffness_poisson2d(verts,k,config)
   if strcmp(config.vemlab_method,'FEM2DT3')
     % area of the element
     area=triangle_area(verts);
@@ -6,13 +6,10 @@ function Kfem = fem_stiffness_poisson2d(verts,matProps,config)
     x=verts(:,1); y=verts(:,2);  
     B=(1/(2*area))*[y(2)-y(3),y(3)-y(1),y(1)-y(2);...
                     x(3)-x(2),x(1)-x(3),x(2)-x(1)];    
-    % FEM element stiffness
-    k=matProps.k;    % isotropic material
+    % FEM element stiffness / isotropic material
     Kfem=k*area*(B'*B);
   elseif strcmp(config.vemlab_method,'FEM2DQ4')
-    % material matrix
-    k=matProps.k;    % isotropic material   
-    % compute stiffness matrix by numerical integration
+    % compute stiffness matrix by numerical integration  / isotropic material
     Kfem=zeros(4,4);
     num_gp=config.number_of_gauss_points_per_axis_FEM2DQ4;
     xi=gauss_points_1d(num_gp);

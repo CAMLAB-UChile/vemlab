@@ -57,7 +57,7 @@ function cantilever_beam_linelast2d
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
   
-  mesh_filename='cantilever_beam_1000poly_elems.txt';   
+  mesh_filename='cantilever_beam_250poly_elems.txt';   
   
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or

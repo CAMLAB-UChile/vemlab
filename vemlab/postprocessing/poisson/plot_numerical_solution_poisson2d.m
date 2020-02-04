@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%                                     VEMLab
+%                                    VEMLab
 %           Source code  : http://camlab.cl/research/software/vemlab/
 %              (See Copyright and License notice in "license.txt")
 %
@@ -18,8 +18,8 @@
 %
 % Usage
 % =====
-% [flux,grad] = plot_numerical_solution_poisson2d(domainMesh,solution,...
-%                                                 matProps,config)
+% [triangles_per_polygon,flux,grad] = plot_numerical_solution_poisson2d(domainMesh,solution,...
+%                                                                       matProps,config)
 %
 % Input
 % =====
@@ -30,6 +30,8 @@
 %
 % Output
 % ======
+% triangles_per_polygon : array containing the number of triangles that 
+%                         subdivide each polygon (VEM case only)
 % flux : struct. (flux.x and flux.y) storing numerical flux at Gauss points
 % grad : struct. (grad.x and grad.y) storing numerical gradient at Gauss points
 %
@@ -40,21 +42,24 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% Feb. 1, 2020: add a return array variable called triangles_per_polygon, which
+%               is used to fix an error in the plotting of VEM fluxes and gradients 
+%               into a text file stage (by A. Ortiz-Bernardin)
+% Jan. 31, 2020: add a check on matProps to figure out if comes on an
+%                element-by-element fashion or not (VEM and FEM cases).
 % Oct. 20, 2018: add option to switch off all matlab contour plots (by A. Ortiz-Bernardin)
 % Apr. 19, 2018: improve the plotting of axis and fonts (by A. Ortiz-Bernardin)
 % Mar. 17, 2018: first realease (by A. Ortiz-Bernardin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-function [flux,grad] = plot_numerical_solution_poisson2d(domainMesh,solution,...
-                                                         matProps,config)
+function [triangles_per_polygon,flux,grad] = ...
+               plot_numerical_solution_poisson2d(domainMesh,solution,matProps,config)
   % plot u field                                       
   plot_u_field(domainMesh,solution,config);
   % plot flux and gradient
-  [flux,grad]=plot_flux_and_gradient(solution,domainMesh,matProps,config);
+  [triangles_per_polygon,flux,grad]=plot_flux_and_gradient(solution,domainMesh,matProps,config);
 end
-
 
 function plot_u_field(domainMesh,solution,config)
   if strcmp(config.create_matlab_contour_plots,'yes')
@@ -107,12 +112,13 @@ function plot_u_field(domainMesh,solution,config)
   end
 end
 
-function [flux,grad]=plot_flux_and_gradient(solution,domainMesh,matProps,config)
+function [triangles_per_polygon,flux,grad]=plot_flux_and_gradient(solution,domainMesh,matProps,config)
   if strcmp(config.poisson2d_plot_flux_and_gradient,'yes')
     if strcmp(config.vemlab_method,'VEM2D')
-      [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax]=...
+      [triangles_per_polygon,flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax]=...
         vem_flux_and_gradient_poisson2d(solution,domainMesh,matProps,config);
     elseif strcmp(config.vemlab_method,'FEM2DT3')||strcmp(config.vemlab_method,'FEM2DQ4')
+      triangles_per_polygon=[]; % no subtriangulation is performed inside fem_flux_and_gradient_poisson2d     
       [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax]=...
         fem_flux_and_gradient_poisson2d(solution,domainMesh,matProps,config);     
     else
@@ -127,8 +133,8 @@ function [flux,grad]=plot_flux_and_gradient(solution,domainMesh,matProps,config)
   end
 end
 
-function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
-       vem_flux_and_gradient_poisson2d(solution,domainMesh,matProps,config) 
+function [triangles_per_polygon,flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
+              vem_flux_and_gradient_poisson2d(solution,domainMesh,matProps,config) 
      
   fprintf('Postprocessing %s flux and gradient at Gauss points...\n',...
           config.vemlab_method); 
@@ -142,6 +148,14 @@ function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
   coords=domainMesh.coords;
   connect=domainMesh.connect;    
   num_elem=length(connect); 
+  triangles_per_polygon=zeros(num_elem,1); % an entry stores the number of triangles that subdivide the polygon  
+  % figure out whether material's data is given in an element-by-element fashion or not
+  size_k=length(matProps.k);
+  if size_k==num_elem
+    k_is_unique = false;
+  elseif size_k==1
+    k_is_unique = true;
+  end  
   % loop over elements
   gp=0;   
   for i=1:num_elem
@@ -162,13 +176,25 @@ function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
     % VEM gradient
     pic_grad_uh=Wc'*uh_elem_column;    
     grad_uh.x(i)=pic_grad_uh(1);
-    grad_uh.y(i)=pic_grad_uh(2);     
-    % VEM flux
-    k=matProps.k;  % isotropic material   
-    flux_h.x(i)=-k*pic_grad_uh(1);
-    flux_h.y(i)=-k*pic_grad_uh(2);    
+    grad_uh.y(i)=pic_grad_uh(2);   
+    % conductivity for isotropic material 
+    if k_is_unique    
+      k=matProps.k; % conductivity is the same for all the elements
+    else
+      k=matProps.k{i,1}; % conductivity is particular for the current element
+    end
+    size_k_i=length(k);      
+    % VEM flux 
+    if size_k_i == 1
+      flux_h.x(i)=-k*pic_grad_uh(1);
+      flux_h.y(i)=-k*pic_grad_uh(2);
+    else
+      throw_error('In plot_numerical_solution_poisson2d.m --> plot_flux_and_gradient --> vem_flux_and_gradient_poisson2d : either conductivity was not defined or multiple conductivities assigned to the element... not implemented for this condition');
+    end
     % triangulate and assign the constant flux and gradient to the subtriangles
     newconnect=triangulate_polygon(domainMesh,i);
+    num_triangles=size(newconnect,1);
+    triangles_per_polygon(i)=num_triangles;    
     for tr_i=1:size(newconnect,1)
       gp=gp+1;   
       % assign constant flux and gradient to the subtriangle Gauss point (1-pt rule)
@@ -207,6 +233,13 @@ function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
   coords=domainMesh.coords;
   connect=domainMesh.connect;    
   num_elem=length(connect); 
+  % figure out whether material's data is given in an element-by-element fashion or not
+  size_k=length(matProps.k);
+  if size_k==num_elem
+    k_is_unique = false;
+  elseif size_k==1
+    k_is_unique = true;
+  end
   if strcmp(config.vemlab_method,'FEM2DT3')
     % loop over elements
     gp=0;
@@ -227,10 +260,20 @@ function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
       grad_uh=B*uh_elem_column;
       grad.dx(i)=grad_uh(1);
       grad.dy(i)=grad_uh(2);  
-      % FEM flux
-      k=matProps.k;  % isotropic material   
-      flux.qx(i)=-k*grad_uh(1);
-      flux.qy(i)=-k*grad_uh(2);  
+      % conductivity for isotropic material 
+      if k_is_unique    
+        k=matProps.k; % conductivity is the same for all the elements
+      else
+        k=matProps.k{i,1}; % conductivity is particular for the current element
+      end
+      size_k_i=length(k);      
+      % FEM flux 
+      if size_k_i == 1
+        flux.qx(i)=-k*grad_uh(1);
+        flux.qy(i)=-k*grad_uh(2); 
+      else
+        throw_error('In plot_numerical_solution_poisson2d.m --> plot_flux_and_gradient --> fem_flux_and_gradient_poisson2d : either conductivity was not defined or multiple conductivities assigned to the element... not implemented for this condition');
+      end
       % assign constant flux and gradient to the element Gauss point (1-pt rule)
       gp=gp+1;
       [xy,~]=gauss_points_T3(1,elem_coord); % int. point in the form [x y]         
@@ -289,11 +332,21 @@ function [flux,grad,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
           % FEM strains
           grad_uh=B*uh_elem_column; 
           grad.dx(gp)=grad_uh(1);
-          grad.dy(gp)=grad_uh(2);  
-          % VEM flux
-          k=matProps.k;  % isotropic material   
-          flux.qx(gp)=-k*grad_uh(1);
-          flux.qy(gp)=-k*grad_uh(2);    
+          grad.dy(gp)=grad_uh(2);
+          % conductivity for isotropic material 
+          if k_is_unique    
+            k=matProps.k; % conductivity is the same for all the elements
+          else
+            k=matProps.k{i,1}; % conductivity is particular for the current element
+          end
+          size_k_i=length(k);      
+          % FEM flux 
+          if size_k_i == 1
+            flux.qx(gp)=-k*grad_uh(1);
+            flux.qy(gp)=-k*grad_uh(2);
+          else
+            throw_error('In plot_numerical_solution_poisson2d.m --> plot_flux_and_gradient --> fem_flux_and_gradient_poisson2d : either conductivity was not defined or multiple conductivities assigned to the element... not implemented for this condition');
+          end  
           % assign flux and gradient to the element Gauss points             
           N1=(1-xi(gpxi))*(1-eta(gpeta))/4;
           N2=(1+xi(gpxi))*(1-eta(gpeta))/4;
