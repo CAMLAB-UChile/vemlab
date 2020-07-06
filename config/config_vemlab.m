@@ -21,7 +21,7 @@
 % config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,problem,...
 %                        plot_mesh_over_results,write_solutions_to_text_file,...
 %                        write_solutions_to_GiD_file,vemlab_module,...
-%                        vemlab_method)
+%                        vemlab_method,vemlab_solver)
 %
 % Input
 % =====
@@ -33,6 +33,7 @@
 % write_solutions_to_GiD_file : 'yes' or 'no' 
 % vemlab_module          : 'LinearElastostatics' or 'Poisson'
 % vemlab_method          : 'VEM2D', 'FEM2DT3' or 'FEM2DQ4'
+% vemlab_solver          : 'sparse' or 'dense'
 %
 % Output
 % ======
@@ -44,6 +45,8 @@
 %-------------------------------------------------------------------------------
 % Function's updates history
 % ==========================
+% July 5, 2020: - add sparse solver for FEM
+%               - add sparse solver for VEM 
 % Feb. 2, 2020: add some control variables for mesh plotting; add option to
 %               write a result file to be read a Convex Polygon Packing (CPP) program
 % Oct. 19, 2018: add variable "config.create_matlab_contour_plots" to control
@@ -59,9 +62,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
-                                vemlab_module,vemlab_method)
+                                vemlab_module,vemlab_method,vemlab_solver)
   % VEMLab version
-  config.vemlab_version='2.2.2';
+  config.vemlab_version='2.3';
   
   % program options
   [create_matlab_contour_plots,plot_mesh,plot_mesh_linewidth,plot_mesh_nodes,...
@@ -94,6 +97,7 @@ function config = config_vemlab(opsystem,vemlab_root_dir,mesh_filename,...
   config.linelast2d_plot_strain=linelast2d_plot_strain;
   config.vemlab_module=vemlab_module;  
   config.vemlab_method=vemlab_method;
+  config.vemlab_solver=vemlab_solver;  
   
   config.linelast2d_plot_deformed_domain=linelast2d_plot_deformed_domain;
   config.linelast2d_scale_for_plotting_deformed_domain=linelast2d_scale_for_plotting_deformed_domain;

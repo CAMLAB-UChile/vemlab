@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   VEMLab
 %-------------------------------------------------------------------------------                                  
-%  Version      : 2.2.2                      
-%  Date         : 25-OCT-2019
+%  Version      : 2.3                    
+%  Date         : 5-JULY-2020
 %  Source code  : http://camlab.cl/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -17,8 +17,9 @@
 % References 
 % ==========
 % [1] A. Ortiz-Bernardin, C. Alvarez, N. Hitschfeld-Kahler, A. Russo, 
-%     R. Silva, A. Olate-Sanzana, "Veamy: an extensible object-oriented 
-%     C++ library for the virtual element method," arXiv:1708.03438 [cs.MS]
+%     R. Silva, A. Olate-Sanzana. Veamy: an extensible object-oriented 
+%     C++ library for the virtual element method. Numerical Algorithms,
+%     Vol. 82, pp. 1189-1220, 2019
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,6 +67,9 @@ function linear_patch_test_linelast2d
   % module
   vemlab_module='LinearElastostatics';   % 'LinearElastostatics' or 'Poisson'
   
+  % solver
+  vemlab_solver='sparse';   % 'sparse' or 'dense'     
+  
   %% PLOT AND OUTPUT OPTIONS
   % to setup plot and output options go to folder 'config' and 
   % set the parameters inside function 'plot_and_output_options.m'
@@ -73,7 +77,7 @@ function linear_patch_test_linelast2d
   %% VEMLAB CONFIGURATION
   
   config=config_vemlab(opsystem,vemlab_root_dir,mesh_filename,vemlab_module,...
-                       vemlab_method);
+                       vemlab_method,vemlab_solver);
                                          
   %% PRINT INIT MESSAGE TO SCREEN
 

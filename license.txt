@@ -2,8 +2,8 @@
 %                                   VEMLab
 %------------------------------------------------------------------------------
 %                                  
-%            Version      : 2.2.2                       
-%            Date         : 25-OCT-2019 
+%            Version      : 2.3                     
+%            Date         : 5-JULY-2020
 %            Source code  : http://camlab.cl/software/vemlab/
 %
 %------------------------------------------------------------------------------
@@ -12,9 +12,9 @@
 %
 %------------------------------------------------------------------------------
 %
-%                          Copyright (c) 2018 -2019                    
+%                          Copyright (c) 2018 -2020                   
 %                        by Alejandro Ortiz-Bernardin 
-%                            aortizb@uchile.cl
+%                             aortizb@uchile.cl
 %							   
 %                    Department of Mechanical Engineering                        
 %                   Universidad de Chile,  Santiago, CHILE                        

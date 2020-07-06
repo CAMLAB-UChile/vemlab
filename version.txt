@@ -3,7 +3,7 @@
                 Source code  : http://camlab.cl/software/vemlab
               (See Copyright and License notice in "license.txt")
 
-                            Copyright (c) 2018-2019                     
+                            Copyright (c) 2018-2020                     
                          by Alejandro Ortiz-Bernardin 
                                aortizb@uchile.cl
 				                 http://camlab.cl/alejandro/
@@ -18,6 +18,16 @@
                             All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
+Version 2.3 (5-JULY-2020):
+
+- Add possibility of using multiple materials in the Poisson module.
+- Update triangulate_polygon function so that it uses the built-in triangulation matlab function.
+- Bug fix in writing to txt file.
+- Add possibility to write output files suitable to be read in Convex Polygon Packing (CPP) program.
+- Add some options for controlling the plotting of the mesh (plot_mesh_linewidth, plot_mesh_nodes, plot_mesh_nodesize, plot_mesh_axis).
+- Add sparse solver to VEM2D/FEM2D in LinearElastostatics and Poisson modules.
+- Remove L-shape example from the test folder due to bad behavior in plotting stresses and strains.
+
 Version 2.2.2 (25-OCT-2019):
 
 - Fix function max_edge_size.m
