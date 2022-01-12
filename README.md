@@ -26,30 +26,31 @@ Good Times RG: This font must be added to the Java Runtime Environment (JRE) tha
 <h2>About plotting capabilities</h2>
 <a>Plots can be directly obtained through MATLAB’s figures by setting the following parame-ters in function plot_and_output_options.m that is located in folder “config”:
 
-  create_matlab_contour_plots='yes'; % (for numerical solution)
  
-  create_matlab_exact_contour_plots='yes'; % (for exact solution)
+     create_matlab_contour_plots='yes'; % (for numerical solution)
+     create_matlab_exact_contour_plots='yes'; % (for exact solution)
   
 The figures can also be printed and saved to PDF files (the output PDFs are saved to folder “test/output_files/matlab_figures/”) by setting
 
-  print_figures='yes'; % (for numerical solution)
-  print_exact_figures='yes'; % (for exact solution)
+     print_figures='yes'; % (for numerical solution)
+     print_exact_figures='yes'; % (for exact solution)
 
 The figures can also be saved to .fig files (the output .fig files are saved to folder “test/output_files/matlab_figures/”) by setting
 
-  save_matlab_figures='yes'; % (for numerical solution) 
-  save_exact_matlab_figures='yes'; % (for exact solution)   
+     save_matlab_figures='yes'; % (for numerical solution) 
+     save_exact_matlab_figures='yes'; % (for exact solution)   
 
 The resolution of the MATLAB’s figures when plotting to PDF files or saving to .fig files is controlled by
 
-  print_figures_resolution=600;
+     print_figures_resolution=600;
 
 where it has been set to 600 dpi. This value can be changed as required by the user.
+ 
 Many other customizations of the output figures can be made by setting the appropriate parameters in plot_and_output_options.m (see Section 8 of this primer for details). Sev-eral example output MATLAB’s figures are provided in Section 10 of this primer.
 
 As an alternative, plots can be visualized externally in the GiD postprocessor. This is an independent process and can be performed even if plots were set to be displayed on MATLAB’s figures. When the following is set in plot_and_output_options.m:
 
-  write_solutions_to_GiD_file='yes';
+     write_solutions_to_GiD_file='yes';
 
 results are written to GiD files and saved to folder “test/output_files/GiD”. GiD can be downloaded from its webpage: https://www.gidhome.com/.<a/>
 <h2>Author</h2>
