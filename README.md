@@ -12,12 +12,10 @@ This repository contains the code for an open source MATLAB library for the virt
 </ul>
 <h2>First steps</h2>
 <a>Once the software is downloaded there are two fonts that need to be installed so that the output figures are plotted correctly. If these fonts are not present, MATLAB will use default fonts. These fonts are Segoe UI Semibold and Good Times RG. For Windows systems, these fonts are included in folder “vemlab/utilities/fonts”. The instructions to install these fonts are also provided in the same folder. For completeness, the instructions are also provided here.
-
  
+<b>Segoe UI Semibold</b>: This font must be installed directly in your operating system. In Windows system this is done in Settings-->Fonts or just type "Font settings" in Window's search utility.
 
-Segoe UI Semibold: This font must be installed directly in your operating system. In Windows system this is done in Settings-->Fonts or just type "Font settings" in Window's search utility.
-
-Good Times RG: This font must be added to the Java Runtime Environment (JRE) that ships with MATLAB (if that is the Java version being used by the program). Below are steps to install the fonts:
+<b>Good Times RG</b>: This font must be added to the Java Runtime Environment (JRE) that ships with MATLAB (if that is the Java version being used by the program). Below are steps to install the fonts:
 
 1.	Copy the TTF fonts to "<matlabroot>\sys\java\jre\win64\jre\lib\fonts", e.g., "C:\Program Files\MATLAB\R2019a\sys\java\jre\win64\jre\lib\fonts". Note: You might need to be an administrator to copy files to this folder.
 
