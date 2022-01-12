@@ -12,7 +12,7 @@
 %       functionalities that are not available in the original            %
 %       PolyMesher's code. These are marked as "A.O-B, Date"              %
 %-------------------------------------------------------------------------%
-function [Node,Element,Supp,Load,P] = ...
+function [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,Supp,Load,P] = ...
                      PolyMesher(Domain,NElem,MaxIter,MeshFile,P)
 fprintf('PolyMesher is generating a mesh ...\n');                   
 if ~exist('P','var'), P=PolyMshr_RndPtSet(NElem,Domain); end
@@ -36,14 +36,15 @@ while(It<=MaxIter && Err>Tol)
 end
 [Node,Element] = PolyMshr_ExtrNds(NElem,Node,Element);  %Extract node list
 %[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,0.1);  %Remove small edges
-[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,0.2);  %AOB: Remove small edges
+epsilon_a=0.01;
+[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,epsilon_a);  %AOB: Remove small edges
+%[Node,Element] = PolyMshr_CllpsEdgs(Node,Element,0.2);  %AOB: Remove small edges
 [Node,Element] = PolyMshr_RsqsNds(Node,Element);        %Reoder Nodes
 BC=Domain('BC',{Node,Element}); Supp=BC{1}; Load=BC{2}; %Recover BC arrays
 PolyMshr_PlotMsh(Node,Element,NElem,Supp,Load);         %Plot mesh and BCs
+% hold on;
 % A.O-B, Dec. 26, 2017
-BoundaryNodes=Domain('Boundary',{Node});
-PolyMesher2VEMLab(Node,Element,NElem,...      %Plot mesh to a VEMLab mesh format
-                  BoundaryNodes,MeshFile,DomainType,BdBox); 
+[BoundaryNodes,Node]=Domain('Boundary',{Node});
 close all                                       %Close plot of PolyMesher's mesh
 % END A.O-B
 %------------------------------------------------- GENERATE RANDOM POINTSET

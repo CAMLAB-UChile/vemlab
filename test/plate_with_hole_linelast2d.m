@@ -1,8 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                   VEMLab
-%-------------------------------------------------------------------------------                                  
-%  Version      : 2.3                    
-%  Date         : 5-JULY-2020
+%         VEMLAB: A Matlab Library for the Virtual Element Method
+%-------------------------------------------------------------------------------
+%  Version      : 2.4                    
 %  Source code  : http://camlab.cl/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -16,16 +15,19 @@
 %-------------------------------------------------------------------------------
 % References 
 % ==========
+% VEMLAB implementation is based on the VEM theory given in:
+%
 % [1] A. Ortiz-Bernardin, C. Alvarez, N. Hitschfeld-Kahler, A. Russo, 
-%     R. Silva, A. Olate-Sanzana. Veamy: an extensible object-oriented 
-%     C++ library for the virtual element method. Numerical Algorithms,
-%     Vol. 82, pp. 1189-1220, 2019
+%     R. Silva, A. Olate-Sanzana, "Veamy: an extensible object-oriented 
+%     C++ library for the virtual element method," Numerical Algorithms, 
+%     volume 82, pages 1189–1220(2019)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function plate_with_hole_linelast2d
 
   close all;
+  clear all;
   clc;
 
   %% THIS BLOCK MUST BE PUT ON EVERY TEST FILE
@@ -49,9 +51,9 @@ function plate_with_hole_linelast2d
   
   % mesh filename: see available sample mesh files in folder "test/mesh_files/"
   %
-  %     VEM2D meshes have the keyword "polygon" in the mesh filename
+  %     VEM2D meshes have the keyword "poly" in the mesh filename
   %     FEM2DQ4 meshes have the keyword "q4" in the mesh filename
-  %     FEM2DT3 meshes have the keyword "q4" in the mesh filename 
+  %     FEM2DT3 meshes have the keyword "t3" in the mesh filename 
   % 
   %     VEM2D meshes can be used with 'VEM2D' method only.
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
@@ -59,17 +61,24 @@ function plate_with_hole_linelast2d
   %
   
   mesh_filename='plate_with_hole_1500poly_elems.txt';   
+%   mesh_filename='plate_with_hole_600poly_elems.txt';
   
   % method
-  vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
-                              % 'FEM2DT3' (3-node triangles - linear FEM) or
-                              % 'FEM2DQ4' (4-node quadrilaterals - bilinear FEM)
-  
+  vemlab_method='VEM2D';        % 'VEM2D' (polygons - linear VEM) or
+                                % 'FEM2DT3' (3-node triangles - linear FEM) or
+                                % 'FEM2DQ4' (4-node quadrilaterals - bilinear FEM)
+                                
+  % Stability
+  stability_type=2;           % 0 -> without stability
+                              % 1 -> Gain et al.
+                              % 2 -> D-recipe
+                              % 3 -> modified D-recipe
+                           
   % module
-  vemlab_module='LinearElastostatics';  % 'LinearElastostatics' or 'Poisson'
+  vemlab_module='LinearElastostatics';  % 'LinearElastostatics' or 'Poisson'                             
   
   % solver
-  vemlab_solver='sparse';   % 'sparse' or 'dense'      
+  vemlab_solver='sparse';   % 'sparse' or 'dense'  
   
   %% PLOT AND OUTPUT OPTIONS
   % to setup plot and output options go to folder 'config' and 
@@ -78,7 +87,7 @@ function plate_with_hole_linelast2d
   %% VEMLAB CONFIGURATION
   
   config=config_vemlab(opsystem,vemlab_root_dir,mesh_filename,vemlab_module,...
-                       vemlab_method,vemlab_solver);
+                       vemlab_method,vemlab_solver,stability_type);
                                          
   %% PRINT INIT MESSAGE TO SCREEN
 
@@ -101,8 +110,8 @@ function plate_with_hole_linelast2d
   
   %% BODY FORCE FUNCTIONS
   
-  body_force_fun_values.bx=@(x,y)bx_body_force_fun(x,y);
-  body_force_fun_values.by=@(x,y)by_body_force_fun(x,y);
+  body_force_fun_values.bx=@(x,y,matProps)bx_body_force_fun(x,y,matProps);
+  body_force_fun_values.by=@(x,y,matProps)by_body_force_fun(x,y,matProps);
   
   %% ASSEMBLY 
   
@@ -115,13 +124,14 @@ function plate_with_hole_linelast2d
 
   Neumann_boundary_nodes=domainMesh.boundary_nodes.Right;
   Neumann_boundary_dofs=domainMesh.boundary_dofs.Right; 
-  Neumann_fun_values.fx=@(x,y)fx_Neumann_fun(x,y);  
-  Neumann_fun_values.fy=@(x,y)fy_Neumann_fun(x,y);   
+  Neumann_fun_values.fx=@(x,y,matProps)fx_Neumann_fun(x,y,matProps);  
+  Neumann_fun_values.fy=@(x,y,matProps)fy_Neumann_fun(x,y,matProps);   
   
   %% APPLY NEUMANN BCS ON THE BOUNDARY NODES 
   
   fprintf('Applying Neumann boundary conditions...\n');   
-  Neumann_BCs=compute_Neumann_BCs(domainMesh,config,Neumann_boundary_nodes,Neumann_boundary_dofs,Neumann_fun_values); 
+  Neumann_BCs=compute_Neumann_BCs(domainMesh,config,Neumann_boundary_nodes,...
+                                  Neumann_boundary_dofs,Neumann_fun_values,matProps); 
   f_global(Neumann_BCs.indexes)=f_global(Neumann_BCs.indexes)+Neumann_BCs.values;
   
   %% DIRICHLET BOUNDARY NODES/DOFS/FUNCTIONS (left side of the beam) 
@@ -134,15 +144,15 @@ function plate_with_hole_linelast2d
   Dirichlet_boundary_nodes=[Dirichlet_boundary_nodes;domainMesh.boundary_nodes.MidNodeRightFace];
   Dirichlet_boundary_dofs=[Dirichlet_boundary_dofs;domainMesh.boundary_dofs.MidNodeRightFace];
   % define the values of the Dirichlet boundary conditions
-  Dirichlet_fun_values.ux=@(x,y)ux_Dirichlet_fun(x,y);  
-  Dirichlet_fun_values.uy=@(x,y)uy_Dirichlet_fun(x,y);   
+  Dirichlet_fun_values.ux=@(x,y,matProps)ux_Dirichlet_fun(x,y,matProps);  
+  Dirichlet_fun_values.uy=@(x,y,matProps)uy_Dirichlet_fun(x,y,matProps);   
 
   %% ENFORCE DIRICHLET BCS ON THE BOUNDARY NODES
   
   fprintf('Enforcing Dirichlet boundary conditions...\n');   
   u_nodal_sol=zeros(2*length(domainMesh.coords),1);    
   DB_dofs=compute_Dirichlet_BCs(domainMesh,config,Dirichlet_boundary_nodes,...
-                                Dirichlet_boundary_dofs,Dirichlet_fun_values); % DOFs with Dirichlet BCs
+                                Dirichlet_boundary_dofs,Dirichlet_fun_values,matProps); % DOFs with Dirichlet BCs
   u_nodal_sol(DB_dofs.indexes)=DB_dofs.values;
   f_global=f_global-K_global*u_nodal_sol;    
   
@@ -166,7 +176,7 @@ end
 
 %% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE PLATE WITH A HOLE
 
-function bx = bx_body_force_fun(x,y)
+function bx = bx_body_force_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "bx"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -174,7 +184,7 @@ function bx = bx_body_force_fun(x,y)
   
   bx=0; % is used as a force per volume   
 end
-function by = by_body_force_fun(x,y)
+function by = by_body_force_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "by"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -185,7 +195,7 @@ end
 
 %% DEFINITION OF NEUMANN FUNCTIONS FOR THE PLATE WITH A HOLE
 % to apply on the right boundary
-function fx = fx_Neumann_fun(x,y)
+function fx = fx_Neumann_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "fx"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -193,7 +203,7 @@ function fx = fx_Neumann_fun(x,y)
   
   fx=100;  % is used as a force per length   
 end
-function fy = fy_Neumann_fun(x,y)
+function fy = fy_Neumann_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "fy"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -204,7 +214,7 @@ end
 
 %% DEFINITION OF DIRICHLET FUNCTIONS FOR THE PLATE WITH A HOLE
 % to apply on the left boundary and on the middle node of the righ boundary
-function ux = ux_Dirichlet_fun(x,y)
+function ux = ux_Dirichlet_fun(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).
@@ -222,7 +232,7 @@ function ux = ux_Dirichlet_fun(x,y)
   % added in the list of boundary nodes, so it is the last one in the ux array)
   ux(length(x),2)=1;
 end
-function uy = uy_Dirichlet_fun(x,y)
+function uy = uy_Dirichlet_fun(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).

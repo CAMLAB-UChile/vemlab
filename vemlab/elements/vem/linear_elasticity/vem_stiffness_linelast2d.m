@@ -1,4 +1,4 @@
-function [Kvem]=vem_stiffness_linelast2d(verts,matProps)
+function [Kvem]=vem_stiffness_linelast2d(verts,matProps,config)
   % area of the element
 %   area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).*verts(:,2);
 %   area=0.5*abs(sum(area_components));
@@ -10,12 +10,26 @@ function [Kvem]=vem_stiffness_linelast2d(verts,matProps)
   Hr=vem_Hr_linelast2d(verts);
   Pp=Hr*Wr'+Hc*Wc';
   I_2N=eye(2*length(verts));
-  % scaling parameter
-  gamma=1.0;
-  alpha=gamma*area*trace(matProps.D)/trace(Hc'*Hc);
-  % VEM element stiffness
-  Se=alpha*I_2N;
+  
+  nvertices=length(verts);
+  if config.stability_type==1 % Gain et al.
+    gamma=1.0;
+    alpha=gamma*area*trace(matProps.D)/trace(Hc'*Hc);
+    Se=alpha*I_2N;
+  elseif config.stability_type==2  % D-recipe
+    sizeKc=2*nvertices;    
+    Se = max(eye(sizeKc),diag(diag(area*Wc*(matProps.D)*Wc')));   
+  elseif config.stability_type==3  % modified D-recipe
+    sizeKc=2*nvertices;
+    Se=max((trace(Wc*(matProps.D)*(Wc')*area)/sizeKc)*eye(sizeKc),diag(diag(area*Wc*(matProps.D)*Wc')));   
+  else
+    throw_error('In vem_stiffness_linelast2d.m: stability_type');
+  end
 
-  %Se = diag(diag(area*Wc*(matProps.D)*Wc'));
-  Kvem=area*Wc*(matProps.D)*Wc'+(I_2N-Pp)'*Se*(I_2N-Pp);
+  if config.stability_type==0 % no stability
+    Kvem=Wc*(matProps.D)*(Wc')*area; 
+  else
+    Kvem=Wc*(matProps.D)*(Wc')*area + (I_2N-Pp)'*Se*(I_2N-Pp); 
+  end
+  
 end

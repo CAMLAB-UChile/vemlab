@@ -1,9 +1,9 @@
 %------------------------------------------------------------------------------
-%                                   VEMLab
+%        VEMLAB: A Matlab Library for the Virtual Element Method
 %------------------------------------------------------------------------------
 %                                  
-%            Version      : 2.3                     
-%            Date         : 5-JULY-2020
+%            Version      : 2.4                    
+%            Date         : 12-JANUARY-2022
 %            Source code  : http://camlab.cl/software/vemlab/
 %
 %------------------------------------------------------------------------------
@@ -12,7 +12,7 @@
 %
 %------------------------------------------------------------------------------
 %
-%                          Copyright (c) 2018 -2020                   
+%                          Copyright (c) 2018 -2022                   
 %                        by Alejandro Ortiz-Bernardin 
 %                             aortizb@uchile.cl
 %							   
@@ -20,7 +20,6 @@
 %                   Universidad de Chile,  Santiago, CHILE                        
 %						 
 %               Computational and Applied Mechanics Laboratory,
-%                Center for Modern Computational Engineering,
 %                 Facultad de Ciencias Físicas y Matemáticas,
 %                   Universidad de Chile, Santiago, CHILE
 %                            All Rights Reserved.                              

@@ -1,4 +1,4 @@
-function fb=vem_body_force_linelast2d(verts,body_force_fun_values)
+function fb=vem_body_force_linelast2d(verts,body_force_fun_values,matProps)
   % area of the element  
 %   area_components=verts(:,1).*verts([2:end,1],2)-verts([2:end,1],1).*verts(:,2);
 %   area=0.5*abs(sum(area_components));
@@ -6,7 +6,7 @@ function fb=vem_body_force_linelast2d(verts,body_force_fun_values)
   % number of vertices
   n=length(verts);
   % vector of nodal body forces
-  bf=body_force_function_linelast2d(verts,body_force_fun_values);
+  bf=body_force_function_linelast2d(verts,body_force_fun_values,matProps);
   % mean body forces: this should be replaced by b_j = 1/|E| * int_E b_j dx
   mean_bfx=(1/n)*sum(bf(1:2:(2*n-1),1));
   mean_bfy=(1/n)*sum(bf(2:2:(2*n),1));

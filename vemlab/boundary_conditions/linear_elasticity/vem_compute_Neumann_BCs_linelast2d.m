@@ -1,7 +1,7 @@
 function Neumann_BCs=...
            vem_compute_Neumann_BCs_linelast2d(domainMesh,Neumann_boundary_nodes,...
                                               Neumann_boundary_dofs,...
-                                              Neumann_fun_value)
+                                              Neumann_fun_value,matProps)
   coords=domainMesh.coords;  
   nodes=Neumann_boundary_nodes;  
   % VEM interpolation matrix
@@ -22,10 +22,10 @@ function Neumann_BCs=...
     x1=x(first_node); y1=y(first_node);
     x2=x(second_node); y2=y(second_node);      
     edge_length=norm([x1-x2; y1-y2]);
-    tx_first_node=Neumann_fun_value.fx(x1,y1);
-    ty_first_node=Neumann_fun_value.fy(x1,y1);
-    tx_second_node=Neumann_fun_value.fx(x2,y2);      
-    ty_second_node=Neumann_fun_value.fy(x2,y2);
+    tx_first_node=Neumann_fun_value.fx(x1,y1,matProps);
+    ty_first_node=Neumann_fun_value.fy(x1,y1,matProps);
+    tx_second_node=Neumann_fun_value.fx(x2,y2,matProps);      
+    ty_second_node=Neumann_fun_value.fy(x2,y2,matProps);
     traction_first_node=[tx_first_node; ty_first_node];
     traction_second_node=[tx_second_node; ty_second_node];       
     mean_traction=(traction_first_node+traction_second_node)/2;
@@ -36,8 +36,19 @@ function Neumann_BCs=...
     Neumann_BCs.values(range2)=Neumann_BCs.values(range2)+edge_length*N_bar'*mean_traction;  
 %       This also works: if shape functions are defined as in 1D FEM, the following coincides with a trapezoidal rule
 %       Neumann_BCs.values(range1)=Neumann_BCs.values(range1)+edge_length*N_bar'*traction_first_node;
-%       Neumann_BCs.values(range2)=Neumann_BCs.values(range2)+edge_length*N_bar'*traction_second_node;      
+%       Neumann_BCs.values(range2)=Neumann_BCs.values(range2)+edge_length*N_bar'*traction_second_node;    
+
+%     x1
+%     y1
+%     traction_first_node
+%     x2
+%     y2
+%     traction_second_node
+
   end
   % indices of the dofs that have an associated Neumman BC
-  Neumann_BCs.indexes=Neumann_boundary_dofs;
+  Neumann_BCs.indexes=Neumann_boundary_dofs;  
+  
+%   Neumann_BCs.values
+  
 end

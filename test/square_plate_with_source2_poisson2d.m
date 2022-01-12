@@ -1,8 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                   VEMLab
-%-------------------------------------------------------------------------------                                  
-%  Version      : 2.3                    
-%  Date         : 5-JULY-2020
+%         VEMLAB: A Matlab Library for the Virtual Element Method
+%-------------------------------------------------------------------------------
+%  Version      : 2.4                      
 %  Source code  : http://camlab.cl/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -10,22 +9,25 @@
 %              (See updates and version details in "version.txt")
 %-------------------------------------------------------------------------------
 %
-%                       Square Plate with a Source
-%                           2D Poisson Problem
+%                   Square Plate (1x1) with a Source
+%                         2D Poisson Problem
 %
 %-------------------------------------------------------------------------------
 % References 
 % ==========
+% VEMLAB implementation is based on the VEM theory given in:
+%
 % [1] A. Ortiz-Bernardin, C. Alvarez, N. Hitschfeld-Kahler, A. Russo, 
-%     R. Silva, A. Olate-Sanzana. Veamy: an extensible object-oriented 
-%     C++ library for the virtual element method. Numerical Algorithms,
-%     Vol. 82, pp. 1189-1220, 2019
+%     R. Silva, A. Olate-Sanzana, "Veamy: an extensible object-oriented 
+%     C++ library for the virtual element method," Numerical Algorithms, 
+%     volume 82, pages 1189–1220(2019)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function square_plate_with_source2_poisson2d
 
   close all;
+  clear all;
   clc;
   
   %% THIS BLOCK MUST BE PUT ON EVERY TEST FILE
@@ -47,16 +49,16 @@ function square_plate_with_source2_poisson2d
   
   % mesh filename: see available sample mesh files in folder "test/mesh_files/"
   %
-  %     VEM2D meshes have the keyword "polygon" in the mesh filename
+  %     VEM2D meshes have the keyword "poly" in the mesh filename
   %     FEM2DQ4 meshes have the keyword "q4" in the mesh filename
-  %     FEM2DT3 meshes have the keyword "q4" in the mesh filename 
+  %     FEM2DT3 meshes have the keyword "t3" in the mesh filename 
   % 
   %     VEM2D meshes can be used with 'VEM2D' method only.
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
   
-  mesh_filename='square_plate_poisson2d_1000poly_elems.txt'; 
+  mesh_filename='square_plate_poisson2d_250poly_elems.txt'; 
 
   % method
   vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
@@ -67,7 +69,7 @@ function square_plate_with_source2_poisson2d
   vemlab_module='Poisson';    % 'LinearElastostatics' or 'Poisson'
   
   % solver
-  vemlab_solver='sparse';   % 'sparse' or 'dense'   
+  vemlab_solver='sparse';   % 'sparse' or 'dense'  
   
   %% PLOT AND OUTPUT OPTIONS
   % to setup plot and output options go to folder 'config' and 
@@ -75,8 +77,9 @@ function square_plate_with_source2_poisson2d
   
   %% VEMLAB CONFIGURATION
   
+  stability_type = []; % not used---only one stability implemented for Poisson module
   config=config_vemlab(opsystem,vemlab_root_dir,mesh_filename,vemlab_module,...
-                       vemlab_method,vemlab_solver);
+                       vemlab_method,vemlab_solver,stability_type);
                                          
   %% PRINT INIT MESSAGE TO SCREEN
 
@@ -99,7 +102,7 @@ function square_plate_with_source2_poisson2d
   
   %% SOURCE TERM FUNCTIONS
   
-  source_term_fun_values=@(x,y)source_term_fun(x,y);
+  source_term_fun_values=@(x,y,matProps)source_term_fun(x,y,matProps);
   
   %% ASSEMBLY 
   
@@ -114,14 +117,14 @@ function square_plate_with_source2_poisson2d
   
   Dirichet_boundary_nodes=domainMesh.boundary_nodes.all; 
   Dirichet_boundary_dofs=domainMesh.boundary_dofs.all; 
-  Dirichlet_fun_values=@(x,y)u_Dirichlet_fun(x,y);   
+  Dirichlet_fun_values=@(x,y,matProps)u_Dirichlet_fun(x,y,matProps);   
 
   %% ENFORCE DIRICHLET BCS ON THE BOUNDARY NODES
   
   fprintf('Enforcing Dirichlet boundary conditions...\n');   
   u_nodal_sol=zeros(length(domainMesh.coords),1);    
   DB_dofs=compute_Dirichlet_BCs(domainMesh,config,Dirichet_boundary_nodes,...
-                                Dirichet_boundary_dofs,Dirichlet_fun_values); % DOFs with Dirichlet BCs
+                                Dirichet_boundary_dofs,Dirichlet_fun_values,matProps); % DOFs with Dirichlet BCs
   u_nodal_sol(DB_dofs.indexes)=DB_dofs.values;
   f_global=f_global-K_global*u_nodal_sol;    
   
@@ -136,9 +139,9 @@ function square_plate_with_source2_poisson2d
   %% EXACT SOLUTIONS
   % (see definition of functions at the bottom of this file)
   
-  exact_solution_handle.u=@(x,y)u_exact(x,y);
-  exact_solution_handle.dudx=@(x,y)dudx_exact(x,y);   
-  exact_solution_handle.dudy=@(x,y)dudy_exact(x,y);    
+  exact_solution_handle.u=@(x,y,matProps)u_exact(x,y,matProps);
+  exact_solution_handle.dudx=@(x,y,matProps)dudx_exact(x,y,matProps);   
+  exact_solution_handle.dudy=@(x,y,matProps)dudy_exact(x,y,matProps);    
   
   %% NORMS OF THE ERROR
   
@@ -161,7 +164,7 @@ end
 
 %% DEFINITION OF THE SOURCE TERM FUNCTION
 
-function b = source_term_fun(x,y)
+function b = source_term_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "b"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -173,7 +176,7 @@ end
 
 %% DEFINITION OF DIRICHLET FUNCTIONS FOR THE SQUARE PLATE WITH HEAT SOURCE
 
-function u = u_Dirichlet_fun(x,y)
+function u = u_Dirichlet_fun(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).
@@ -191,7 +194,7 @@ end
 
 %% DEFINITION OF THE EXACT SOLUTIONS
 
-function u = u_exact(x,y)
+function u = u_exact(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -200,7 +203,7 @@ function u = u_exact(x,y)
   u=1/(2*pi*pi)*sin(pi*x).*sin(pi*y);
 end
 
-function dudx = dudx_exact(x,y)
+function dudx = dudx_exact(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -209,7 +212,7 @@ function dudx = dudx_exact(x,y)
   dudx=1/(2*pi)*cos(pi*x).*sin(pi*y);
 end
 
-function dudy = dudy_exact(x,y)
+function dudy = dudy_exact(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the

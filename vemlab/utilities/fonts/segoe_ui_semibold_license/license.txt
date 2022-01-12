@@ -1,0 +1,18 @@
+Font family: Segoe UI Semibold
+
+Font subfamily identification: Regular
+
+Unique identifier: Segoe UI Semibold
+
+Full font name: Segoe UI Semibold
+
+Version: Version 5. 32
+
+Postscript font name: SegoeUI-Semibold
+
+Trademark notice: Segoe is a trademark of the Microsoft group of companies.
+
+Manufacturer name: Microsoft Corporation
+
+License: You may use this font as permitted by the EULA for the product in which this font is included to display and print content. You may only embed this font in content as permitted by the embedding restrictions included in this font. 
+See https://docs.microsoft.com/en-us/typography/font-list/segoe-ui

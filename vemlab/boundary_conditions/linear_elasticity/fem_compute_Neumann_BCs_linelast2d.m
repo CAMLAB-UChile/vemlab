@@ -1,7 +1,7 @@
 function Neumann_BCs=...
               fem_compute_Neumann_BCs_linelast2d(domainMesh,Neumann_boundary_nodes,...
                                               Neumann_boundary_dofs,...
-                                              Neumann_fun_value)
+                                              Neumann_fun_value,matProps)
   coords=domainMesh.coords;
   nodes=Neumann_boundary_nodes;
   % FEM interpolation matrix for 1-pt rule: N(xi=0)
@@ -24,8 +24,8 @@ function Neumann_BCs=...
     edge_length=norm([x1-x2; y1-y2]);
     xg=0.5*x1+0.5*x2; % isoparametric mapping at xi=0: xg=N1(0)*x1+N2(0)*x2
     yg=0.5*y1+0.5*y2; % isoparametric mapping at xi=0: yg=N1(0)*y1+N2(0)*y2
-    tx=Neumann_fun_value.fx(xg,yg);
-    ty=Neumann_fun_value.fy(xg,yg);       
+    tx=Neumann_fun_value.fx(xg,yg,matProps);
+    ty=Neumann_fun_value.fy(xg,yg,matProps);       
     traction=[tx; ty]; 
     range1=(2*first_node-1):(2*first_node);
     range2=(2*second_node-1):(2*second_node);

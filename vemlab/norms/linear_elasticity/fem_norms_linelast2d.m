@@ -1,6 +1,8 @@
-function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
+function [h_size,L2rel,H1rel,L2prel]=fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
   % initialize some variables
-  h_max=0; L2_norm_top=0; L2_norm_bottom=0; 
+%   h_max=0; 
+  h_size=0;  
+  L2_norm_top=0; L2_norm_bottom=0; 
   H1_seminorm_top=0; H1_seminorm_bottom=0; 
   
   % mesh data
@@ -24,15 +26,17 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
 
       % element VEM nodal solution
       uh_elem_column=uh_global(dofs);
+      
+      % area of the element
+      area=triangle_area(elem_coord);        
 
       % h = nodal spacing = maximum distance between any two neighbor nodes in the mesh
-      h_size=max_edge_size(elem_coord);
-      if h_size>h_max
-        h_max=h_size;
-      end  
-
-      % area of the element
-      area=triangle_area(elem_coord);   
+%       h_size=max_edge_size(elem_coord);
+%       if h_size>h_max
+%         h_max=h_size;
+%       end  
+      h_E=area;    
+      h_size=h_size+h_E;
 
       % deformation matrix
       x=elem_coord(:,1); y=elem_coord(:,2);  
@@ -54,13 +58,12 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
       for ngp=1:length(gauss_weights)
         wgp=gauss_weights(ngp);
         xgp=gauss_points(ngp,:); % integration point in the form [x y z]            
-        [u_exact_xgp,dudx_exact_xgp,dudy_exact_xgp]=...
-                      exact_solutions_linelast2d(exact_sol,xgp);
 
         % exact solution at Gauss point
-        du_exact_xgp=[dudx_exact_xgp;dudy_exact_xgp]; % [duxdx; duydx; duxdy; duydy]
-        strain_exact_xgp=[du_exact_xgp(1);du_exact_xgp(4);...
-                          0.5*(du_exact_xgp(3)+du_exact_xgp(2))];   
+        [u_exact_xgp,p_exact_xgp,strainvec_exact_xgp]=...
+                      exact_solutions_linelast2d(exact_sol,xgp,matProps);
+        strain_exact_xgp=strainvec_exact_xgp';                           
+                        
 
         % displacement projection at Gauss point
         if strcmp(config.vemlab_method,'FEM2DT3')
@@ -91,6 +94,8 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
       
     end
     
+    h_size=sqrt(h_size/num_elem); % square root of the average area of the elements 
+    
   elseif strcmp(config.vemlab_method,'FEM2DQ4')
     
     % loop over elements
@@ -109,10 +114,12 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
       uh_elem_column=uh_global(dofs);
 
       % h = nodal spacing = maximum distance between any two neighbor nodes in the mesh
-      h_size=max_edge_size(elem_coord);
-      if h_size>h_max
-        h_max=h_size;
-      end  
+%       h_size=max_edge_size(elem_coord);
+%       if h_size>h_max
+%         h_max=h_size;
+%       end 
+      h_E=polyarea(elem_coord(:,1),elem_coord(:,2));    
+      h_size=h_size+h_E;
                              
       % compute norms by numerical integration
       num_gp=2; % number of Gauss points per axis
@@ -168,11 +175,10 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
              0,N1,0,N2,0,N3,0,N4];  
           uh_xgp=N*uh_elem_column;           
           % exact solutions at Gauss point                        
-          [u_exact_xgp,dudx_exact_xgp,dudy_exact_xgp]=...
-                    exact_solutions_linelast2d(exact_sol,xgp);
-          du_exact_xgp=[dudx_exact_xgp;dudy_exact_xgp]; % [duxdx; duydx; duxdy; duydy]
-          strain_exact_xgp=[du_exact_xgp(1);du_exact_xgp(4);...
-                            0.5*(du_exact_xgp(3)+du_exact_xgp(2))]; 
+          [u_exact_xgp,p_exact_xgp,strainvec_exact_xgp]=...
+                        exact_solutions_linelast2d(exact_sol,xgp,matProps);
+          strain_exact_xgp=strainvec_exact_xgp';                             
+                                          
           % errors at Gauss point
           u_error_xgp=uh_xgp-u_exact_xgp;
           strain_error_xgp=strain_uh_xgp-strain_exact_xgp;
@@ -187,7 +193,9 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
         end
       end      
     
-    end    
+    end 
+    
+    h_size=sqrt(h_size/num_elem); % square root of the average area of the elements    
     
   else
     throw_error('Error in fem_norms_linelast2d.m: vemlab_method');
@@ -195,15 +203,18 @@ function fem_norms_linelast2d(exact_sol,uh_global,domainMesh,config,matProps)
   
   % Finish computation of the norms of the errors
   L2rel = sqrt(L2_norm_top/L2_norm_bottom);
-  L2abs = sqrt(L2_norm_top);  
+%   L2abs = sqrt(L2_norm_top);  
   H1rel = sqrt(H1_seminorm_top/H1_seminorm_bottom);
-  H1abs = sqrt(H1_seminorm_top);
+%   H1abs = sqrt(H1_seminorm_top);
+  
+  L2prel = []; % L2 norm of the pressure error
   
   % Print out norms
   fprintf('Relative L2-norm of the error = %.20f\n',L2rel); 
   fprintf('Relative H1-seminorm of the error = %.20f\n',H1rel);  
-  fprintf('Absolute L2-norm of the error = %.20f\n',L2abs); 
-  fprintf('Absolute H1-seminorm of the error = %.20f\n',H1abs);  
-  fprintf('Mesh spacing (h) = %.12f\n',h_max);    
+%   fprintf('Absolute L2-norm of the error = %.20f\n',L2abs); 
+%   fprintf('Absolute H1-seminorm of the error = %.20f\n',H1abs);  
+%   fprintf('Mesh spacing (h) = %.12f\n',h_max);    
+  fprintf('Element size (sqrt(average area of the elements)): h = %.12f\n\n',h_size);  
   
 end

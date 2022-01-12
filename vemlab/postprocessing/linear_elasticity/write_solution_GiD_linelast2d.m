@@ -65,7 +65,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,...
-                                                     stressesT3,strainsT3,config)
+                                                     stresses,strains,config)
 
   fprintf('\n'); 
   fprintf('Writing %s solution to a GiD file...\n',config.vemlab_method); 
@@ -90,7 +90,7 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
   for i=1:num_polygons
     % make the subtriangulation of the polygonal mesh that will be used with
     % the entries stored in stressesT3 and strainsT3 --- see note above.
-    if strcmp(config.vemlab_method,'VEM2D')
+    if strcmp(config.vemlab_method,'VEM2D')||strcmp(config.vemlab_method,'NIVEM2D')
       connect=triangulate_polygon(domainMesh,i);
     elseif strcmp(config.vemlab_method,'FEM2DT3')
       node_indices=domainMesh.connect(i,:);
@@ -101,7 +101,26 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
     for tr_i=1:size(connect,1)
       k=k+1;   
       % write mesh of triangles
-      fprintf(fid,'%d %d %d %d %d\n',k,connect(tr_i,1),connect(tr_i,2),connect(tr_i,3),1);     
+      fprintf(fid,'%d %d %d %d %d\n',k,connect(tr_i,1),connect(tr_i,2),connect(tr_i,3),1);
+      % AOB: (19-AUG-2021) assign the element stresses and strains to the
+      % element's subtriangulation since stresses and strains contain one
+      % constant value per polygon 
+      stressesT3.s11(k)=stresses.s11(i);
+      stressesT3.s22(k)=stresses.s22(i);  
+      stressesT3.s33(k)=stresses.s33(i); 
+      stressesT3.s12(k)=stresses.s12(i);  
+      stressesT3.s1(k)=stresses.s1(i);       
+      stressesT3.s2(k)=stresses.s2(i);  
+      stressesT3.s3(k)=stresses.s3(i);   
+      stressesT3.vm(k)=stresses.vm(i);    
+      stressesT3.p(k)=stresses.p(i);
+      strainsT3.e11(k)=strains.e11(i);    
+      strainsT3.e22(k)=strains.e22(i);  
+      strainsT3.e33(k)=strains.e33(i);         
+      strainsT3.e12(k)=strains.e12(i);
+      strainsT3.e1(k)=strains.e1(i);   
+      strainsT3.e2(k)=strains.e2(i);  
+      strainsT3.e3(k)=strains.e3(i);     
     end
   end
   num_triangles=k;
@@ -230,6 +249,18 @@ function write_solution_GiD_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
       end
     end
     fprintf(fid,'End Values\n');  
+    
+    fprintf(fid,'Result  "Stresses//Pressure"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Values\n');
+    kk=1;
+    for i=1:num_triangles
+      fprintf(fid,'%d ',i); % element number
+      for j=1:npoints
+        fprintf(fid,'%f\n',stressesT3.p(kk));
+        kk=kk+1;
+      end
+    end
+    fprintf(fid,'End Values\n');     
   end
 
   %% WRITE STRAINS
@@ -528,6 +559,18 @@ function write_solution_GiD_FEM2DQ4_linelast2d(domainMesh,displacements,stresses
       end
     end
     fprintf(fid,'End Values\n');
+    
+    fprintf(fid,'Result  "Stresses//Pressure"   "Load Analysis"   %d   Scalar OnGaussPoints "Given gauss points"\n',step);
+    fprintf(fid,'Values\n');
+    kk=1;
+    for i=1:numel
+      fprintf(fid,'%d ',i); % element number
+      for j=1:npoints
+        fprintf(fid,'%f\n',stresses.p(kk));
+        kk=kk+1;
+      end
+    end
+    fprintf(fid,'End Values\n');    
   end
 
   %% WRITE STRAINS

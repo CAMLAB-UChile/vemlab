@@ -52,8 +52,10 @@ function config = config_vemlab_mesher(opsystem,vemlab_root_dir,mesh_filename)
   is_Linux = strcmp(opsystem,'GLNX86') || strcmp(opsystem,'GLNXA64');  
   if is_Windows  
     config.mesh_folder_location=[vemlab_root_dir,'\test\mesh_files\'];
+    config.GiD_T3_mesh_folder_location=[vemlab_root_dir,'\test\mesh_files\GiD_T3_mesh_files\'];
   elseif is_Linux 
     config.mesh_folder_location=[vemlab_root_dir,'/test/mesh_files/'];  
+    config.GiD_T3_mesh_folder_location=[vemlab_root_dir,'/test/mesh_files/GiD_T3_mesh_files/']; 
   end 
   
 end

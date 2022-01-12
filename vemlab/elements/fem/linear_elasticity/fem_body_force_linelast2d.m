@@ -1,9 +1,9 @@
-function fb = fem_body_force_linelast2d(verts,config,body_force_fun_values) 
+function fb = fem_body_force_linelast2d(verts,config,body_force_fun_values,matProps) 
   if strcmp(config.vemlab_method,'FEM2DT3')
     % area of the element 
     area=triangle_area(verts);
     % vector of nodal body forces
-    bf=body_force_function_linelast2d(verts,body_force_fun_values);                                     
+    bf=body_force_function_linelast2d(verts,body_force_fun_values,matProps);                                     
     bx1=bf(1); bx2=bf(3); bx3=bf(5); % when b is not a constant, b is linearly 
     by1=bf(2); by2=bf(4); by3=bf(6); % interpolated inside the element and we end
                                      % up with nodal values of b. If the nodal
@@ -58,7 +58,7 @@ function fb = fem_body_force_linelast2d(verts,config,body_force_fun_values)
            0,N1,0,N2,0,N3,0,N4];    
         x=N1*xcoord(1)+N2*xcoord(2)+N3*xcoord(3)+N4*xcoord(4);
         y=N1*ycoord(1)+N2*ycoord(2)+N3*ycoord(3)+N4*ycoord(4);
-        bf=body_force_function_linelast2d([x,y],body_force_fun_values);
+        bf=body_force_function_linelast2d([x,y],body_force_fun_values,matProps);
         fb=fb+N'*bf*wxi(gpxi)*weta(gpeta)*detJ;
       end
     end    

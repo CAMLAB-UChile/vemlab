@@ -1,23 +1,38 @@
 ------------------------------------------------------------------------------
-                                    VEMLab
+            VEMLAB: A Matlab Library for the Virtual Element Method 
+
                 Source code  : http://camlab.cl/software/vemlab
               (See Copyright and License notice in "license.txt")
 
-                            Copyright (c) 2018-2020                     
+                            Copyright (c) 2018-2022                     
                          by Alejandro Ortiz-Bernardin 
                                aortizb@uchile.cl
 				                 http://camlab.cl/alejandro/
 							   
-                    Department of Mechanical Engineering                        
-                   Universidad de Chile,  Santiago, CHILE                        
+                     Department of Mechanical Engineering                        
+                    Universidad de Chile,  Santiago, CHILE                        
 						 
-               Computational and Applied Mechanics Laboratory,
-                Center for Modern Computational Engineering,
-                 Facultad de Ciencias Físicas y Matemáticas,
-                   Universidad de Chile, Santiago, CHILE
-                            All Rights Reserved.
+                Computational and Applied Mechanics Laboratory,
+                  Facultad de Ciencias Físicas y Matemáticas,
+                    Universidad de Chile, Santiago, CHILE
+                             All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
+Version 2.4 (12-JANUARY-2022):
+
+- Add several options for in plot_and_output_options.m. New options:
+   delete existing output files, plot front/isometric view of the figure,
+   print and save pdf figures, save .fig figures, set figure resolution, color system 
+   for the colorbar, colorbar ticks and lines, figure ticks, figure grid, set min/max 
+   limit of the colorbar.
+- Several enhancements to the output figures.
+- Improvements for plotting of FEA results on FEM2DQ4 elements.
+- Add several example test problems in "test" folder.
+- Create a polygonal mesh from a 3-node triangular mesh (see folder "mesher").
+- Three stabilization options are now available in the LinearElastostatics module.
+- Mesh size parameter is now computed as the average area of the polygons in the mesh.
+- Update VEMLAB Primer.
+
 Version 2.3 (5-JULY-2020):
 
 - Add possibility of using multiple materials in the Poisson module.

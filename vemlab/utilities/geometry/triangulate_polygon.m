@@ -47,12 +47,21 @@ function connect = triangulate_polygon(domainMesh,element_id)
 %   fprintf('******* Triangulating element %d\n',element_id);
   
   elem_nodes=domainMesh.connect{element_id,1};
+%   element_id
+%   elem_nodes
   elem_coords=domainMesh.coords(elem_nodes,:);
-  T = triangulation(polyshape(elem_coords));
+%   T = triangulation(polyshape(elem_coords));
+  T = triangulation(polyshape(elem_coords,'KeepCollinearPoints',true,'Simplify',false));  
   num_triangles = size(T.ConnectivityList,1);
   connect = zeros(num_triangles,3);
   for e = 1:num_triangles
     connect(e,:) = elem_nodes(T.ConnectivityList(e,:));
   end
+  
+%   connect
+  
+%   figure
+%   triplot(T);
+ 
 end
 

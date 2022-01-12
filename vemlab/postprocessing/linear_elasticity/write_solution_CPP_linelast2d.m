@@ -1,8 +1,8 @@
-function write_solution_CPP_linelast2d(domainMesh,displacements,stress,strain,triangles_per_polygon,config)
+function write_solution_CPP_linelast2d(domainMesh,displacements,stress,strain,config)
 
   if strcmp(config.vemlab_method,'VEM2D')
     write_solution_CPP_VEM2D_linelast2d(domainMesh,displacements,stress,...
-                                        strain,triangles_per_polygon,config);
+                                        strain,config);
     write_polymesh_CPP_VEM2D_linelast2d(domainMesh,config);
   else
     throw_warning('*** Warning in write_solution_CPP_linelast2d.m: skipping writing of CPP file. Procedure not available for this vemlab_method ***')
@@ -12,7 +12,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%                                  VEMLab
+%                                    VEMLab 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FUNCTION:          write_solution_CPP_VEM2D_FEM2DT3_linelast2d
@@ -61,8 +61,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function write_solution_CPP_VEM2D_linelast2d(domainMesh,displacements,...
-                                             stresses,strains,...
-                                             triangles_per_polygon,config)
+                                             stresses,strains,config)
   fprintf('\n'); 
   fprintf('Writing %s solution to a CPP text file...\n',config.vemlab_method); 
   % output file
@@ -96,19 +95,16 @@ function write_solution_CPP_VEM2D_linelast2d(domainMesh,displacements,...
     fprintf(fid,'ComponentsNames: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n','e_11','e_22','e_33','e_12','s_11','s_22','s_33','s_12','VM','e_1','e_2','e_3','s_1','s_2','s_3');  
     fprintf(fid,'NumberOfPolygons: %d\n',numel);  
     fprintf(fid,'Polygon e_11 e_22 e_33 e_12 s_11 s_22 s_33 s_12 VM e_1 e_2 e_3 s_1 s_2 s_3\n');    
-    k = 1;
-    for elem_i=1:numel
+    for e=1:numel
       fprintf(fid,'%d %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n', ...
-              elem_i,strains.e11(k),strains.e22(k),strains.e33(k),...
-              strains.e12(k),stresses.s11(k),stresses.s22(k),...
-              stresses.s33(k),stresses.s12(k),stresses.vm(k),...
-              strains.e1(k),strains.e2(k),strains.e3(k),...
-              stresses.s1(k),stresses.s2(k),stresses.s3(k));   
-      num_triangles = triangles_per_polygon(elem_i);
-      k = k + num_triangles; % points to the first triangle into the next polygon subdivision            
+              e,strains.e11(e),strains.e22(e),strains.e33(e),...
+              strains.e12(e),stresses.s11(e),stresses.s22(e),...
+              stresses.s33(e),stresses.s12(e),stresses.vm(e),...
+              strains.e1(e),strains.e2(e),strains.e3(e),...
+              stresses.s1(e),stresses.s2(e),stresses.s3(e));             
     end
   else
-    throw_error('Error in write_solution_CPP_linelast2d.m --> write_solution_CPP_VEM2D_FEM2DT3_linelast2d: stresses container is empty\n');
+    throw_error('Error in write_solution_CPP_linelast2d.m --> write_solution_CPP_VEM2D_linelast2d: stresses container is empty\n');
   end
   fprintf('Check CPP output files in folder: %s\n',...
            config.CPP_output_folder_location);   

@@ -1,4 +1,4 @@
-function [K_global,f_global] = vem_sparse_assembly_linelast2d(domainMesh,matProps,body_force_fun_values)
+function [K_global,f_global] = vem_sparse_assembly_linelast2d(domainMesh,matProps,body_force_fun_values,config)
   num_nodes=length(domainMesh.coords(:,1)); 
   numel=length(domainMesh.connect);  
   
@@ -36,8 +36,8 @@ function [K_global,f_global] = vem_sparse_assembly_linelast2d(domainMesh,matProp
 %     f_global(ind)=f_global(ind)+vem_body_force_linelast2d(verts,body_force_fun_values);
          
     num_eldofs = 2*length(nodes);
-    K_local = vem_stiffness_linelast2d(verts,matProps);
-    f_local = vem_body_force_linelast2d(verts,body_force_fun_values);
+    K_local = vem_stiffness_linelast2d(verts,matProps,config);
+    f_local = vem_body_force_linelast2d(verts,body_force_fun_values,matProps);
     ind_vector_K = (1:num_eldofs^2) + pos_vector_K;
     ind_vector_f = (1:num_eldofs) + pos_vector_f;
     vector_K(ind_vector_K) = K_local(:);

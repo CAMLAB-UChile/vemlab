@@ -1,0 +1,5 @@
+Segoe UI Semibold font must be installed directly in your operating system. 
+In Windows this is done in Settings-->Fonts or just type "Font settings" in 
+Window's search utility. 
+
+This font is used in the output figures of VEMLAB.

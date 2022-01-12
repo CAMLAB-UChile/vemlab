@@ -1,8 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                   VEMLab
-%-------------------------------------------------------------------------------                                  
-%  Version      : 2.3                    
-%  Date         : 5-JULY-2020
+%         VEMLAB: A Matlab Library for the Virtual Element Method
+%-------------------------------------------------------------------------------
+%  Version      : 2.4                    
 %  Source code  : http://camlab.cl/software/vemlab
 %  Author       : A. Ortiz-Bernardin, aortizb@uchile.cl, camlab.cl/alejandro
 %
@@ -16,16 +15,19 @@
 %-------------------------------------------------------------------------------
 % References 
 % ==========
+% VEMLAB implementation is based on the VEM theory given in:
+%
 % [1] A. Ortiz-Bernardin, C. Alvarez, N. Hitschfeld-Kahler, A. Russo, 
-%     R. Silva, A. Olate-Sanzana. Veamy: an extensible object-oriented 
-%     C++ library for the virtual element method. Numerical Algorithms,
-%     Vol. 82, pp. 1189-1220, 2019
+%     R. Silva, A. Olate-Sanzana, "Veamy: an extensible object-oriented 
+%     C++ library for the virtual element method," Numerical Algorithms, 
+%     volume 82, pages 1189–1220(2019)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function rigidtranslation_patch_test_linelast2d
 
   close all;
+  clear all;
   clc;
   
   %% THIS BLOCK MUST BE PUT ON EVERY TEST FILE
@@ -49,26 +51,33 @@ function rigidtranslation_patch_test_linelast2d
   
   % mesh filename: see available sample mesh files in folder "test/mesh_files/"
   %
-  %     VEM2D meshes have the keyword "polygon" in the mesh filename
+  %     VEM2D meshes have the keyword "poly" in the mesh filename
   %     FEM2DQ4 meshes have the keyword "q4" in the mesh filename
-  %     FEM2DT3 meshes have the keyword "q4" in the mesh filename 
+  %     FEM2DT3 meshes have the keyword "t3" in the mesh filename 
   % 
   %     VEM2D meshes can be used with 'VEM2D' method only.
   %     FEM2DQ4 meshes can be used with 'FEM2DQ4' and 'VEM2D' methods.
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
+  
   mesh_filename='rigidtranslation_patch_test_4poly_elems.txt';  
   
   % method
-  vemlab_method='VEM2D';      % 'VEM2D' (polygons - linear VEM) or
-                              % 'FEM2DT3' (3-node triangles - linear FEM) or
-                              % 'FEM2DQ4' (4-node quadrilaterals - bilinear FEM)
-  
+  vemlab_method='VEM2D';        % 'VEM2D' (polygons - linear VEM) or
+                                % 'FEM2DT3' (3-node triangles - linear FEM) or
+                                % 'FEM2DQ4' (4-node quadrilaterals - bilinear FEM)
+                                
+  % Stability
+  stability_type=2;           % 0 -> without stability
+                              % 1 -> Gain et al.
+                              % 2 -> D-recipe
+                              % 3 -> modified D-recipe
+                           
   % module
-  vemlab_module='LinearElastostatics';   % 'LinearElastostatics' or 'Poisson'
+  vemlab_module='LinearElastostatics';  % 'LinearElastostatics' or 'Poisson'
   
   % solver
-  vemlab_solver='sparse';   % 'sparse' or 'dense'      
+  vemlab_solver='sparse';   % 'sparse' or 'dense'  
   
   %% PLOT AND OUTPUT OPTIONS
   % to setup plot and output options go to folder 'config' and 
@@ -77,7 +86,7 @@ function rigidtranslation_patch_test_linelast2d
   %% VEMLAB CONFIGURATION
   
   config=config_vemlab(opsystem,vemlab_root_dir,mesh_filename,vemlab_module,...
-                       vemlab_method,vemlab_solver);
+                       vemlab_method,vemlab_solver,stability_type);
                                          
   %% PRINT INIT MESSAGE TO SCREEN
 
@@ -100,8 +109,8 @@ function rigidtranslation_patch_test_linelast2d
   
   %% BODY FORCE FUNCTIONS
   
-  body_force_fun_values.bx=@(x,y)bx_body_force_fun(x,y);
-  body_force_fun_values.by=@(x,y)by_body_force_fun(x,y);
+  body_force_fun_values.bx=@(x,y,matProps)bx_body_force_fun(x,y,matProps);
+  body_force_fun_values.by=@(x,y,matProps)by_body_force_fun(x,y,matProps);
   
   %% ASSEMBLY 
   
@@ -115,15 +124,15 @@ function rigidtranslation_patch_test_linelast2d
   
   Dirichet_boundary_nodes=domainMesh.boundary_nodes.all;
   Dirichet_boundary_dofs=domainMesh.boundary_dofs.all; 
-  Dirichlet_fun_values.ux=@(x,y)ux_Dirichlet_fun(x,y);  
-  Dirichlet_fun_values.uy=@(x,y)uy_Dirichlet_fun(x,y);   
+  Dirichlet_fun_values.ux=@(x,y,matProps)ux_Dirichlet_fun(x,y,matProps);  
+  Dirichlet_fun_values.uy=@(x,y,matProps)uy_Dirichlet_fun(x,y,matProps);   
 
   %% ENFORCE DIRICHLET BCS ON THE BOUNDARY NODES
   
   fprintf('Enforcing Dirichlet boundary conditions...\n');   
   u_nodal_sol=zeros(2*length(domainMesh.coords),1);    
   DB_dofs=compute_Dirichlet_BCs(domainMesh,config,Dirichet_boundary_nodes,...
-                                Dirichet_boundary_dofs,Dirichlet_fun_values); % DOFs with Dirichlet BCs
+                                Dirichet_boundary_dofs,Dirichlet_fun_values,matProps); % DOFs with Dirichlet BCs
   u_nodal_sol(DB_dofs.indexes)=DB_dofs.values;
   f_global=f_global-K_global*u_nodal_sol;    
   
@@ -138,12 +147,10 @@ function rigidtranslation_patch_test_linelast2d
   %% EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
   % (see definition of functions at the bottom of this file)
   
-  exact_solution_handle.ux=@(x,y)ux_exact(x,y);
-  exact_solution_handle.uy=@(x,y)uy_exact(x,y);
-  exact_solution_handle.duxdx=@(x,y)duxdx_exact(x,y);  
-  exact_solution_handle.duydx=@(x,y)duydx_exact(x,y);  
-  exact_solution_handle.duxdy=@(x,y)duxdy_exact(x,y);  
-  exact_solution_handle.duydy=@(x,y)duydy_exact(x,y);   
+  exact_solution_handle.ux=@(x,y,matProps)ux_exact(x,y,matProps);
+  exact_solution_handle.uy=@(x,y,matProps)uy_exact(x,y,matProps);
+  exact_solution_handle.p=@(x,y,matProps)p_exact(x,y,matProps);   
+  exact_solution_handle.strainvec=@(x,y,matProps)strainvec_exact(x,y,matProps);    
   
   %% NORMS OF THE ERROR
   
@@ -166,7 +173,7 @@ end
 
 %% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE LINEAR PATCH TEST
 
-function bx = bx_body_force_fun(x,y)
+function bx = bx_body_force_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "bx"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -174,7 +181,7 @@ function bx = bx_body_force_fun(x,y)
   
   bx=0;  % is used as a force per volume 
 end
-function by = by_body_force_fun(x,y)
+function by = by_body_force_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "by"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -185,7 +192,7 @@ end
 
 %% DEFINITION OF DIRICHLET FUNCTIONS FOR THE LINEAR PATCH TEST
 
-function ux = ux_Dirichlet_fun(x,y)
+function ux = ux_Dirichlet_fun(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).
@@ -201,7 +208,7 @@ function ux = ux_Dirichlet_fun(x,y)
                          % values of ux(:,1)
   ux(:,1)=0.5;   % update the value 
 end
-function uy = uy_Dirichlet_fun(x,y)
+function uy = uy_Dirichlet_fun(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).
@@ -220,7 +227,7 @@ end
 
 %% DEFINITION OF THE EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
 
-function ux = ux_exact(x,y)
+function ux = ux_exact(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -228,7 +235,7 @@ function ux = ux_exact(x,y)
   
   ux=0.5;    
 end
-function uy = uy_exact(x,y)  
+function uy = uy_exact(x,y,matProps)  
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
@@ -236,37 +243,38 @@ function uy = uy_exact(x,y)
   
   uy=0.5;  
 end
-function duxdx = duxdx_exact(x,y)
+
+function p = p_exact(x,y,matProps)  
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duxdx" is an array that has the same form of the input "x" or "y"
+  % return "p" is an array that has the same form of the input "x" or "y"
+    
+  strain_vec=strainvec_exact(x,y,matProps);
+  p = -matProps.lam*(strain_vec(:,1) + strain_vec(:,1));   % update the value
+
+end
+
+function strainvec = strainvec_exact(x,y,matProps)
+  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "strainvec" is an array that has the same form of the input "x" or "y"
   
   duxdx=0;
-end
-function duydx = duydx_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duydx" is an array that has the same form of the input "x" or "y"
-  
-  duydx=0;
-end
-function duxdy = duxdy_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duxdy" is an array that has the same form of the input "x" or "y"
-  
-  duxdy=0;
-end
-function duydy = duydy_exact(x,y)
-  % Use something like x.*y (i.e., use the dot symbol) if the exact solution
-  % depends on x and y. This way, this function will also serve in case x and y 
-  % are arrays. If the function does not depend on x and y, make sure that the
-  % return "duydy" is an array that has the same form of the input "x" or "y"
-  
-  duydy=0;
+  duydx=0;  
+  duxdy=0;  
+  duydy=0;      
+ 
+  % strain vector in the form: [e11; e22; e12]  
+  % note that the tird component is e12 and not 2*e12
+  % this is due to that this code uses the material matrix D accordingly
+  % with the strain vector definition as [e11; e22; e12]
+  % -----------------
+  % IMPORTANT: FOR x and y vectors of size n, the strain vector must be stored as: 
+  % [e11_1 e22_1 e12_1;...;e11_n e22_n e12_n]
+  % ------------------
+  strainvec = [duxdx,duydy,0.5*(duxdy+duydx)]; 
 end
 
 

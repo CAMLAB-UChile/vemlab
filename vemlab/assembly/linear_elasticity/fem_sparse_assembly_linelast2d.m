@@ -41,7 +41,7 @@ function [K_global,f_global] = fem_sparse_assembly_linelast2d(domainMesh,config,
 
     num_eldofs = 2*length(nodes);
     K_local = fem_stiffness_linelast2d(verts,matProps,config);
-    f_local = fem_body_force_linelast2d(verts,config,body_force_fun_values);
+    f_local = fem_body_force_linelast2d(verts,config,body_force_fun_values,matProps);
     ind_vector_K = (1:num_eldofs^2) + pos_vector_K;
     ind_vector_f = (1:num_eldofs) + pos_vector_f;
     vector_K(ind_vector_K) = K_local(:);

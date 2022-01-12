@@ -23,8 +23,8 @@ function create_polygonal_mesh
   %    - PlateWithHoleDomain
   %
   
-  N_elems=4000;
-  mesh_filename='big_wrench_4000poly_elems.txt'; 
+  N_elems=22495;
+  mesh_filename='colliding_flow_linelast2d_22495poly_elems_distorted.txt';
   
   % WARNING: DON'T CHANGE THE FOLLOWING TWO LINES IF YOU DON'T KNOW WHAT YOU ARE DOING!
   config=config_vemlab_mesher(opsystem,vemlab_root_dir,mesh_filename); % configure mesher
@@ -33,19 +33,34 @@ function create_polygonal_mesh
   % USE ONLY ONE OF THE FOLLOWING PolyMesher FUNCTIONS FOR CUSTOMIZED DOMAINS
   
   % RECTANGULAR DOMAIN
-%   [~,~,~,~,~]=PolyMesher(@RectangularDomain,N_elems,100,mesh_file);
+  [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,~,~,~]=...
+                     PolyMesher(@RectangularDomain,N_elems,1000,mesh_file);
   
   % WRENCH DOMAIN  
 %   [~,~,~,~,~]=PolyMesher(@WrenchDomain,N_elems,100,mesh_file);  
 
   % BIG WRENCH DOMAIN  
-  [~,~,~,~,~]=PolyMesher(@BigWrenchDomain,N_elems,100,mesh_file);  
+%   [~,~,~,~,~]=PolyMesher(@BigWrenchDomain,N_elems,100,mesh_file);  
   
   % PLATE WITH HOLE DOMAIN  
 %   [~,~,~,~,~]=PolyMesher(@PlateWithHoleDomain,N_elems,100,mesh_file);  
 
-  
+  % distort the mesh (comment if not required)
+  b=3.4;
+  a=0;
+  Node(:,1)=Node(:,1)+0.3*Node(:,1).*sin(b*Node(:,1)+a).*sin(b*Node(:,2)+a).*(BdBox(2)-Node(:,1))./BdBox(2);
+  Node(:,2)=Node(:,2)+0.3*Node(:,2).*sin(b*Node(:,2)+a).*sin(b*Node(:,1)+a).*(BdBox(4)-Node(:,2))./BdBox(4);
+
+  %Plot mesh to a VEMLab mesh format
+  PolyMesher2VEMLab(Node,Element,NElem,BoundaryNodes,mesh_file,DomainType,BdBox);      
+ 
+  % plot mesh
+  config.plot_mesh = 'yes'; % 'yes' or 'no'
+  config.plot_node_numbers = 'no'; % 'yes' or 'no'
+  config.plot_element_numbers = 'no'; % 'yes' or 'no'  
+  config.plot_axis = 'no'; % 'yes' or 'no'
   %%%%%%%%%%%%%%%%%%         END USER AREA         %%%%%%%%%%%%%%%%%%%%%%%  
+  plot_mesh(Element,Node,config);  
   
 end
 
@@ -70,8 +85,8 @@ end
 %% 
 % RECTANGULAR DOMAIN
 %
-function [x] = RectangularDomain(Demand,Arg)
-  BdBox = [0 1 0 1]; % [xmin xmax ymin ymax]: in this case, BdBox defines
+function [x,Arg] = RectangularDomain(Demand,Arg)
+  BdBox = [0 2 0 2]; % [xmin xmax ymin ymax]: in this case, BdBox defines
                      % the dimensions of the rectangular domain. Update the 
                      % BdBox to change the dimensions.
   switch(Demand)
@@ -79,7 +94,7 @@ function [x] = RectangularDomain(Demand,Arg)
     case('BC');    x = BndryCnds(Arg{:},BdBox);
     case('BdBox'); x = BdBox;
     case('PFix');  x = FixedPoints(BdBox);
-    case('Boundary'); x = BoundaryRectangularDomain(Arg{:},BdBox); % added by A.O-B
+    case('Boundary'); [x,Arg] = BoundaryRectangularDomain(Arg{:},BdBox); % added by A.O-B
     case('DomainType'); x = 'RectangularDomain'; % added by A.O-B
   end
   %----------------------------------------------- COMPUTE DISTANCE FUNCTIONS
@@ -95,7 +110,7 @@ function [x] = RectangularDomain(Demand,Arg)
     PFix = [];
   end
   %----------------------------------------------------- GET BOUNDARY (added by A.O-B)
-  function [BoundaryNodes] = BoundaryRectangularDomain(Node,BdBox)
+  function [BoundaryNodes,Node] = BoundaryRectangularDomain(Node,BdBox)
     eps = 0.1*sqrt((BdBox(2)-BdBox(1))*(BdBox(4)-BdBox(3))/size(Node,1));
     BoundaryNodes.bottom = find(abs(Node(:,2)-BdBox(3))<eps);   
     BoundaryNodes.top = find(abs(Node(:,2)-BdBox(4))<eps);  
@@ -108,6 +123,11 @@ function [x] = RectangularDomain(Demand,Arg)
     BoundaryNodes.blcorner = BoundaryNodes.bottom(find(blcorner_index==1));
     trcorner_index=Node(BoundaryNodes.top,1)==max(Node(BoundaryNodes.top,1));
     BoundaryNodes.trcorner = BoundaryNodes.top(find(trcorner_index==1));
+    % fix boundary nodes coordinates to make them lie exactly on the BdBox
+    Node(BoundaryNodes.bottom,2)=BdBox(3);    
+    Node(BoundaryNodes.top,2)=BdBox(4); 
+    Node(BoundaryNodes.left,1)=BdBox(1);      
+    Node(BoundaryNodes.right,1)=BdBox(2);    
   end  
 end
 
@@ -259,5 +279,94 @@ function [x] = PlateWithHoleDomain(Demand,Arg)
     BoundaryNodes.MidNodeRightFace=MidRightFace(1);
   end  
 end
+
+function plot_mesh(connect,coords,config)
+
+  if strcmp(config.plot_mesh,'yes')
+    nelems=length(connect);
+    polygons=cell(nelems,1);
+    for e=1:nelems
+      polygons{e,1}=connect{e,1}';
+    end 
+    figure; 
+    maxNumVertices = max(cellfun(@numel,polygons));
+    padFunc = @(vertList) [vertList' NaN(1,maxNumVertices-numel(vertList))];
+    elements = cellfun(padFunc,polygons,'UniformOutput',false);
+    elements = vertcat(elements{:});
+    patch('Faces',elements,'Vertices',coords,'FaceColor','w'); 
+    axis equal; 
+    if strcmp(config.plot_axis,'yes')
+     axis on;
+    else
+      axis off;
+    end
+
+    hold on;
+
+    % set the font size for the node and element numbering
+    if nelems <= 50
+      fsize = 10;
+    else
+      fsize = 6;
+    end
+
+    % node numbering
+    numnod=size(coords,1);
+    mesh_size=min_edge_size(coords,connect,nelems);
+    if strcmp(config.plot_node_numbers,'yes')
+      offset_x = 0.06*mesh_size; offset_y = 0.08*mesh_size;
+      for i = 1:numnod
+        idstring = sprintf('%d',i);
+        text(coords(i,1)+offset_x, coords(i,2)+offset_y, idstring,'color',[1,0,0],'fontsize',fsize);
+      end
+    end
+
+    % element numbering for QUAD4
+    if strcmp(config.plot_element_numbers,'yes')
+      for e = 1:length(connect(:,1))
+        xc = mean(coords(connect{e},1)); % element number is plotted in the
+        yc = mean(coords(connect{e},2)); % center of the rectangle
+        idstring = sprintf('%d',e);
+        text(xc, yc, idstring, 'color',[0,0,0],'fontsize',fsize);
+      end
+    end  
+  end
+  
+end
+
+function h_min = min_edge_size(Node,Element,NElem)
+  h_min=1e1000;
+  for e=1:NElem
+    NVertex = length(Element{e});
+    nodes = Element{e}(1:NVertex);
+    verts=Node(nodes,:); 
+
+    mysize=size(verts,1);
+    mydist=zeros(mysize*mysize,1);
+
+    % This procedure also compute the distance between a node with itself (0); however, it
+    % doesn't matter since at the end the maximum distance is selected
+    r = 1;
+    for node_i = 1:mysize
+      for node_j = 1:mysize
+        % shifts coordinates with respect to "node i" in the connectivity
+        shifted_coords= verts-repmat(verts(node_i,:),mysize,1);
+        % compute the distances wrt to "node_i" in the element connectivity
+        for node = 1:(mysize-1)
+          mydist(r) = norm(shifted_coords(node,:));
+          r = r + 1;
+        end
+      end  
+    end
+
+    % minimum distance from the first node to any node in the element connectivity 
+    h_size=min(mydist);
+
+    if h_size<h_min
+      h_min=h_size;
+    end   
+  end
+end
+
 
 
