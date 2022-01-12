@@ -13,6 +13,7 @@ This repository contains the code for an open source MATLAB library for the virt
 <h2>First steps</h2>
 <a>Once the software is downloaded there are two fonts that need to be installed so that the output figures are plotted correctly. If these fonts are not present, MATLAB will use default fonts. These fonts are Segoe UI Semibold and Good Times RG. For Windows systems, these fonts are included in folder “vemlab/utilities/fonts”. The instructions to install these fonts are also provided in the same folder. For completeness, the instructions are also provided here.
 
+ 
 Segoe UI Semibold: This font must be installed directly in your operating system. In Windows system this is done in Settings-->Fonts or just type "Font settings" in Window's search utility.
 
 Good Times RG: This font must be added to the Java Runtime Environment (JRE) that ships with MATLAB (if that is the Java version being used by the program). Below are steps to install the fonts:
@@ -55,6 +56,6 @@ results are written to GiD files and saved to folder “test/output_files/GiD”
 <h2>Author</h2>
 <a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>, Associate Professor, Department of Mechanical Engineering, Universidad de Chile.
 <h2>Running VEMLab</h2>
-<a>VEMLAB is a library. You need to create a main .m file and place it inside the folder “test.” The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder 'doc.'</a>
+<a>VEMLAB is a library. You need to create a main .m file and place it inside the folder “test.” The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder “doc.”</a>
 <h2>License</h2>
 <a>This project is licensed under the GPL3 License. This program is free software; it can be redistributed or modified under the terms of the GNU General Public License 3 as published by the Free Software Foundation.<a/>
