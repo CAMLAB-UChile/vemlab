@@ -45,7 +45,7 @@ The resolution of the MATLAB’s figures when plotting to PDF files or saving to
 
 where it has been set to 600 dpi. This value can be changed as required by the user.
  
-Many other customizations of the output figures can be made by setting the appropriate parameters in 'plot_and_output_options.m' (for details, see Section 8 of the manual that is available in the folder 'doc'). Several example output MATLAB’s figures are provided in Section 10 of the manual that is available in the folder 'doc'.
+Many other customizations of the output figures can be made by setting the appropriate parameters in 'plot_and_output_options.m' (for details, see Section 8 of the manual that is available in the folder “doc”). Several example output MATLAB’s figures are provided in Section 10 of the manual that is available in the folder “doc.”
 
 As an alternative, plots can be visualized externally in the GiD postprocessor. This is an independent process and can be performed even if plots were set to be displayed on MATLAB’s figures. When the following is set in plot_and_output_options.m:
 
