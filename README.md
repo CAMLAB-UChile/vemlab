@@ -11,7 +11,7 @@ This repository contains the code for an open source MATLAB library for the virt
     <li> Solutions can be plotted to MATLAB figures, text files, <a href="https://www.gidhome.com/">GiD</a> files and <a href="https://www.vtk.org/">VTK</a> files.</li>  
 </ul>
 <h2>First steps</h2>
-<a>Once the software is downloaded there are two fonts that need to be installed so that the output figures are plotted correctly. If these fonts are not present, MATLAB will use default fonts. These fonts are Segoe UI Semibold and Good Times RG. For Windows sys-tems, these fonts are included in folder “vemlab/utilities/fonts”. The instructions to install these fonts are also provided in the same folder. For completeness, the instruc-tions are also provided here.
+<a>Once the software is downloaded there are two fonts that need to be installed so that the output figures are plotted correctly. If these fonts are not present, MATLAB will use default fonts. These fonts are Segoe UI Semibold and Good Times RG. For Windows systems, these fonts are included in folder “vemlab/utilities/fonts”. The instructions to install these fonts are also provided in the same folder. For completeness, the instruc-tions are also provided here.
 
 Segoe UI Semibold: This font must be installed directly in your operating system. In Windows system this is done in Settings-->Fonts or just type "Font settings" in Window's search utility.
 
