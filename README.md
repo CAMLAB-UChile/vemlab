@@ -24,9 +24,8 @@ Good Times RG: This font must be added to the Java Runtime Environment (JRE) tha
 3.	You should now be able to see the fonts in MATLAB's font preference panel. Note: If using the default JVM shipped with MATLAB, you must do this for each MATLAB version installed.<a/>
 
 <h2>About plotting capabilities</h2>
-<a>Plots can be directly obtained through MATLAB’s figures by setting the following parame-ters in function plot_and_output_options.m that is located in folder “config”:
+<a>Plots can be directly obtained through MATLAB’s figures by setting the following parame-ters in function 'plot_and_output_options.m' that is located in folder “config”:
 
- 
      create_matlab_contour_plots='yes'; % (for numerical solution)
      create_matlab_exact_contour_plots='yes'; % (for exact solution)
   
@@ -46,7 +45,7 @@ The resolution of the MATLAB’s figures when plotting to PDF files or saving to
 
 where it has been set to 600 dpi. This value can be changed as required by the user.
  
-Many other customizations of the output figures can be made by setting the appropriate parameters in plot_and_output_options.m (see Section 8 of this primer for details). Sev-eral example output MATLAB’s figures are provided in Section 10 of this primer.
+Many other customizations of the output figures can be made by setting the appropriate parameters in 'plot_and_output_options.m' (for details, see Section 8 of the manual that is available in the folder 'doc'). Several example output MATLAB’s figures are provided in Section 10 of the manual that is available in the folder 'doc'.
 
 As an alternative, plots can be visualized externally in the GiD postprocessor. This is an independent process and can be performed even if plots were set to be displayed on MATLAB’s figures. When the following is set in plot_and_output_options.m:
 
