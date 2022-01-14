@@ -15,7 +15,7 @@ This repository contains the code for an open source MATLAB library for the virt
  
 <b>Segoe UI Semibold</b>: This font must be installed directly in your operating system. In Windows system this is done in Settings-->Fonts or just type "Font settings" in Window's search utility.
 
-<b>Good Times RG</b>: This font must be added to the Java Runtime Environment (JRE) that ships with MATLAB (if that is the Java version being used by the program). Below are steps to install the fonts:
+<b>Good Times RG</b>: This font must be added to the Java Runtime Environment (JRE) that ships with MATLAB (if that is the Java version being used by the program). The steps to install the font are:
 
 1.	Copy the TTF fonts to "<matlabroot>\sys\java\jre\win64\jre\lib\fonts", e.g., "C:\Program Files\MATLAB\R2019a\sys\java\jre\win64\jre\lib\fonts". Note: You might need to be an administrator to copy files to this folder.
 
@@ -54,7 +54,7 @@ As an alternative, plots can be visualized externally in the GiD postprocessor. 
 results are written to GiD files and saved to folder “test/output_files/GiD”. GiD can be downloaded from its webpage: https://www.gidhome.com/.<a/>
 <h2>Author</h2>
 <a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>, Associate Professor, Department of Mechanical Engineering, Universidad de Chile.
-<h2>Running VEMLab</h2>
+<h2>Running VEMLAB</h2>
 <a>VEMLAB is a library. You need to create a main .m file and place it inside the folder “test.” The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder “doc.”</a>
 <h2>License</h2>
 <a>This project is licensed under the GPL3 License. This program is free software; it can be redistributed or modified under the terms of the GNU General Public License 3 as published by the Free Software Foundation.<a/>
