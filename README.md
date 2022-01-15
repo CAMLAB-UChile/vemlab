@@ -23,8 +23,8 @@ This repository contains the code for an open source MATLAB library for the virt
 
 3.	You should now be able to see the fonts in MATLAB's font preference panel. Note: If using the default JVM shipped with MATLAB, you must do this for each MATLAB version installed.<a/>
 
-<h2>About plotting capabilities</h2>
-<a>Plots can be directly obtained through MATLAB’s figures by setting the following parame-ters in function 'plot_and_output_options.m' that is located in folder “config”:
+<h2>Plotting of results</h2>
+<a>Plots can be directly obtained through MATLAB’s figures by setting the following parameters in function “plot_and_output_options.m” that is located in folder “config”:
 
      create_matlab_contour_plots='yes'; % (for numerical solution)
      create_matlab_exact_contour_plots='yes'; % (for exact solution)
@@ -45,16 +45,31 @@ The resolution of the MATLAB’s figures when plotting to PDF files or saving to
 
 where it has been set to 600 dpi. This value can be changed as required by the user.
  
-Many other customizations of the output figures can be made by setting the appropriate parameters in 'plot_and_output_options.m' (for details, see Section 8 of the manual that is available in the folder “doc”). Several example output MATLAB’s figures are provided in Section 10 of the manual that is available in the folder “doc.”
+Many other customizations of the output figures can be made by setting the appropriate parameters in “plot_and_output_options.m” (for details, see the manual that is available in the folder “doc”). Several example output MATLAB’s figures are provided in the manual that is available in the folder “doc.”
 
-As an alternative, plots can be visualized externally in the GiD postprocessor. This is an independent process and can be performed even if plots were set to be displayed on MATLAB’s figures. When the following is set in plot_and_output_options.m:
+As an alternative, plots can be visualized externally in the GiD postprocessor. This is an independent process and can be performed even if plots were set to be displayed on MATLAB’s figures. When the following is set in “plot_and_output_options.m”:
 
      write_solutions_to_GiD_file='yes';
 
 results are written to GiD files and saved to folder “test/output_files/GiD”. GiD can be downloaded from its webpage: https://www.gidhome.com/.<a/>
-<h2>Author</h2>
-<a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>, Associate Professor, Department of Mechanical Engineering, Universidad de Chile.
 <h2>Running VEMLAB</h2>
 <a>VEMLAB is a library. You need to create a main .m file and place it inside the folder “test.” The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder “doc.”</a>
+<h2>Running VEMLAB in Octave</h2>
+<a>We are grateful to Dr. Stefan Holst, EMAG Application Manager, Technology Group, CD-adapco/Siemens PLM Software, for his kind advice on making VEMLAB to run in Octave.
+
+In Octave, the “computer” function that is at the beginning of each test file, returns a different name than one of those expected by VEMLAB when running in MATLAB, i.e., 'PCWIN', 'PCWIN64', 'GLNX86' or 'GLNXA64'. To fix this, at the beginning of each test file simply redefine the variable “opsystem” as follows: opsystem='PCWIN' or opsystem=' GLNX86' if the machine where Octave is installed is a Windows machine or a Linux machine, respectively.
+
+In addition, Octave presents some issues when plotting VEMLAB results to MATLAB figures (on small meshes it will do the work, but on larger meshes it will crash). To fix this, switch off all the MATLAB figures by setting the following parameters in the function “plot_and_output_options.m” that is in the folder “config”:
+
+     create_matlab_contour_plots='no';
+     plot_mesh='no';
+     plot_mesh_over_results='no';
+     write_solutions_to_text_file='yes';
+     write_solutions_to_GiD_file='yes';
+     write_solutions_to_VTK_file='yes';
+
+Make sure the last three parameters are set to 'yes' so that one can have access to VEMLAB results through text files or can postprocess results in GiD and VTK/Paraview.</a> 
+<h2>Author</h2>
+<a href="https://github.com/aaortizb">Alejandro Ortiz-Bernardin</a>, Associate Professor, Department of Mechanical Engineering, Universidad de Chile.
 <h2>License</h2>
 <a>This project is licensed under the GPL3 License. This program is free software; it can be redistributed or modified under the terms of the GNU General Public License 3 as published by the Free Software Foundation.<a/>
