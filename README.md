@@ -6,8 +6,8 @@ This repository contains the code for an open source MATLAB library for the virt
     <li> Solution methods: Linear VEM (polygonal elements), FEM (3-node triangles, 4-node quadrilateral).</li>
     <li> Boundary conditions: Dirichlet, Neumann on boundary edges; can be a constant or a function.</li>  
     <li> Meshers: PolyMesher, distmesh2d, quad4mesh; PolyMesher is customized for rectangular domain, wrench domain and plate with a hole domain; distmesh2d and quad4mesh are customized for rectangular domain only. Domains can be extended for any of the meshers, but it requires adjustments to some interface functions (see the instructions that are available in functions create_polygonal_mesh.m, create_quadrilateral_mesh.m and create_triangular_mesh.m in folder “mesher”).</li>  
-    <li> Meshes need to be generated separately and saved to folder “test/mesh_files.”</li>
-    <li> Meshes must be generated with the functions “create_” located in the folder “mesher.” Then, the files containing the generated meshes will be automatically saved to folder “test/mesh_files” for their use.</li> 
+    <li> Meshes need to be generated separately and saved to folder “test/mesh_files”.</li>
+    <li> Meshes must be generated with the functions “create_” located in the folder “mesher”. Then, the files containing the generated meshes will be automatically saved to folder “test/mesh_files” for their use.</li> 
     <li> Solutions can be plotted to MATLAB figures, text files, <a href="https://www.gidhome.com/">GiD</a> files and <a href="https://www.vtk.org/">VTK</a> files.</li>  
 </ul>
 <h2>First steps</h2>
@@ -45,7 +45,7 @@ The resolution of the MATLAB’s figures when plotting to PDF files or saving to
 
 where it has been set to 600 dpi. This value can be changed as required by the user.
  
-Many other customizations of the output figures can be made by setting the appropriate parameters in “plot_and_output_options.m” (for details, see the manual that is available in the folder “doc”). Several example output MATLAB’s figures are provided in the manual that is available in the folder “doc.”
+Many other customizations of the output figures can be made by setting the appropriate parameters in “plot_and_output_options.m” (for details, see the manual that is available in the folder “doc”). Several example output MATLAB’s figures are provided in the manual that is available in the folder “doc”.
 
 As an alternative, plots can be visualized externally in the GiD postprocessor. This is an independent process and can be performed even if plots were set to be displayed on MATLAB’s figures. When the following is set in “plot_and_output_options.m”:
 
@@ -53,7 +53,7 @@ As an alternative, plots can be visualized externally in the GiD postprocessor. 
 
 results are written to GiD files and saved to folder “test/output_files/GiD”. GiD can be downloaded from its webpage: https://www.gidhome.com/.<a/>
 <h2>Running VEMLAB</h2>
-<a>VEMLAB is a library. You need to create a main .m file and place it inside the folder “test.” The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder “doc.”</a>
+<a>VEMLAB is a library. You need to create a main .m file and place it inside the folder “test”. The main file has the typical structure of a FEM simulation. Simply follow the test problems (they are given with detailed comments) that are provided inside the folder “test” to write your own .m files or modify the ones provided. Alternatively, you can read the manual that is available in the folder “doc”.</a>
 <h2>Running VEMLAB in Octave</h2>
 <a>We are grateful to Dr. Stefan Holst, EMAG Application Manager, Technology Group, CD-adapco/Siemens PLM Software, for his kind advice on making VEMLAB to run in Octave.
 
