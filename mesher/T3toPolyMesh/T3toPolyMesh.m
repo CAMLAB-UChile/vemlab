@@ -53,17 +53,31 @@ function [V,Vertices,Dirichlet_vertices,Neumann_vertices] =...
   %GENERA CONECTIVIDAD DE LOS POLIGONOS EN BASE A VERTICES (CENTRO DE CADA T3).
   %EL TAG DE CADA NUEVA CELDA CORRESPONDE AL TAG DEL SU NODO CENTRAL 
   %HASTA AQUI FALTAN LOS VERTICES DEL CONTORNO
-    
+
+%  REPLACED BY THE CODE BELOW BY TONGRUI LIU
+%   tic
+%   V = cell(NumberNodes,1);
+%   for i=1:NumberNodes 
+%     c = 1;
+%     for j=1:NumberElement
+%       if(Element{j}(1)==i || Element{j}(2)==i || Element{j}(3)==i)
+%         V{i,1}(c) = j;
+%         c=c+1;
+%       end       
+%     end       
+%   end
+%   toc
+  
+%   % By Tongrui Liu
+  %tic
+  connective = reshape(cell2mat(Element),3,[]);
   V = cell(NumberNodes,1);
-  for i=1:NumberNodes 
-    c = 1;
-    for j=1:NumberElement
-      if(Element{j}(1)==i || Element{j}(2)==i || Element{j}(3)==i)
-        V{i,1}(c) = j;
-        c=c+1;
-      end       
-    end       
-  end
+  tic
+  for i=1:NumberNodes
+    index = sum(reshape(reshape(connective,[],1)==i*ones(3*length(connective),1),3,[]));
+    V{i}= find(index == 1);
+  end  
+  %toc
   
   %SE GERENA NUEVOS VERTICES EN EL BORDE, Y SE LE ASIGNA UN TAG
   %CADA NUEVO VERTICE ESTA ASOCIADO AL ELEMENTO T3 CORRESPONDINTE Y A SUS
