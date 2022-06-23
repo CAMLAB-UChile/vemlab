@@ -23,8 +23,8 @@ function create_polygonal_mesh
   %    - PlateWithHoleDomain
   %
   
-  N_elems=22495;
-  mesh_filename='colliding_flow_linelast2d_22495poly_elems_distorted.txt';
+  N_elems=2500;
+  mesh_filename='plate_with_hole_2500poly_elems.txt';
   
   % WARNING: DON'T CHANGE THE FOLLOWING TWO LINES IF YOU DON'T KNOW WHAT YOU ARE DOING!
   config=config_vemlab_mesher(opsystem,vemlab_root_dir,mesh_filename); % configure mesher
@@ -33,23 +33,26 @@ function create_polygonal_mesh
   % USE ONLY ONE OF THE FOLLOWING PolyMesher FUNCTIONS FOR CUSTOMIZED DOMAINS
   
   % RECTANGULAR DOMAIN
-  [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,~,~,~]=...
-                     PolyMesher(@RectangularDomain,N_elems,1000,mesh_file);
+%   [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,~,~,~]=...
+%                      PolyMesher(@RectangularDomain,N_elems,1000,mesh_file);
   
   % WRENCH DOMAIN  
-%   [~,~,~,~,~]=PolyMesher(@WrenchDomain,N_elems,100,mesh_file);  
+%   [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,~,~,~]=...
+%                      PolyMesher(@WrenchDomain,N_elems,100,mesh_file);  
 
   % BIG WRENCH DOMAIN  
-%   [~,~,~,~,~]=PolyMesher(@BigWrenchDomain,N_elems,100,mesh_file);  
+%   [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,~,~,~]=...
+%                      PolyMesher(@BigWrenchDomain,N_elems,100,mesh_file);  
   
   % PLATE WITH HOLE DOMAIN  
-%   [~,~,~,~,~]=PolyMesher(@PlateWithHoleDomain,N_elems,100,mesh_file);  
+  [Node,Element,NElem,BoundaryNodes,DomainType,BdBox,~,~,~]=...
+                     PolyMesher(@PlateWithHoleDomain,N_elems,100,mesh_file);  
 
   % distort the mesh (comment if not required)
-  b=3.4;
-  a=0;
-  Node(:,1)=Node(:,1)+0.3*Node(:,1).*sin(b*Node(:,1)+a).*sin(b*Node(:,2)+a).*(BdBox(2)-Node(:,1))./BdBox(2);
-  Node(:,2)=Node(:,2)+0.3*Node(:,2).*sin(b*Node(:,2)+a).*sin(b*Node(:,1)+a).*(BdBox(4)-Node(:,2))./BdBox(4);
+%   b=3.4;
+%   a=0;
+%   Node(:,1)=Node(:,1)+0.3*Node(:,1).*sin(b*Node(:,1)+a).*sin(b*Node(:,2)+a).*(BdBox(2)-Node(:,1))./BdBox(2);
+%   Node(:,2)=Node(:,2)+0.3*Node(:,2).*sin(b*Node(:,2)+a).*sin(b*Node(:,1)+a).*(BdBox(4)-Node(:,2))./BdBox(4);
 
   %Plot mesh to a VEMLab mesh format
   PolyMesher2VEMLab(Node,Element,NElem,BoundaryNodes,mesh_file,DomainType,BdBox);      
@@ -134,7 +137,7 @@ end
 %% 
 % WRENCH DOMAIN
 %
-function [x] = WrenchDomain(Demand,Arg)
+function [x,Arg] = WrenchDomain(Demand,Arg)
   BdBox = [-0.3 2.5 -0.5 0.5]; % [xmin xmax ymin ymax]: in this case, BdBox
                                % defines a box within which the wrench domain
                                % will reside. The actual wrench domain is
@@ -144,7 +147,7 @@ function [x] = WrenchDomain(Demand,Arg)
     case('BC');    x = BndryCnds(Arg{:},BdBox);
     case('BdBox'); x = BdBox;
     case('PFix');  x = FixedPoints(BdBox);
-    case('Boundary'); x = BoundaryWrenchDomain(Arg{:},BdBox); % added by A.O-B 
+    case('Boundary'); [x,Arg] = BoundaryWrenchDomain(Arg{:},BdBox); % added by A.O-B 
     case('DomainType'); x = 'WrenchDomain'; % added by A.O-B      
   end
   %----------------------------------------------- COMPUTE DISTANCE FUNCTIONS
@@ -173,7 +176,7 @@ function [x] = WrenchDomain(Demand,Arg)
     PFix = [];
   end
   %----------------------------------------------------- GET BOUNDARY (added by A.O-B)
-  function [BoundaryNodes] = BoundaryWrenchDomain(Node,BdBox)
+  function [BoundaryNodes,Node] = BoundaryWrenchDomain(Node,BdBox)
     eps = 0.1*sqrt((BdBox(2)-BdBox(1))*(BdBox(4)-BdBox(3))/size(Node,1));
     BoundaryNodes.RightCircle = ...
         find(abs(sqrt((Node(:,1)-2).^2+ Node(:,2).^2)-0.3)<eps);   
@@ -185,7 +188,7 @@ end
 %% 
 % BIG WRENCH DOMAIN
 %
-function [x] = BigWrenchDomain(Demand,Arg)
+function [x,Arg] = BigWrenchDomain(Demand,Arg)
   BdBox = [-8 63 -13 13]; % [xmin xmax ymin ymax]: in this case, BdBox
                                % defines a box within which the wrench domain
                                % will reside. The actual wrench domain is
@@ -195,7 +198,7 @@ function [x] = BigWrenchDomain(Demand,Arg)
     case('BC');    x = BndryCnds(Arg{:},BdBox);
     case('BdBox'); x = BdBox;
     case('PFix');  x = FixedPoints(BdBox);
-    case('Boundary'); x = BoundaryWrenchDomain(Arg{:},BdBox); % added by A.O-B 
+    case('Boundary'); [x,Arg] = BoundaryWrenchDomain(Arg{:},BdBox); % added by A.O-B 
     case('DomainType'); x = 'WrenchDomain'; % added by A.O-B      
   end
   %----------------------------------------------- COMPUTE DISTANCE FUNCTIONS
@@ -224,7 +227,7 @@ function [x] = BigWrenchDomain(Demand,Arg)
     PFix = [];
   end
   %----------------------------------------------------- GET BOUNDARY (added by A.O-B)
-  function [BoundaryNodes] = BoundaryWrenchDomain(Node,BdBox)
+  function [BoundaryNodes,Node] = BoundaryWrenchDomain(Node,BdBox)
     eps = 0.1*sqrt((BdBox(2)-BdBox(1))*(BdBox(4)-BdBox(3))/size(Node,1));
     BoundaryNodes.RightCircle = ...
         find(abs(sqrt((Node(:,1)-50).^2+ Node(:,2).^2)-7)<eps);   
@@ -236,7 +239,7 @@ end
 %%
 % PLATE WITH A HOLE DOMAIN
 %
-function [x] = PlateWithHoleDomain(Demand,Arg)
+function [x,Arg] = PlateWithHoleDomain(Demand,Arg)
   BdBox = [0 5 -2 2]; % [xmin xmax ymin ymax]: in this case, BdBox defines
                       % the dimensions of the rectangular domain for the plate
                       % but WITHOUT the hole. The hole is added in the 
@@ -247,7 +250,7 @@ function [x] = PlateWithHoleDomain(Demand,Arg)
     case('BC');    x = BndryCnds(Arg{:},BdBox);
     case('BdBox'); x = BdBox;
     case('PFix');  x = FixedPoints(BdBox);
-    case('Boundary'); x = BoundaryPlateWithHoleDomain(Arg{:},BdBox); % added by A.O-B 
+    case('Boundary'); [x,Arg] = BoundaryPlateWithHoleDomain(Arg{:},BdBox); % added by A.O-B 
     case('DomainType'); x = 'PlateWithHoleDomain'; % added by A.O-B        
   end
  
@@ -268,7 +271,7 @@ function [x] = PlateWithHoleDomain(Demand,Arg)
     PFix = [];
   end
   %----------------------------------------------------- GET BOUNDARY (added by A.O-B)
-  function [BoundaryNodes] = BoundaryPlateWithHoleDomain(Node,BdBox)
+  function [BoundaryNodes,Node] = BoundaryPlateWithHoleDomain(Node,BdBox)
     eps = 0.1*sqrt((BdBox(2)-BdBox(1))*(BdBox(4)-BdBox(3))/size(Node,1));
     %BoundaryNodes.LeftCircle = find(abs(sqrt(Node(:,1).^2+Node(:,2).^2)-1.0)<eps);
     BoundaryNodes.Left = find(abs(Node(:,1)-BdBox(1))<eps);    

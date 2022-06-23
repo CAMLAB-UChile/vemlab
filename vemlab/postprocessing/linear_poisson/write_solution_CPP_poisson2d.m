@@ -1,8 +1,7 @@
-function write_solution_CPP_poisson2d(domainMesh,displacements,flux,grad,triangles_per_polygon,config)
+function write_solution_CPP_poisson2d(domainMesh,displacements,flux,grad,config)
 
   if strcmp(config.vemlab_method,'VEM2D')
-    write_solution_CPP_VEM2D_poisson2d(domainMesh,displacements,flux,...
-                                        grad,triangles_per_polygon,config);
+    write_solution_CPP_VEM2D_poisson2d(domainMesh,displacements,flux,grad,config);
     write_polymesh_CPP_VEM2D_poisson2d(domainMesh,config);
   else
     throw_warning('*** Warning in write_solution_CPP_poisson2d.m: Skipping writing of CPP file. Procedure not available for this vemlab_method ***')
@@ -61,8 +60,7 @@ end
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function write_solution_CPP_VEM2D_poisson2d(domainMesh,solution,flux,grad,...
-                                            triangles_per_polygon,config)
+function write_solution_CPP_VEM2D_poisson2d(domainMesh,solution,flux,grad,config)
   fprintf('\n'); 
   fprintf('Writing %s solution to a CPP text file...\n',config.vemlab_method); 
   % output file
@@ -98,13 +96,10 @@ function write_solution_CPP_VEM2D_poisson2d(domainMesh,solution,flux,grad,...
     fprintf(fid,'ComponentsNames: %s %s %s %s %s %s\n','Grad_x','Grad_y','Norm(Grad)','Flux_x','Flux_y','Norm(Flux)');  
     fprintf(fid,'NumberOfPolygons: %d\n',numel);  
     fprintf(fid,'Polygon Grad_x Grad_y Norm(Grad) Flux_x Flux_y Norm(Flux)\n');    
-    k = 1;
-    for elem_i=1:numel
+    for e=1:numel
       fprintf(fid,'%d %7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n', ...
-              elem_i,grad.dx(k),grad.dy(k),gradNorm(k),...
-              flux.qx(k),flux.qy(k),fluxNorm(k));   
-      num_triangles = triangles_per_polygon(elem_i);
-      k = k + num_triangles; % points to the first triangle into the next polygon subdivision            
+              e,grad.dx(e),grad.dy(e),gradNorm(e),...
+              flux.qx(e),flux.qy(e),fluxNorm(e));              
     end
   else
     throw_error('Error in write_solution_CPP_poisson2d.m --> write_solution_CPP_VEM2D_poisson2d: flux container is empty\n');

@@ -54,12 +54,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [triangles_per_polygon,flux,grad] = ...
+function [flux,grad] = ...
                plot_numerical_solution_poisson2d(domainMesh,solution,matProps,config)
              
   [flux,grad]=...
-    plot_numerical_solution_vem_fem_poisson2d(solution,domainMesh,matProps,config);      
-  triangles_per_polygon=[];
+    plot_numerical_solution_vem_fem_poisson2d(solution,domainMesh,matProps,config);
 
 end
 

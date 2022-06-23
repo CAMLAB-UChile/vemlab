@@ -1,8 +1,8 @@
-function write_solution_txt_poisson2d(domainMesh,scalar_sol,flux,grad,triangles_per_polygon,config)
+function write_solution_txt_poisson2d(domainMesh,scalar_sol,flux,grad,config)
 
   if strcmp(config.vemlab_method,'VEM2D')||strcmp(config.vemlab_method,'FEM2DT3')
     write_solution_txt_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,flux,...
-                                                grad,triangles_per_polygon,config);
+                                                grad,config);
   elseif strcmp(config.vemlab_method,'FEM2DQ4')
     write_solution_txt_FEM2DQ4_poisson2d(domainMesh,scalar_sol,flux,...
                                           grad,config);    
@@ -62,7 +62,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function write_solution_txt_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
-                                                    flux,grad,triangles_per_polygon,config)
+                                                    flux,grad,config)
   fprintf('\n'); 
   fprintf('Writing %s solution to a text file...\n',config.vemlab_method); 
   % output file
@@ -88,29 +88,19 @@ function write_solution_txt_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
     fprintf(fid,'%d %.8f %.8f %.8f\n', ...
             i,domainMesh.coords(i,1),domainMesh.coords(i,2),scalar_sol(i));
   end
-  % write fluxes and gradients only if flux is not empty
-  % since fluxes and gradients contain these quantities at the subtriangulation
-  % level, we only consider the first triangle in the triangulation of each polygon.
-  % for this, the helper array triangles_per_polygon is used.  
+  % write fluxes and gradients only if flux is not empty  
   if ~isempty(flux) 
     fluxNorm=sqrt((flux.qx).*(flux.qx)+(flux.qy).*(flux.qy));
     gradNorm=sqrt((grad.dx).*(grad.dx)+(grad.dy).*(grad.dy));
     fprintf(fid,'Gradient and Flux: \n'); 
     fprintf(fid,'(quantities are constant in the element)\n\n');   
     numel=length(domainMesh.connect);
-    k=1;
     for elem_i=1:numel
       fprintf(fid,'Element %d\n',elem_i);  
       fprintf(fid,'Grad_x      Grad_y      ||Grad||      Flux_x       Flux_y      ||Flux|| \n');
       fprintf(fid,'%7.4f %7.4f %7.4f %7.4f %7.4f %7.4f\n', ...
               grad.dx(elem_i),grad.dy(elem_i),gradNorm(elem_i),...
-              flux.qx(elem_i),flux.qy(elem_i),fluxNorm(elem_i));   
-      if strcmp(config.vemlab_method,'VEM2D')
-        num_triangles = triangles_per_polygon(elem_i);        
-        k = k + num_triangles; % points to the first triangle into the next polygon subdivision
-      else
-        k = k + 1;
-      end            
+              flux.qx(elem_i),flux.qy(elem_i),fluxNorm(elem_i));          
     end
   end
   fprintf('Check txt output files in folder: %s\n',...

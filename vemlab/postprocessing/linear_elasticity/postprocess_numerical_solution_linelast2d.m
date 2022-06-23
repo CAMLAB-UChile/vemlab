@@ -4,7 +4,7 @@ function postprocess_numerical_solution_linelast2d(domainMesh,solution,matProps,
      plot_numerical_solution_linelast2d(domainMesh,solution,matProps,config);
   % write numerical solutions to a text file
   if strcmp(config.write_solutions_to_text_file,'yes')
-    write_solution_txt_linelast2d(domainMesh,solution,stress,strain,triangles_per_polygon,config);
+    write_solution_txt_linelast2d(domainMesh,solution,stress,strain,config);
   end
   % write numerical solutions to a CPP text file
   if strcmp(config.write_solutions_to_CPP_file,'yes')

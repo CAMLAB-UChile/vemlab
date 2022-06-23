@@ -102,6 +102,13 @@ function write_solution_GiD_VEM2D_FEM2DT3_poisson2d(domainMesh,scalar_sol,...
       k=k+1;   
       % write mesh of triangles
       fprintf(fid,'%d %d %d %d %d\n',k,connect(tr_i,1),connect(tr_i,2),connect(tr_i,3),1);  
+      % AOB: (19-AUG-2021) assign the element fluxes and gradients to the
+      % element's subtriangulation since fluxes and gradients contain one
+      % constant value per polygon 
+      fluxT3.qx(k)=fluxT3.qx(i);
+      fluxT3.qy(k)=fluxT3.qy(i);
+      gradientT3.dx(k)=gradientT3.dx(i);    
+      gradientT3.dy(k)=gradientT3.dy(i);        
     end
   end
   num_triangles=k;

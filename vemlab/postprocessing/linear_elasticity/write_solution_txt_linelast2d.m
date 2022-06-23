@@ -1,8 +1,8 @@
-function write_solution_txt_linelast2d(domainMesh,displacements,stress,strain,triangles_per_polygon,config)
+function write_solution_txt_linelast2d(domainMesh,displacements,stress,strain,config)
 
   if strcmp(config.vemlab_method,'VEM2D')||strcmp(config.vemlab_method,'FEM2DT3')
     write_solution_txt_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,stress,...
-                                                strain,triangles_per_polygon,config);
+                                                strain,config);
   elseif strcmp(config.vemlab_method,'FEM2DQ4')
     write_solution_txt_FEM2DQ4_linelast2d(domainMesh,displacements,stress,...
                                           strain,config);    
@@ -62,8 +62,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function write_solution_txt_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,...
-                                                     stresses,strains,...
-                                                     triangles_per_polygon,config)
+                                                     stresses,strains,config)
   fprintf('\n'); 
   fprintf('Writing %s solution to a text file...\n',config.vemlab_method); 
   % output file
@@ -90,9 +89,6 @@ function write_solution_txt_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
             i,domainMesh.coords(i,1),domainMesh.coords(i,2),displacements(2*i-1),displacements(2*i));
   end
   % write stresses and strains only if stresses is not empty.
-  % since stresses and strains contain these quantities at the subtriangulation
-  % level, we only consider the first triangle in the triangulation of each polygon.
-  % for this, the helper array triangles_per_polygon is used.
   if ~isempty(stresses)
     fprintf(fid,'Strains, Stresses, Principal Strains and Principal Stresses: \n'); 
     fprintf(fid,'(quantities are constant in the element)\n\n');   
@@ -107,12 +103,7 @@ function write_solution_txt_VEM2D_FEM2DT3_linelast2d(domainMesh,displacements,..
               stresses.s33(k),stresses.s12(k),stresses.vm(k),stresses.p(k),...
               strains.e1(k),strains.e2(k),strains.e3(k),...
               stresses.s1(k),stresses.s2(k),stresses.s3(k));   
-      if strcmp(config.vemlab_method,'VEM2D')
-        num_triangles = triangles_per_polygon(elem_i);        
-        k = k + num_triangles; % points to the first triangle into the next polygon subdivision
-      else
-        k = k + 1;
-      end
+      k = k + 1;
     end
   end
   fprintf('Check txt output files in folder: %s\n',...
