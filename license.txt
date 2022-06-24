@@ -2,8 +2,8 @@
 %        VEMLAB: A Matlab Library for the Virtual Element Method
 %------------------------------------------------------------------------------
 %                                  
-%            Version      : 2.4                    
-%            Date         : 12-JANUARY-2022
+%            Version      : 2.4.1                    
+%            Date         : 24-JUNE-2022
 %            Source code  : http://camlab.cl/software/vemlab/
 %
 %------------------------------------------------------------------------------
