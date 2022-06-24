@@ -18,9 +18,22 @@
                              All Rights Reserved.
 							 
 ------------------------------------------------------------------------------
+Version 2.4.1 (24-JUNE-2022):
+
+- Fix some bugs in create_polygonal_mesh.m
+- Fix several bugs in the writing of output files. Affected functions: 
+    postprocess_numerical_solution_linelast2d.m
+    write_solution_txt_linelast2d.m
+    plot_numerical_solution_poisson2d.m
+    postprocess_numerical_solution_poisson2d.m
+    write_solution_CPP_poisson2d.m
+    write_solution_txt_poisson2d.m
+    write_solution_GiD_poisson2d.m
+- Optimize function T3toPolyMesh.m 
+
 Version 2.4 (12-JANUARY-2022):
 
-- Add several options for in plot_and_output_options.m. New options:
+- Add several options in plot_and_output_options.m. New options:
    delete existing output files, plot front/isometric view of the figure,
    print and save pdf figures, save .fig figures, set figure resolution, color system 
    for the colorbar, colorbar ticks and lines, figure ticks, figure grid, set min/max 
