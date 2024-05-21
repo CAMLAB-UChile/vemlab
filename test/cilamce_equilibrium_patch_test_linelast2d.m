@@ -9,7 +9,7 @@
 %              (See updates and version details in "version.txt")
 %-------------------------------------------------------------------------------
 %
-%                      2D Rigid Translation Patch Test
+%               2D Linear Equilibrium Patch Test as Given in [2]
 %                  Plane Strain - Linear Elastic Material
 %
 %-------------------------------------------------------------------------------
@@ -22,14 +22,16 @@
 %     C++ library for the virtual element method," Numerical Algorithms, 
 %     volume 82, pages 1189–1220(2019)
 %
+% [2] https://publicacoes.softaliza.com.br/cilamce2023/article/view/5017/4101
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function rigidtranslation_patch_test_linelast2d
+function  cilamce_equilibrium_patch_test_linelast2d
 
   close all;
   clear all;
   clc;
-  
+ 
   %% THIS BLOCK MUST BE PUT ON EVERY TEST FILE
   
   % add all vemlab folders to the path
@@ -40,14 +42,14 @@ function rigidtranslation_patch_test_linelast2d
     cd ..\; vemlab_root_dir=setpath;
   elseif is_Linux
     cd ../; vemlab_root_dir=setpath;
-  end    
+  end   
   
   %% INPUT DATA 
   
   % set material parameters
-  Ey=10^7;                               % Young's modulus
+  Ey=1e6;                               % Young's modulus
   nu=0.3;                                % Poisson's ratio
-  elastic_state='plane_strain';          % 'plane_strain' or 'plane_stress'  
+  elastic_state='plane_stress';          % 'plane_strain' or 'plane_stress'  
   
   % mesh filename: see available sample mesh files in folder "test/mesh_files/"
   %
@@ -60,7 +62,7 @@ function rigidtranslation_patch_test_linelast2d
   %     FEM2DT3 meshes can be used with 'FEM2DT3' and 'VEM2D' methods.
   %
   
-  mesh_filename='rigidtranslation_patch_test_4poly_elems.txt';  
+  mesh_filename='cilamce_patch_test_q4_uniform_5x5elems.txt';  
   
   % method
   vemlab_method='VEM2D';        % 'VEM2D' (polygons - linear VEM) or
@@ -77,7 +79,7 @@ function rigidtranslation_patch_test_linelast2d
   vemlab_module='LinearElastostatics';  % 'LinearElastostatics' or 'Poisson'
   
   % solver
-  vemlab_solver='sparse';   % 'sparse' or 'dense'  
+  vemlab_solver='sparse';   % 'sparse' or 'dense'    
   
   %% PLOT AND OUTPUT OPTIONS
   % to setup plot and output options go to folder 'config' and 
@@ -118,45 +120,72 @@ function rigidtranslation_patch_test_linelast2d
   fprintf('Assemblying element matrices...\n'); 
   [K_global,f_global]=assembly(domainMesh,config,matProps,body_force_fun_values);
   
+  %% NEUMANN BOUNDARY NODES/DOFS/FUNCTIONS (right side of the domain) 
+  % (see definition of functions at the bottom of this file)
+
+  Neumann_boundary_nodes=domainMesh.boundary_nodes.right;
+  Neumann_boundary_dofs=domainMesh.boundary_dofs.right; 
+  Neumann_fun_values.fx=@(x,y,matProps)fx_Neumann_fun(x,y,matProps);  
+  Neumann_fun_values.fy=@(x,y,matProps)fy_Neumann_fun(x,y,matProps);   
   
-  %% DIRICHLET BOUNDARY NODES/DOFS/FUNCTIONS (entire boundary) 
+  %% APPLY NEUMANN BCS ON THE BOUNDARY NODES 
+  
+  fprintf('Applying Neumann boundary conditions...\n');   
+  Neumann_BCs=compute_Neumann_BCs(domainMesh,config,Neumann_boundary_nodes,...
+                                  Neumann_boundary_dofs,Neumann_fun_values,matProps); 
+  f_global(Neumann_BCs.indexes)=f_global(Neumann_BCs.indexes)+Neumann_BCs.values;
+  
+  %% DIRICHLET BOUNDARY NODES/DOFS/FUNCTIONS 
   % (see definition of functions at the bottom of this file)
   
-  Dirichet_boundary_nodes=domainMesh.boundary_nodes.all;
-  Dirichet_boundary_dofs=domainMesh.boundary_dofs.all; 
-  Dirichlet_fun_values.ux=@(x,y,matProps)ux_Dirichlet_fun(x,y,matProps);  
-  Dirichlet_fun_values.uy=@(x,y,matProps)uy_Dirichlet_fun(x,y,matProps);   
+  % left boundary
+  Dirichlet_boundary_nodes1=domainMesh.boundary_nodes.left;
+  Dirichlet_boundary_dofs1=domainMesh.boundary_dofs.left; 
+  Dirichlet_fun_values1.ux=@(x,y,matProps)ux_Dirichlet_fun1(x,y,matProps);  
+  Dirichlet_fun_values1.uy=@(x,y,matProps)uy_Dirichlet_fun1(x,y,matProps);   
+  
+  % bottom boundary
+  Dirichlet_boundary_nodes2=domainMesh.boundary_nodes.bottom;
+  Dirichlet_boundary_dofs2=domainMesh.boundary_dofs.bottom; 
+  Dirichlet_fun_values2.ux=@(x,y,matProps)ux_Dirichlet_fun2(x,y,matProps);  
+  Dirichlet_fun_values2.uy=@(x,y,matProps)uy_Dirichlet_fun2(x,y,matProps); 
 
   %% ENFORCE DIRICHLET BCS ON THE BOUNDARY NODES
   
   fprintf('Enforcing Dirichlet boundary conditions...\n');   
-  u_nodal_sol=zeros(2*length(domainMesh.coords),1);    
-  DB_dofs=compute_Dirichlet_BCs(domainMesh,config,Dirichet_boundary_nodes,...
-                                Dirichet_boundary_dofs,Dirichlet_fun_values,matProps); % DOFs with Dirichlet BCs
-  u_nodal_sol(DB_dofs.indexes)=DB_dofs.values;
+  u_nodal_sol=zeros(2*length(domainMesh.coords),1);   
+  
+  DB_dofs1=compute_Dirichlet_BCs(domainMesh,config,Dirichlet_boundary_nodes1,...
+                                Dirichlet_boundary_dofs1,Dirichlet_fun_values1,matProps); % DOFs with Dirichlet BCs
+  DB_dofs2=compute_Dirichlet_BCs(domainMesh,config,Dirichlet_boundary_nodes2,...
+                                Dirichlet_boundary_dofs2,Dirichlet_fun_values2,matProps); % DOFs with Dirichlet BCs      
+                              
+  DB_dofs_indexes=[DB_dofs1.indexes;DB_dofs2.indexes];
+  DB_dofs_values=[DB_dofs1.values;DB_dofs2.values];                                                      
+  u_nodal_sol(DB_dofs_indexes)=DB_dofs_values;
   f_global=f_global-K_global*u_nodal_sol;    
   
   %% SOLVE RESULTING SYSTEM OF LINEAR EQUATIONS 
   
   fprintf('Solving system of linear equations...\n');   
   num_nodes=length(domainMesh.coords(:,1));    
-  free_dofs=setdiff(1:2*num_nodes,DB_dofs.indexes); % dofs that do not have Dirichlet boundary conditions associated  
+  free_dofs=setdiff(1:2*num_nodes,DB_dofs_indexes); % dofs that do not have Dirichlet boundary conditions associated  
   u_nodal_sol(free_dofs)=K_global(free_dofs,free_dofs)\f_global(free_dofs); % nodal solution at free dofs
   toc
   
-  %% EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
+  %% EXACT SOLUTIONS FOR THE QUADRATIC PATCH TEST
   % (see definition of functions at the bottom of this file)
   
   exact_solution_handle.ux=@(x,y,matProps)ux_exact(x,y,matProps);
   exact_solution_handle.uy=@(x,y,matProps)uy_exact(x,y,matProps);
   exact_solution_handle.p=@(x,y,matProps)p_exact(x,y,matProps);   
-  exact_solution_handle.strainvec=@(x,y,matProps)strainvec_exact(x,y,matProps);    
+  exact_solution_handle.strainvec=@(x,y,matProps)strainvec_exact(x,y,matProps);  
   
   %% NORMS OF THE ERROR
   
   fprintf('\n');
   fprintf('Computing norms of the solution error...\n');   
-  compute_norms_of_the_error(exact_solution_handle,u_nodal_sol,domainMesh,config,matProps);  
+  compute_norms_of_the_error(exact_solution_handle,u_nodal_sol,domainMesh,config,matProps);
   
   %% POSTPROCESSING
   
@@ -171,7 +200,7 @@ function rigidtranslation_patch_test_linelast2d
   
 end
 
-%% DEFINITION OF THE BODY FORCE FUNCTIONS FOR THE LINEAR PATCH TEST
+%% DEFINITION OF THE BODY FORCE FUNCTIONS
 
 function bx = bx_body_force_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "bx"
@@ -179,20 +208,44 @@ function bx = bx_body_force_fun(x,y,matProps)
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "bx" is an array that has the same form of the input "x" or "y"
   
-  bx=0;  % is used as a force per volume 
+%   N=length(x); % size of the b vector!
+%   Ey=10^7;
+%   nu=0.3;
+%   D=(Ey/((1+nu)*(1-2*nu)))*[1-nu,nu,0; nu,1-nu,0; 0,0,2*(1-2*nu)];
+%   bx=-0.2*D(1,1)-0.29*D(1,2)-0.4*D(3,3)*0.25; 
+  bx=0;
 end
 function by = by_body_force_fun(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the return "by"
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "by" is an array that has the same form of the input "x" or "y"
-  
-  by=0;  % is used as a force per volume
+  % 
+  by=0;  
 end
 
-%% DEFINITION OF DIRICHLET FUNCTIONS FOR THE LINEAR PATCH TEST
+%% DEFINITION OF NEUMANN FUNCTIONS
 
-function ux = ux_Dirichlet_fun(x,y,matProps)
+function fx = fx_Neumann_fun(x,y,matProps)
+  % Use something like x.*y (i.e., use the dot symbol) if the return "fx"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "fx" is an array that has the same form of the input "x" or "y"
+  
+  fx=1000;  % is used as a force per length   
+end
+function fy = fy_Neumann_fun(x,y,matProps)
+  % Use something like x.*y (i.e., use the dot symbol) if the return "fy"
+  % depends on x and y. This way, this function will also serve in case x and y 
+  % are arrays. If the function does not depend on x and y, make sure that the
+  % return "fy" is an array that has the same form of the input "x" or "y"
+  
+  fy=0;  % is used as a force per length   
+end
+
+%% DEFINITION OF DIRICHLET FUNCTIONS
+
+function ux = ux_Dirichlet_fun1(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).
@@ -202,13 +255,12 @@ function ux = ux_Dirichlet_fun(x,y,matProps)
   % column = free (1) or fixed (0) to indicate whether the corresponding value 
   % of the degree of freedom-x in the first column should be ignored (free) or 
   % applied (fixed).
-  
+ 
   ux=zeros(length(x),2); % first column = value; second column = free (1) or fixed (0)
                          % In this case, all ux dofs are fixed and have the
                          % values of ux(:,1)
-  ux(:,1)=0.5;   % update the value 
 end
-function uy = uy_Dirichlet_fun(x,y,matProps)
+function uy = uy_Dirichlet_fun1(x,y,matProps)
   % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
   % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
   % consider using something like x.*y (i.e., use the dot symbol).
@@ -222,18 +274,51 @@ function uy = uy_Dirichlet_fun(x,y,matProps)
   uy=zeros(length(y),2); % first column = value; second column = free (1) or fixed (0)
                          % In this case, all uy dofs are fixed and have the
                          % values of uy(:,1)
-  uy(:,1)=0.5;   % update the value  
+  uy(:,2)=1; % free the y-dofs                       
+end
+function ux = ux_Dirichlet_fun2(x,y,matProps)
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: ux = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom-x, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom-x in the first column should be ignored (free) or 
+  % applied (fixed).
+ 
+  ux=zeros(length(x),2); % first column = value; second column = free (1) or fixed (0)
+                         % In this case, all ux dofs are fixed and have the
+                         % values of ux(:,1)
+  ux(:,2)=1; % free the x-dofs                            
+end
+function uy = uy_Dirichlet_fun2(x,y,matProps)
+  % INPUT: x,y are vectors containing the coordinates of the nodes lying on the 
+  % Dirichlet boundary, therefore if the Dirichlet conditions depend on x and y,
+  % consider using something like x.*y (i.e., use the dot symbol).
+  %
+  % OUTPUT: uy = array in which its first column contains the value of the 
+  % Dirichlet boundary condition for the degrees of freedom-y, and its second 
+  % column = free (1) or fixed (0) to indicate whether the corresponding value 
+  % of the degree of freedom-y in the first column should be ignored (free) or 
+  % applied (fixed).
+  
+  uy=zeros(length(y),2); % first column = value; second column = free (1) or fixed (0)
+                         % In this case, all uy dofs are fixed and have the
+                         % values of uy(:,1)                    
 end
 
-%% DEFINITION OF THE EXACT SOLUTIONS FOR THE LINEAR PATCH TEST
+%% DEFINITION OF THE EXACT SOLUTIONS
 
 function ux = ux_exact(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "ux" is an array that has the same form of the input "x" or "y"
-  
-  ux=0.5;    
+  Ey=matProps.Ey;
+  nu=matProps.nu;
+  fx = 1000;
+  ux=(fx/Ey)*x;    
 end
 function uy = uy_exact(x,y,matProps)  
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
@@ -241,9 +326,11 @@ function uy = uy_exact(x,y,matProps)
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "uy" is an array that has the same form of the input "x" or "y"
   
-  uy=0.5;  
+  Ey=matProps.Ey;
+  nu=matProps.nu;
+  fx = 1000;
+  uy=-nu*fx/Ey*y;  
 end
-
 function p = p_exact(x,y,matProps)  
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
@@ -262,17 +349,19 @@ function p = p_exact(x,y,matProps)
   end
 
 end
-
 function strainvec = strainvec_exact(x,y,matProps)
   % Use something like x.*y (i.e., use the dot symbol) if the exact solution
   % depends on x and y. This way, this function will also serve in case x and y 
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "strainvec" is an array that has the same form of the input "x" or "y"
   
-  duxdx=0;
-  duydx=0;  
-  duxdy=0;  
-  duydy=0;      
+  Ey=matProps.Ey;
+  nu=matProps.nu;
+  fx=1000;
+  duxdx=fx/Ey;  
+  duydx=0;
+  duxdy=0;
+  duydy=-nu*fx/Ey;
  
   % strain vector in the form: [e11; e22; e12]  
   % note that the tird component is e12 and not 2*e12
@@ -284,5 +373,4 @@ function strainvec = strainvec_exact(x,y,matProps)
   % ------------------
   strainvec = [duxdx,duydy,0.5*(duxdy+duydx)]; 
 end
-
 

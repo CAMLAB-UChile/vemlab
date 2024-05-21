@@ -559,6 +559,9 @@ function p = p_exact(x,y,matProps)
   fy=zeros(length(x),1);
   fxy=P/(2*Ix)*(D*D/4-y.^2);
 
+  Ey=matProps.Ey;
+  nu=matProps.nu;   
+
   D=matProps.D; % defined as per Gain et al.
                 % to come back to the std definiton in FEM books:
                 % D(3,3)/4, this gives the following stress:
@@ -568,12 +571,13 @@ function p = p_exact(x,y,matProps)
                 
   D(3,3)=D(3,3)/2; % to obtain the strain as [e11 e22 e12]    
   strain_vec = D\[fx';fy';fxy'];
-  
-  p = -matProps.lam*(strain_vec(1,:)' + strain_vec(2,:)');   % update the value 
-  
-%   p
-%   p2 = P/(2*Ix)*(L-x).*y
-%   p3 = -(fx+fy+fz)/3
+
+  stress_vec=D*strain_vec;
+  if strcmp(matProps.plane_state,'plane_stress')
+    p = -1/3*(stress_vec(1) + stress_vec(2));
+  elseif strcmp(matProps.plane_state,'plane_strain')
+    p = -1/3*(stress_vec(1) + stress_vec(2) + nu*(stress_vec(1) + stress_vec(2)));
+  end
 
 end
 

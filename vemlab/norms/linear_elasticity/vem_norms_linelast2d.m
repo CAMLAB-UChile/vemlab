@@ -73,8 +73,13 @@ function [h_size,L2rel,H1rel,L2prel]=vem_norms_linelast2d(exact_sol,uh_global,do
         +[0,pir_grad_uh(1);pir_grad_uh(2),0]*(xgp'-x_bar')+u_bar';
       
       % pressure at Gauss point
-      ph_xgp=-matProps.lam*(pic_grad_uh(1)+pic_grad_uh(2));      
-      
+      stress_uh_xgp=matProps.D*pic_grad_uh;
+      if strcmp(matProps.plane_state,'plane_stress')
+        ph_xgp=-1/3*(stress_uh_xgp(1)+stress_uh_xgp(2));
+      elseif strcmp(matProps.plane_state,'plane_strain')||strcmp(matProps.plane_state,'plane_strain_stokes')
+        ph_xgp=-1/3*(stress_uh_xgp(1) + stress_uh_xgp(2) + matProps.nu*(stress_uh_xgp(1)+stress_uh_xgp(2)));           
+      end
+
       % errors at Gauss point
       u_error_xgp=pip_uh_xgp-u_exact_xgp;
       p_error_xgp=ph_xgp-p_exact_xgp;      

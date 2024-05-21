@@ -166,7 +166,9 @@ function [stress,strain] = ...
     sxx_h=sten_h(1,1); syy_h=sten_h(2,2); szz_h=sten_h(3,3);
     sxy_h=sten_h(1,2); sxz_h=0.0; syz_h=0.0;
     VM_h=(1/sqrt(2))*sqrt((sxx_h-syy_h)^2+(syy_h-szz_h)^2+(szz_h-sxx_h)^2+6*(sxy_h^2+syz_h^2+sxz_h^2));
-    p_h=-lambda*(eten_h(1,1)+eten_h(2,2));
+    % p_h=-lambda*(eten_h(1,1)+eten_h(2,2));
+    % p_h=lambda*(eten_h(1,1)+eten_h(2,2));
+    p_h=-1/3*(sten_h(1,1)+sten_h(2,2)+sten_h(3,3));  
     stress.s11(i)=sten_h(1,1);
     stress.s12(i)=sten_h(1,2);   
     stress.s22(i)=sten_h(2,2); 
@@ -250,7 +252,8 @@ function [stress,strain] = ...
     sxx_h=sten_h(1,1); syy_h=sten_h(2,2); szz_h=sten_h(3,3);
     sxy_h=sten_h(1,2); sxz_h=0.0; syz_h=0.0;
     VM_h=(1/sqrt(2))*sqrt((sxx_h-syy_h)^2+(syy_h-szz_h)^2+(szz_h-sxx_h)^2+6*(sxy_h^2+syz_h^2+sxz_h^2));  
-    p_h=-lambda*(eten_h(1,1)+eten_h(2,2));
+    % p_h=-lambda*(eten_h(1,1)+eten_h(2,2));
+    p_h=-1/3*(sten_h(1,1)+sten_h(2,2)+sten_h(3,3)); 
     stress.s11(i)=sten_h(1,1);
     stress.s12(i)=sten_h(1,2);   
     stress.s22(i)=sten_h(2,2); 
@@ -375,7 +378,8 @@ function [stress,strain,gp_list,h_min,xmin,xmax,ymin,ymax] = ...
         Ey=matProps.Ey;
         nu=matProps.nu;
         lam=Ey*nu/((1+nu)*(1-2*nu));
-        stress.p(gp)=-lam*(eten_h(1,1)+eten_h(2,2));            
+        % stress.p(gp)=-lam*(eten_h(1,1)+eten_h(2,2));  
+        stress.p(gp)=-1/3*(sten_h(1,1)+sten_h(2,2)+sten_h(3,3));             
         % assign stress and strain to the element Gauss points             
         N1=(1-xi(gpxi))*(1-eta(gpeta))/4;
         N2=(1+xi(gpxi))*(1-eta(gpeta))/4;

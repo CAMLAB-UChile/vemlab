@@ -297,8 +297,16 @@ function p = p_exact(x,y,matProps)
   % are arrays. If the function does not depend on x and y, make sure that the
   % return "p" is an array that has the same form of the input "x" or "y"
     
-  strain_vec=strainvec_exact(x,y,matProps);
-  p = -matProps.lam*(strain_vec(:,1) + strain_vec(:,1));   % update the value
+  Ey=matProps.Ey;
+  nu=matProps.nu;  
+  D=matProps.D; % to be used with the strain in the format [e11 e22 e12]
+  strain_vec=strainvec_exact(x,y,matProps);  
+  stress_vec=D*strain_vec';
+  if strcmp(matProps.plane_state,'plane_stress')
+    p = -1/3*(stress_vec(1) + stress_vec(2));
+  elseif strcmp(matProps.plane_state,'plane_strain')
+    p = -1/3*(stress_vec(1) + stress_vec(2) + nu*(stress_vec(1) + stress_vec(2)));
+  end
 
 end
 function strainvec = strainvec_exact(x,y,matProps)
